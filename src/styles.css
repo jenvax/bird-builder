@@ -289,6 +289,11 @@ h2 {
   height: 58px;
 }
 
+.wing-huge .wing {
+  width: 120px;
+  height: 66px;
+}
+
 .wing-tucked .wing {
   left: 132px;
   top: 142px;

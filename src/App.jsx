@@ -213,9 +213,9 @@ function VisualBird({ bird }) {
   const hasFootwear = hasValue(bird.footwear);
   const isTall = bird.legType.includes("Tall");
   const isOnePart = bird.constructionType === "One-Part Bird";
-  const isHugeHead = ["Huge", "Grand"].includes(bird.headSize);
+  const isHugeHead = bird.headSize === "Huge";
   const isTinyBody = ["Tiny", "Small"].includes(bird.bodySize);
-  const isLargeSingleShape = ["Huge", "Grand", "Large"].includes(bird.singleShapeSize);
+  const isLargeSingleShape = ["Huge", "Large"].includes(bird.singleShapeSize);
 
   return (
     <div
