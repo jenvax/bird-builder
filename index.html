@@ -3,59 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Whimsical Bird Builder</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Bird Builder MVP</title>
 </head>
 <body>
-  <main class="app-shell">
-    <section class="bird-card" aria-labelledby="bird-name">
-      <div class="topbar">
-        <p class="version">Version 0.1</p>
-        <p class="tagline">Whimsical Bird Builder</p>
-      </div>
-
-      <div class="bird-stage" aria-hidden="true">
-        <div class="sunburst"></div>
-        <div class="bird-visual">
-          <div class="crest"></div>
-          <div class="head">
-            <span class="eye eye-left"></span>
-            <span class="eye eye-right"></span>
-            <span class="beak"></span>
-          </div>
-          <div class="body"></div>
-          <div class="tail"></div>
-          <div class="legs">
-            <span></span>
-            <span></span>
-          </div>
-          <div class="feet">
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      </div>
-
-      <h1 id="bird-name">Curious Berry Bird</h1>
-
-      <div class="actions" aria-label="Bird controls">
-        <button id="generate-bird" type="button">Generate Bird</button>
-        <button id="copy-prompt" class="secondary" type="button">Copy Prompt</button>
-      </div>
-
-      <section class="panel" aria-labelledby="formula-title">
-        <h2 id="formula-title">Bird Formula</h2>
-        <dl id="bird-formula" class="formula-list"></dl>
-      </section>
-
-      <section class="panel prompt-panel" aria-labelledby="prompt-title">
-        <h2 id="prompt-title">Bird Prompt</h2>
-        <p id="bird-prompt"></p>
-        <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
-      </section>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

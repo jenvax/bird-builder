@@ -1,0 +1,381 @@
+:root {
+  color: #2f2942;
+  background: #fff8e8;
+  font-family: "Trebuchet MS", "Avenir Next", ui-rounded, system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(90deg, rgba(98, 143, 120, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(98, 143, 120, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at top left, rgba(255, 205, 117, 0.5), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(148, 210, 189, 0.55), transparent 32%),
+    #fff8e8;
+  background-size: 24px 24px, 24px 24px, auto, auto, auto;
+}
+
+button {
+  font: inherit;
+}
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 14px;
+}
+
+.sketchbook {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 16px;
+  border: 2px solid #3b3352;
+  border-radius: 8px;
+  background: rgba(255, 252, 242, 0.94);
+  box-shadow: 7px 7px 0 rgba(47, 41, 66, 0.14);
+}
+
+.eyebrow,
+.kicker {
+  margin: 0;
+  color: #635879;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 5px 9px;
+  border: 2px solid #3b3352;
+  border-radius: 999px;
+  background: #ffe08a;
+}
+
+.hero {
+  display: grid;
+  gap: 16px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+h1 {
+  margin: 6px 0 0;
+  color: #241b3a;
+  font-size: clamp(2.4rem, 14vw, 5rem);
+  line-height: 0.92;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.visual-bird {
+  --head: #ffd166;
+  --body: #ff8fab;
+  --tail: #8ecae6;
+  --accent: #95d5b2;
+  position: relative;
+  display: block;
+  width: min(100%, 310px);
+  height: 250px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 2px solid #3b3352;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.55), transparent 36%),
+    linear-gradient(135deg, #fcefb4, #d8f3dc 52%, #ffd6e0);
+}
+
+.palette-1 {
+  --head: #9b5de5;
+  --body: #f15bb5;
+  --tail: #fee440;
+  --accent: #00bbf9;
+}
+
+.palette-2 {
+  --head: #ffb4a2;
+  --body: #e5989b;
+  --tail: #ffcdb2;
+  --accent: #b5838d;
+}
+
+.palette-3 {
+  --head: #b7e4c7;
+  --body: #95d5b2;
+  --tail: #74c69d;
+  --accent: #ffd166;
+}
+
+.palette-4 {
+  --head: #ffc8dd;
+  --body: #cdb4db;
+  --tail: #bde0fe;
+  --accent: #a2d2ff;
+}
+
+.palette-5 {
+  --head: #a2d2ff;
+  --body: #bde0fe;
+  --tail: #cdb4db;
+  --accent: #ffc8dd;
+}
+
+.crest,
+.head,
+.body,
+.tail,
+.eye,
+.beak,
+.legs,
+.feet {
+  position: absolute;
+}
+
+.crest {
+  left: 128px;
+  top: 39px;
+  width: 54px;
+  height: 36px;
+  border: 3px solid #2f2942;
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0;
+  background: var(--accent);
+}
+
+.crest.sunny {
+  background: repeating-conic-gradient(from 0deg, var(--accent) 0deg 14deg, #fff8e8 14deg 28deg);
+}
+
+.head {
+  left: 111px;
+  top: 60px;
+  width: 86px;
+  height: 76px;
+  border: 3px solid #2f2942;
+  border-radius: 48% 52% 45% 55%;
+  background: var(--head);
+}
+
+.head-large {
+  transform: scale(1.15);
+}
+
+.body {
+  left: 88px;
+  top: 120px;
+  width: 124px;
+  height: 92px;
+  border: 3px solid #2f2942;
+  border-radius: 58% 42% 52% 48%;
+  background: var(--body);
+}
+
+.body-small {
+  transform: scale(0.88);
+}
+
+.tail {
+  left: 196px;
+  top: 147px;
+  width: 76px;
+  height: 30px;
+  border: 3px solid #2f2942;
+  border-left: 0;
+  border-radius: 0 80% 80% 0;
+  background: var(--tail);
+  transform: rotate(10deg);
+}
+
+.eye {
+  top: 28px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #2f2942;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.eye::after {
+  position: absolute;
+  inset: 2px;
+  content: "";
+  border-radius: 50%;
+  background: #2f2942;
+}
+
+.eye.left {
+  left: 22px;
+}
+
+.eye.right {
+  right: 22px;
+}
+
+.eye.wide-set.left {
+  left: 14px;
+}
+
+.eye.wide-set.right {
+  right: 14px;
+}
+
+.eye.close-set.left {
+  left: 28px;
+}
+
+.eye.close-set.right {
+  right: 28px;
+}
+
+.beak {
+  left: 37px;
+  top: 43px;
+  width: 26px;
+  height: 17px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  background: #ffb703;
+}
+
+.legs {
+  left: 126px;
+  top: 206px;
+  display: flex;
+  gap: 28px;
+}
+
+.legs span {
+  display: block;
+  width: 5px;
+  height: 22px;
+  border-radius: 99px;
+  background: #2f2942;
+}
+
+.legs-tall span {
+  height: 34px;
+}
+
+.feet {
+  left: 112px;
+  top: 230px;
+  display: flex;
+  gap: 20px;
+}
+
+.feet span {
+  width: 34px;
+  height: 8px;
+  border: 2px solid #2f2942;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 18px 0 14px;
+}
+
+button {
+  min-height: 52px;
+  padding: 12px 16px;
+  border: 2px solid #2f2942;
+  border-radius: 8px;
+  color: #241b3a;
+  font-weight: 900;
+  background: #ff9db5;
+  box-shadow: 4px 4px 0 #2f2942;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible {
+  background: #ffe08a;
+}
+
+button:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #2f2942;
+}
+
+button.secondary {
+  background: #aee8d3;
+}
+
+.paper-panel {
+  margin-top: 12px;
+  padding: 14px;
+  border: 2px solid #3b3352;
+  border-radius: 8px;
+  background:
+    linear-gradient(rgba(47, 41, 66, 0.055) 1px, transparent 1px),
+    #fffefa;
+  background-size: 100% 28px;
+}
+
+.formula {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.formula-row {
+  display: grid;
+  grid-template-columns: minmax(74px, auto) 1fr;
+  gap: 10px;
+}
+
+dt {
+  font-weight: 900;
+}
+
+dd {
+  margin: 0;
+}
+
+.prompt-panel p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.prompt-panel .copy-status {
+  min-height: 1.35em;
+  margin-top: 10px;
+  color: #3f7a59;
+  font-weight: 800;
+}
+
+@media (min-width: 620px) {
+  .page {
+    padding: 28px;
+  }
+
+  .sketchbook {
+    padding: 22px;
+  }
+
+  .hero {
+    grid-template-columns: 310px 1fr;
+  }
+
+  .actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
