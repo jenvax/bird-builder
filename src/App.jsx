@@ -13,6 +13,11 @@ import beaks from "./data/beaks.json";
 import legs from "./data/legs.json";
 import feet from "./data/feet.json";
 import palettes from "./data/palettes.json";
+import patterns from "./data/patterns.json";
+import patternPlacement from "./data/patternPlacement.json";
+import eyewear from "./data/eyewear.json";
+import footwear from "./data/footwear.json";
+import socks from "./data/socks.json";
 
 const tables = {
   constructionTypes,
@@ -28,7 +33,12 @@ const tables = {
   beaks,
   legs,
   feet,
-  palettes
+  palettes,
+  patterns,
+  patternPlacement,
+  eyewear,
+  footwear,
+  socks
 };
 
 function randomItem(items) {
@@ -63,7 +73,12 @@ function makeBird() {
     beak: randomItem(tables.beaks),
     legType: randomItem(tables.legs),
     footType: randomItem(tables.feet),
-    colorPalette: randomItem(tables.palettes)
+    colorPalette: randomItem(tables.palettes),
+    pattern: randomItem(tables.patterns),
+    patternPlacement: randomItem(tables.patternPlacement),
+    eyewear: randomItem(tables.eyewear),
+    footwear: randomItem(tables.footwear),
+    socks: randomItem(tables.socks)
   };
 }
 
@@ -80,6 +95,38 @@ function withSuffix(value, suffix) {
   return normalized.endsWith(suffix) ? normalized : `${normalized} ${suffix}`;
 }
 
+function hasValue(value) {
+  return value !== "None";
+}
+
+function sentenceList(items) {
+  if (items.length === 0) {
+    return "";
+  }
+
+  if (items.length === 1) {
+    return items[0];
+  }
+
+  return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+}
+
+function patternPhrase(pattern, placement) {
+  if (!hasValue(pattern)) {
+    return "";
+  }
+
+  if (placement === "All Over") {
+    return `${lower(pattern)} all over`;
+  }
+
+  if (placement === "Random Patches") {
+    return `${lower(pattern)} in random patches`;
+  }
+
+  return `${lower(pattern)} on the ${lower(placement)}`;
+}
+
 function paletteWord(palette) {
   return palette.split(" ")[0];
 }
@@ -90,12 +137,19 @@ function birdName(bird) {
 
 function birdPrompt(bird) {
   const eyePhrase = `${lower(bird.eyeStyle)} eyes placed ${lower(bird.eyePlacement).replace(" set", "")} and ${lower(bird.eyeSpacing)}`;
+  const accessoryPhrases = [
+    patternPhrase(bird.pattern, bird.patternPlacement),
+    hasValue(bird.eyewear) ? lower(bird.eyewear) : "",
+    hasValue(bird.socks) ? lower(bird.socks) : "",
+    hasValue(bird.footwear) ? lower(bird.footwear) : ""
+  ].filter(Boolean);
+  const accessorySentence = accessoryPhrases.length > 0 ? ` Add ${sentenceList(accessoryPhrases)}.` : "";
 
   if (bird.constructionType === "One-Part Bird") {
-    return `Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}. Use the ${bird.colorPalette} palette.`;
+    return `Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.${accessorySentence} Use the ${bird.colorPalette} palette.`;
   }
 
-  return `Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}. Use the ${bird.colorPalette} palette.`;
+  return `Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.${accessorySentence} Use the ${bird.colorPalette} palette.`;
 }
 
 function birdFormula(bird) {
@@ -106,6 +160,11 @@ function birdFormula(bird) {
     ["Beak", bird.beak],
     ["Legs", bird.legType],
     ["Feet", bird.footType],
+    ["Pattern", bird.pattern],
+    ["Pattern Placement", hasValue(bird.pattern) ? bird.patternPlacement : "None"],
+    ["Eyewear", bird.eyewear],
+    ["Socks", bird.socks],
+    ["Footwear", bird.footwear],
     ["Palette", bird.colorPalette]
   ];
 
@@ -125,6 +184,10 @@ function birdFormula(bird) {
 
 function VisualBird({ bird }) {
   const paletteClass = `palette-${palettes.indexOf(bird.colorPalette) % palettes.length}`;
+  const patternClass = hasValue(bird.pattern) ? `pattern-${token(bird.pattern)}` : "pattern-none";
+  const hasEyewear = hasValue(bird.eyewear);
+  const hasSocks = hasValue(bird.socks);
+  const hasFootwear = hasValue(bird.footwear);
   const isTall = bird.legType.includes("Tall");
   const isOnePart = bird.constructionType === "One-Part Bird";
   const isHugeHead = ["Huge", "Grand"].includes(bird.headSize);
@@ -132,30 +195,32 @@ function VisualBird({ bird }) {
   const isLargeSingleShape = ["Huge", "Grand", "Large"].includes(bird.singleShapeSize);
 
   return (
-    <div className={`visual-bird ${paletteClass} ${isOnePart ? "one-part" : "two-part"}`} aria-hidden="true">
+    <div className={`visual-bird ${paletteClass} ${patternClass} ${isOnePart ? "one-part" : "two-part"}`} aria-hidden="true">
       <div className={`crest ${bird.crest.includes("Sunburst") ? "sunny" : ""}`} />
       {isOnePart ? (
         <div className={`single-shape ${isLargeSingleShape ? "single-shape-large" : ""}`}>
           <span className={`eye left ${token(bird.eyePlacement)} ${token(bird.eyeSpacing)}`} />
           <span className={`eye right ${token(bird.eyePlacement)} ${token(bird.eyeSpacing)}`} />
+          {hasEyewear && <span className={`eyewear ${token(bird.eyewear)}`} />}
           <span className="beak" />
         </div>
       ) : (
         <div className={`head ${isHugeHead ? "head-large" : ""}`}>
           <span className={`eye left ${token(bird.eyePlacement)} ${token(bird.eyeSpacing)}`} />
           <span className={`eye right ${token(bird.eyePlacement)} ${token(bird.eyeSpacing)}`} />
+          {hasEyewear && <span className={`eyewear ${token(bird.eyewear)}`} />}
           <span className="beak" />
         </div>
       )}
       {!isOnePart && <div className={`body ${isTinyBody ? "body-small" : ""}`} />}
       <div className="tail" />
       <div className={`legs ${isTall ? "legs-tall" : ""}`}>
-        <span />
-        <span />
+        <span>{hasSocks && <i />}</span>
+        <span>{hasSocks && <i />}</span>
       </div>
       <div className="feet">
-        <span />
-        <span />
+        <span className={hasFootwear ? "wearing-shoes" : ""} />
+        <span className={hasFootwear ? "wearing-shoes" : ""} />
       </div>
     </div>
   );
