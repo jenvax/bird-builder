@@ -158,6 +158,7 @@ h2 {
 .head,
 .single-shape,
 .body,
+.wing,
 .tail,
 .eye,
 .eyewear,
@@ -168,6 +169,7 @@ h2 {
 }
 
 .crest {
+  z-index: 4;
   left: 128px;
   top: 39px;
   width: 54px;
@@ -183,6 +185,7 @@ h2 {
 }
 
 .head {
+  z-index: 5;
   left: 111px;
   top: 60px;
   width: 86px;
@@ -198,6 +201,7 @@ h2 {
 }
 
 .single-shape {
+  z-index: 3;
   left: 82px;
   top: 72px;
   width: 146px;
@@ -231,6 +235,7 @@ h2 {
 }
 
 .body {
+  z-index: 3;
   left: 88px;
   top: 120px;
   width: 124px;
@@ -245,6 +250,7 @@ h2 {
 }
 
 .tail {
+  z-index: 1;
   left: 196px;
   top: 147px;
   width: 76px;
@@ -256,7 +262,118 @@ h2 {
   transform: rotate(10deg);
 }
 
+.wing {
+  z-index: 2;
+  left: 154px;
+  top: 132px;
+  width: 82px;
+  height: 48px;
+  border: 3px solid #2f2942;
+  border-radius: 68% 36% 62% 38%;
+  background: color-mix(in srgb, var(--accent) 72%, #fff8e8);
+  transform-origin: 14px 24px;
+}
+
+.wing-tiny .wing {
+  width: 50px;
+  height: 30px;
+}
+
+.wing-small .wing {
+  width: 64px;
+  height: 38px;
+}
+
+.wing-large .wing {
+  width: 104px;
+  height: 58px;
+}
+
+.wing-tucked .wing {
+  left: 132px;
+  top: 142px;
+  transform: rotate(8deg);
+}
+
+.wing-side .wing {
+  left: 154px;
+  top: 132px;
+  transform: rotate(8deg);
+}
+
+.wing-droopy .wing {
+  left: 152px;
+  top: 148px;
+  transform: rotate(30deg);
+}
+
+.wing-raised .wing {
+  left: 144px;
+  top: 98px;
+  transform: rotate(-34deg);
+}
+
+.one-part .wing {
+  left: 160px;
+  top: 118px;
+}
+
+.one-part.wing-tucked .wing {
+  left: 132px;
+  top: 132px;
+}
+
+.one-part.wing-droopy .wing {
+  left: 158px;
+  top: 142px;
+}
+
+.one-part.wing-raised .wing {
+  left: 142px;
+  top: 92px;
+}
+
+.wing-leaf-wing .wing {
+  border-radius: 85% 18% 85% 18%;
+}
+
+.wing-cloud-wing .wing {
+  border-radius: 55% 45% 62% 38%;
+  box-shadow:
+    -14px 7px 0 -4px color-mix(in srgb, var(--accent) 72%, #fff8e8),
+    -14px 7px 0 -1px #2f2942;
+}
+
+.wing-petal-wing .wing,
+.wing-teardrop-wing .wing {
+  border-radius: 90% 20% 75% 25%;
+}
+
+.wing-ribbon-wing .wing {
+  border-radius: 10px 80% 80% 10px;
+}
+
+.wing-fan-wing .wing {
+  border-radius: 100% 20% 70% 30%;
+  background:
+    repeating-conic-gradient(from -20deg at 16% 50%, color-mix(in srgb, var(--accent) 76%, #fff8e8) 0deg 14deg, rgba(255, 255, 255, 0.36) 14deg 22deg);
+}
+
+.wing-tulip-wing .wing {
+  border-radius: 72% 38% 62% 42%;
+  clip-path: polygon(0 48%, 30% 0, 50% 24%, 70% 0, 100% 48%, 76% 100%, 24% 100%);
+}
+
+.wing-bean-wing .wing {
+  border-radius: 70% 42% 66% 38%;
+}
+
+.wing-pebble-wing .wing {
+  border-radius: 50%;
+}
+
 .eye {
+  z-index: 6;
   top: 28px;
   width: 10px;
   height: 10px;
@@ -306,6 +423,7 @@ h2 {
 }
 
 .beak {
+  z-index: 7;
   left: 37px;
   top: 43px;
   width: 26px;
@@ -315,6 +433,7 @@ h2 {
 }
 
 .eyewear {
+  z-index: 8;
   left: 12px;
   top: 22px;
   width: 62px;
@@ -368,6 +487,7 @@ h2 {
 }
 
 .legs {
+  z-index: 4;
   left: 126px;
   top: 206px;
   display: flex;
@@ -400,6 +520,7 @@ h2 {
 }
 
 .feet {
+  z-index: 5;
   left: 112px;
   top: 230px;
   display: flex;
