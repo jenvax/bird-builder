@@ -128,7 +128,7 @@ function patternPhrase(pattern, placement) {
 }
 
 function paletteWord(palette) {
-  return palette.split(" ")[0];
+  return palette.name.split(" ")[0];
 }
 
 function birdName(bird) {
@@ -146,10 +146,10 @@ function birdPrompt(bird) {
   const accessorySentence = accessoryPhrases.length > 0 ? ` Add ${sentenceList(accessoryPhrases)}.` : "";
 
   if (bird.constructionType === "One-Part Bird") {
-    return `Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.${accessorySentence} Use the ${bird.colorPalette} palette.`;
+    return `Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.${accessorySentence} Use the ${bird.colorPalette.name} palette.`;
   }
 
-  return `Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.${accessorySentence} Use the ${bird.colorPalette} palette.`;
+  return `Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.${accessorySentence} Use the ${bird.colorPalette.name} palette.`;
 }
 
 function birdFormula(bird) {
@@ -164,8 +164,7 @@ function birdFormula(bird) {
     ["Pattern Placement", hasValue(bird.pattern) ? bird.patternPlacement : "None"],
     ["Eyewear", bird.eyewear],
     ["Socks", bird.socks],
-    ["Footwear", bird.footwear],
-    ["Palette", bird.colorPalette]
+    ["Footwear", bird.footwear]
   ];
 
   if (bird.constructionType === "One-Part Bird") {
@@ -183,7 +182,7 @@ function birdFormula(bird) {
 }
 
 function VisualBird({ bird }) {
-  const paletteClass = `palette-${palettes.indexOf(bird.colorPalette) % palettes.length}`;
+  const [headColor, bodyColor, tailColor, accentColor] = bird.colorPalette.colors;
   const patternClass = hasValue(bird.pattern) ? `pattern-${token(bird.pattern)}` : "pattern-none";
   const hasEyewear = hasValue(bird.eyewear);
   const hasSocks = hasValue(bird.socks);
@@ -195,7 +194,16 @@ function VisualBird({ bird }) {
   const isLargeSingleShape = ["Huge", "Grand", "Large"].includes(bird.singleShapeSize);
 
   return (
-    <div className={`visual-bird ${paletteClass} ${patternClass} ${isOnePart ? "one-part" : "two-part"}`} aria-hidden="true">
+    <div
+      className={`visual-bird ${patternClass} ${isOnePart ? "one-part" : "two-part"}`}
+      style={{
+        "--head": headColor,
+        "--body": bodyColor,
+        "--tail": tailColor,
+        "--accent": accentColor
+      }}
+      aria-hidden="true"
+    >
       <div className={`crest ${bird.crest.includes("Sunburst") ? "sunny" : ""}`} />
       {isOnePart ? (
         <div className={`single-shape ${isLargeSingleShape ? "single-shape-large" : ""}`}>
@@ -223,6 +231,52 @@ function VisualBird({ bird }) {
         <span className={hasFootwear ? "wearing-shoes" : ""} />
       </div>
     </div>
+  );
+}
+
+function PaletteSwatches({ colors }) {
+  return (
+    <div className="palette-swatches" aria-label="Palette colors">
+      {colors.map((color) => (
+        <span key={color} style={{ backgroundColor: color }} />
+      ))}
+    </div>
+  );
+}
+
+function PaletteCard({ palette, compact = false }) {
+  return (
+    <article className={`palette-card ${compact ? "compact" : ""}`}>
+      <div>
+        <h3>{palette.name}</h3>
+        {!compact && <p className="palette-collection">{palette.collection}</p>}
+      </div>
+      <PaletteSwatches colors={palette.colors} />
+      <p className="palette-mood">{palette.mood}</p>
+    </article>
+  );
+}
+
+function PaletteReference() {
+  const collections = palettes.reduce((groups, palette) => {
+    groups[palette.collection] = [...(groups[palette.collection] || []), palette];
+    return groups;
+  }, {});
+
+  return (
+    <section className="paper-panel palette-reference" aria-labelledby="palette-reference-heading">
+      <h2 id="palette-reference-heading">Palette Reference</h2>
+      {Object.entries(collections).map(([collection, collectionPalettes]) => (
+        <div className="palette-group" key={collection}>
+          <h3>{collection}</h3>
+          <div className="palette-grid">
+            {collectionPalettes.map((palette) => (
+              <PaletteCard palette={palette} key={palette.name} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
   );
 }
 
@@ -279,11 +333,15 @@ export default function App() {
           </dl>
         </section>
 
+        <PaletteCard palette={bird.colorPalette} compact />
+
         <section className="paper-panel prompt-panel" aria-labelledby="prompt-heading">
           <h2 id="prompt-heading">Prompt</h2>
           <p>{prompt}</p>
           <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
         </section>
+
+        <PaletteReference />
       </section>
     </main>
   );

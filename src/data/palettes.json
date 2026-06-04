@@ -1,8 +1,86 @@
 [
-  "Citrus Picnic",
-  "Berry Patch",
-  "Sunset Sherbet",
-  "Meadow Mint",
-  "Cotton Candy",
-  "Blueberry Pie"
+  {
+    "collection": "Berry Collection",
+    "name": "Blueberry Pie",
+    "colors": ["#2F3A8F", "#4C63B6", "#7A8FE3", "#D8E2FF", "#F7E7B4"],
+    "mood": "Cozy, sweet, and storybook-soft with a little dusk."
+  },
+  {
+    "collection": "Berry Collection",
+    "name": "Strawberry Shortcake",
+    "colors": ["#F25F7A", "#FF9BAA", "#FFD6DC", "#FFF3C7", "#A7D7A9"],
+    "mood": "Cheerful, tender, and bakery-bright."
+  },
+  {
+    "collection": "Berry Collection",
+    "name": "Blackberry Jam",
+    "colors": ["#2D183F", "#5D2E7A", "#9A5ABF", "#F08CAE", "#F6D6FF"],
+    "mood": "Rich, magical, and a little mischievous."
+  },
+  {
+    "collection": "Garden Collection",
+    "name": "Cottage Garden",
+    "colors": ["#8BC6A3", "#F4A7B9", "#F8D98B", "#B7DDE8", "#FFF7E8"],
+    "mood": "Gentle, flowery, and hand-painted."
+  },
+  {
+    "collection": "Garden Collection",
+    "name": "Wildflower Meadow",
+    "colors": ["#6FBF73", "#F2C94C", "#EB5757", "#56CCF2", "#F9F1D5"],
+    "mood": "Playful, sunny, and happily untamed."
+  },
+  {
+    "collection": "Garden Collection",
+    "name": "Spring Tulips",
+    "colors": ["#FF6F91", "#FF9671", "#FFC75F", "#A0E7A0", "#F8F7FF"],
+    "mood": "Fresh, bright, and full of bounce."
+  },
+  {
+    "collection": "Woodland Collection",
+    "name": "Acorn & Moss",
+    "colors": ["#6B4F2A", "#9B6F3D", "#7A9B55", "#C7D59F", "#F1E6C8"],
+    "mood": "Earthy, friendly, and quietly curious."
+  },
+  {
+    "collection": "Woodland Collection",
+    "name": "Mushroom Hollow",
+    "colors": ["#B85C5C", "#F2B6A0", "#8E6C88", "#D9D0B4", "#FFF4D8"],
+    "mood": "Cozy, odd, and fairy-tale wooded."
+  },
+  {
+    "collection": "Woodland Collection",
+    "name": "Forest Tea Party",
+    "colors": ["#315C4B", "#6FA386", "#D7B56D", "#E8DCC2", "#B76E79"],
+    "mood": "Polite, mossy, and quietly fancy."
+  },
+  {
+    "collection": "Sky Collection",
+    "name": "Cloud Parade",
+    "colors": ["#BDE0FE", "#D7F3FF", "#FFFFFF", "#C8D7E8", "#FFD6E8"],
+    "mood": "Airy, dreamy, and light as paper."
+  },
+  {
+    "collection": "Sky Collection",
+    "name": "Rainbow Daydream",
+    "colors": ["#FFADAD", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#A0C4FF"],
+    "mood": "Imaginative, bright, and wonderfully silly."
+  },
+  {
+    "collection": "Sky Collection",
+    "name": "Sunset Picnic",
+    "colors": ["#FF8C61", "#FFB067", "#FFD166", "#A8DADC", "#725AC1"],
+    "mood": "Warm, relaxed, and golden-hour whimsical."
+  },
+  {
+    "collection": "Seasonal Collection",
+    "name": "Autumn Orchard",
+    "colors": ["#B85C38", "#D99058", "#F2C879", "#7D9D5C", "#5C4033"],
+    "mood": "Crunchy-leaf warm with a harvest glow."
+  },
+  {
+    "collection": "Seasonal Collection",
+    "name": "Winter Cocoa",
+    "colors": ["#5B4636", "#A77C5B", "#D8C3A5", "#F4EDE4", "#8CBFD1"],
+    "mood": "Snuggly, calm, and cocoa-sweet."
+  }
 ]
