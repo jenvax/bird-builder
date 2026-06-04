@@ -254,6 +254,14 @@ h2 {
   background: #2f2942;
 }
 
+.eye.high-set {
+  top: 20px;
+}
+
+.eye.low-set {
+  top: 36px;
+}
+
 .eye.left {
   left: 22px;
 }
@@ -262,19 +270,19 @@ h2 {
   right: 22px;
 }
 
-.eye.wide-set.left {
+.eye.wide.left {
   left: 14px;
 }
 
-.eye.wide-set.right {
+.eye.wide.right {
   right: 14px;
 }
 
-.eye.close-set.left {
+.eye.close.left {
   left: 28px;
 }
 
-.eye.close-set.right {
+.eye.close.right {
   right: 28px;
 }
 
