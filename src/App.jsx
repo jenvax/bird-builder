@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import constructionTypes from "./data/constructionTypes.json";
 import moods from "./data/moods.json";
 import headShapes from "./data/headShapes.json";
 import headSizes from "./data/headSizes.json";
@@ -14,6 +15,7 @@ import feet from "./data/feet.json";
 import palettes from "./data/palettes.json";
 
 const tables = {
+  constructionTypes,
   moods,
   headShapes,
   headSizes,
@@ -33,13 +35,26 @@ function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
+function randomConstructionType() {
+  return Math.random() < 0.7 ? "Two-Part Bird" : "One-Part Bird";
+}
+
 function makeBird() {
+  const constructionType = randomConstructionType();
+  const headShape = randomItem(tables.headShapes);
+  const headSize = randomItem(tables.headSizes);
+  const bodyShape = randomItem(tables.bodyShapes);
+  const bodySize = randomItem(tables.bodySizes);
+
   return {
+    constructionType,
     mood: randomItem(tables.moods),
-    headShape: randomItem(tables.headShapes),
-    headSize: randomItem(tables.headSizes),
-    bodyShape: randomItem(tables.bodyShapes),
-    bodySize: randomItem(tables.bodySizes),
+    headShape,
+    headSize,
+    bodyShape,
+    bodySize,
+    singleShape: randomItem([...tables.headShapes, ...tables.bodyShapes]),
+    singleShapeSize: randomItem(tables.bodySizes),
     crest: randomItem(tables.crests),
     tail: randomItem(tables.tails),
     eyeStyle: randomItem(tables.eyeStyles),
@@ -60,6 +75,20 @@ function withSuffix(value, suffix) {
   return normalized.endsWith(suffix) ? normalized : `${normalized} ${suffix}`;
 }
 
+function asBodyShape(value) {
+  const normalized = lower(value);
+
+  if (normalized.endsWith("body shape")) {
+    return normalized;
+  }
+
+  if (normalized.endsWith("body")) {
+    return `${normalized} shape`;
+  }
+
+  return `${normalized} body shape`;
+}
+
 function paletteWord(palette) {
   return palette.split(" ")[0];
 }
@@ -69,14 +98,17 @@ function birdName(bird) {
 }
 
 function birdPrompt(bird) {
-  return `Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.eyeStyle)} eyes placed ${lower(bird.eyePlacement).replace(" set", "")} on the face, a ${lower(bird.beak)}, and ${lower(bird.legType)} legs with ${lower(bird.footType)}. Use the ${bird.colorPalette} color palette.`;
+  if (bird.constructionType === "One-Part Bird") {
+    return `Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${asBodyShape(bird.singleShape)}, ${lower(bird.eyeStyle)} eyes placed ${lower(bird.eyePlacement).replace(" set", "")} on the face, a ${withSuffix(bird.beak, "beak")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}. Use the ${bird.colorPalette} palette.`;
+  }
+
+  return `Draw a ${lower(bird.mood)} two-part bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.eyeStyle)} eyes placed ${lower(bird.eyePlacement).replace(" set", "")} on the face, a ${withSuffix(bird.beak, "beak")}, and ${lower(bird.legType)} legs with ${lower(bird.footType)}. Use the ${bird.colorPalette} palette.`;
 }
 
 function birdFormula(bird) {
-  return [
+  const sharedRows = [
+    ["Construction", bird.constructionType],
     ["Mood", bird.mood],
-    ["Head", `${bird.headSize} ${bird.headShape}`],
-    ["Body", `${bird.bodySize} ${bird.bodyShape}`],
     ["Crest", bird.crest],
     ["Tail", bird.tail],
     ["Eyes", `${bird.eyeStyle} / ${bird.eyePlacement}`],
@@ -85,23 +117,51 @@ function birdFormula(bird) {
     ["Feet", bird.footType],
     ["Palette", bird.colorPalette]
   ];
+
+  if (bird.constructionType === "One-Part Bird") {
+    return [
+      sharedRows[0],
+      sharedRows[1],
+      ["Shape", bird.singleShape],
+      ["Shape Size", bird.singleShapeSize],
+      ...sharedRows.slice(2)
+    ];
+  }
+
+  return [
+    sharedRows[0],
+    sharedRows[1],
+    ["Head", `${bird.headSize} ${bird.headShape}`],
+    ["Body", `${bird.bodySize} ${bird.bodyShape}`],
+    ...sharedRows.slice(2)
+  ];
 }
 
 function VisualBird({ bird }) {
   const paletteClass = `palette-${palettes.indexOf(bird.colorPalette) % palettes.length}`;
   const isTall = bird.legType.includes("Tall");
+  const isOnePart = bird.constructionType === "One-Part Bird";
   const isHugeHead = ["Huge", "Grand"].includes(bird.headSize);
   const isTinyBody = ["Tiny", "Small"].includes(bird.bodySize);
+  const isLargeSingleShape = ["Huge", "Grand", "Large"].includes(bird.singleShapeSize);
 
   return (
-    <div className={`visual-bird ${paletteClass}`} aria-hidden="true">
+    <div className={`visual-bird ${paletteClass} ${isOnePart ? "one-part" : "two-part"}`} aria-hidden="true">
       <div className={`crest ${bird.crest.includes("Sunburst") ? "sunny" : ""}`} />
-      <div className={`head ${isHugeHead ? "head-large" : ""}`}>
-        <span className={`eye left ${lower(bird.eyePlacement).replace(" ", "-")}`} />
-        <span className={`eye right ${lower(bird.eyePlacement).replace(" ", "-")}`} />
-        <span className="beak" />
-      </div>
-      <div className={`body ${isTinyBody ? "body-small" : ""}`} />
+      {isOnePart ? (
+        <div className={`single-shape ${isLargeSingleShape ? "single-shape-large" : ""}`}>
+          <span className={`eye left ${lower(bird.eyePlacement).replace(" ", "-")}`} />
+          <span className={`eye right ${lower(bird.eyePlacement).replace(" ", "-")}`} />
+          <span className="beak" />
+        </div>
+      ) : (
+        <div className={`head ${isHugeHead ? "head-large" : ""}`}>
+          <span className={`eye left ${lower(bird.eyePlacement).replace(" ", "-")}`} />
+          <span className={`eye right ${lower(bird.eyePlacement).replace(" ", "-")}`} />
+          <span className="beak" />
+        </div>
+      )}
+      {!isOnePart && <div className={`body ${isTinyBody ? "body-small" : ""}`} />}
       <div className="tail" />
       <div className={`legs ${isTall ? "legs-tall" : ""}`}>
         <span />
@@ -113,6 +173,15 @@ function VisualBird({ bird }) {
       </div>
     </div>
   );
+}
+
+function FormulaRows({ formula }) {
+  return formula.map(([label, value]) => (
+    <div className="formula-row" key={label}>
+      <dt>{label}:</dt>
+      <dd>{value}</dd>
+    </div>
+  ));
 }
 
 export default function App() {
@@ -155,12 +224,7 @@ export default function App() {
         <section className="paper-panel" aria-labelledby="formula-heading">
           <h2 id="formula-heading">Bird Formula</h2>
           <dl className="formula">
-            {formula.map(([label, value]) => (
-              <div className="formula-row" key={label}>
-                <dt>{label}:</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
+            <FormulaRows formula={formula} />
           </dl>
         </section>
 

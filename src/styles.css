@@ -138,6 +138,7 @@ h2 {
 
 .crest,
 .head,
+.single-shape,
 .body,
 .tail,
 .eye,
@@ -170,6 +171,40 @@ h2 {
   border: 3px solid #2f2942;
   border-radius: 48% 52% 45% 55%;
   background: var(--head);
+}
+
+.one-part .crest {
+  left: 128px;
+  top: 34px;
+}
+
+.single-shape {
+  left: 82px;
+  top: 72px;
+  width: 146px;
+  height: 128px;
+  border: 3px solid #2f2942;
+  border-radius: 58% 42% 48% 52%;
+  background: var(--body);
+}
+
+.single-shape-large {
+  transform: scale(1.08);
+}
+
+.one-part .tail {
+  left: 208px;
+  top: 132px;
+}
+
+.one-part .legs {
+  left: 128px;
+  top: 196px;
+}
+
+.one-part .feet {
+  left: 114px;
+  top: 222px;
 }
 
 .head-large {
