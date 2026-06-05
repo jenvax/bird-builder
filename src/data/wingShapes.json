@@ -1,12 +1,12 @@
 [
   { "name": "None" },
-  { "name": "Leaf Wing", "image": "/assets/bird-parts/wings/leaf-wing.png" },
+  { "name": "Leaf Wing", "image": "/assets/bird-parts/wings/leaf.png" },
   { "name": "Cloud Wing", "image": "/assets/bird-parts/wings/cloud-wing.png" },
   { "name": "Petal Wing", "image": "/assets/bird-parts/wings/petal-wing.png" },
   { "name": "Ribbon Wing", "image": "/assets/bird-parts/wings/ribbon-wing.png" },
   { "name": "Teardrop Wing", "image": "/assets/bird-parts/wings/teardrop-wing.png" },
-  { "name": "Fan Wing", "image": "/assets/bird-parts/wings/fan-wing.png" },
-  { "name": "Tulip Wing", "image": "/assets/bird-parts/wings/tulip-wing.png" },
+  { "name": "Fan Wing", "image": "/assets/bird-parts/wings/leaf-fan.png" },
+  { "name": "Tulip Wing", "image": "/assets/bird-parts/wings/tulip-crest.png" },
   { "name": "Bean Wing", "image": "/assets/bird-parts/wings/bean-wing.png" },
   { "name": "Pebble Wing", "image": "/assets/bird-parts/wings/pebble-wing.png" }
 ]

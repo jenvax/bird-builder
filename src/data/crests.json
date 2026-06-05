@@ -1,9 +1,9 @@
 [
   { "name": "Fan Crest", "image": "/assets/bird-parts/crests/fan-crest.png" },
   { "name": "Pebble Tuft", "image": "/assets/bird-parts/crests/pebble-tuft.png" },
-  { "name": "Leaf Crest", "image": "/assets/bird-parts/crests/leaf-crest.png" },
-  { "name": "Flower Crest", "image": "/assets/bird-parts/crests/flower-crest.png" },
+  { "name": "Leaf Crest", "image": "/assets/bird-parts/crests/leaf.png" },
+  { "name": "Flower Crest", "image": "/assets/bird-parts/crests/flower.png" },
   { "name": "Ribbon Crest", "image": "/assets/bird-parts/crests/ribbon-crest.png" },
-  { "name": "Sunburst Crest", "image": "/assets/bird-parts/crests/sunburst-crest.png" },
+  { "name": "Sunburst Crest", "image": "/assets/bird-parts/crests/sunburst.png" },
   { "name": "Daisy Crest", "image": "/assets/bird-parts/crests/daisy-crest.png" }
 ]
