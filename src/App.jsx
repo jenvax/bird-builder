@@ -55,6 +55,14 @@ function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
+function itemName(item) {
+  return typeof item === "string" ? item : item.name;
+}
+
+function itemImage(item, key = "image") {
+  return typeof item === "string" ? "" : item[key] || item.image || "";
+}
+
 function randomConstructionType() {
   return Math.random() < 0.7 ? "Two-Part Bird" : "One-Part Bird";
 }
@@ -94,11 +102,11 @@ function makeBird() {
 }
 
 function lower(value) {
-  return value.toLowerCase();
+  return itemName(value).toLowerCase();
 }
 
 function hasValue(value) {
-  return value !== "None";
+  return itemName(value) !== "None";
 }
 
 function withSuffix(value, suffix) {
@@ -119,7 +127,7 @@ function sentenceList(items) {
 }
 
 function articleFor(value) {
-  return /^[aeiou]/i.test(value) ? "an" : "a";
+  return /^[aeiou]/i.test(itemName(value)) ? "an" : "a";
 }
 
 function patternPhrase(pattern, placement) {
@@ -143,7 +151,7 @@ function wingValue(bird) {
     return "None";
   }
 
-  return `${bird.wingSize} ${bird.wingShape} / ${bird.wingPlacement}`;
+  return `${bird.wingSize} ${itemName(bird.wingShape)} / ${bird.wingPlacement}`;
 }
 
 function wingPromptPhrase(bird) {
@@ -187,33 +195,33 @@ function constructionDetails(bird) {
   if (bird.constructionType === "One-Part Bird") {
     return [
       ["Construction Type", bird.constructionType],
-      ["Shape", `${bird.singleShapeSize} ${bird.singleShape}`],
+      ["Shape", `${bird.singleShapeSize} ${itemName(bird.singleShape)}`],
       ["Wings", wingValue(bird)],
-      ["Crest", bird.crest],
-      ["Tail", bird.tail],
-      ["Legs", bird.legType],
-      ["Feet", bird.footType]
+      ["Crest", itemName(bird.crest)],
+      ["Tail", itemName(bird.tail)],
+      ["Legs", itemName(bird.legType)],
+      ["Feet", itemName(bird.footType)]
     ];
   }
 
   return [
     ["Construction Type", bird.constructionType],
-    ["Head", `${bird.headSize} ${bird.headShape}`],
-    ["Body", `${bird.bodySize} ${bird.bodyShape}`],
+    ["Head", `${bird.headSize} ${itemName(bird.headShape)}`],
+    ["Body", `${bird.bodySize} ${itemName(bird.bodyShape)}`],
     ["Wings", wingValue(bird)],
-    ["Crest", bird.crest],
-    ["Tail", bird.tail],
-    ["Legs", bird.legType],
-    ["Feet", bird.footType]
+    ["Crest", itemName(bird.crest)],
+    ["Tail", itemName(bird.tail)],
+    ["Legs", itemName(bird.legType)],
+    ["Feet", itemName(bird.footType)]
   ];
 }
 
 function faceDetails(bird) {
   return [
-    ["Eye Style", bird.eyeStyle],
+    ["Eye Style", itemName(bird.eyeStyle)],
     ["Eye Placement", bird.eyePlacement],
     ["Eye Spacing", bird.eyeSpacing],
-    ["Beak", bird.beak]
+    ["Beak", itemName(bird.beak)]
   ];
 }
 
@@ -233,6 +241,49 @@ function decorationDetails(bird) {
     ["Socks", bird.socks],
     ["Footwear", bird.footwear]
   ];
+}
+
+function SketchLayer({ src, className, alt }) {
+  if (!src) {
+    return null;
+  }
+
+  return (
+    <img
+      className={`sketch-layer ${className}`}
+      src={src}
+      alt={alt}
+      onError={(event) => {
+        event.currentTarget.hidden = true;
+      }}
+    />
+  );
+}
+
+function SketchPreview({ bird }) {
+  const isOnePart = bird.constructionType === "One-Part Bird";
+  const bodySource = isOnePart
+    ? itemImage(bird.singleShape, "bodyImage")
+    : itemImage(bird.bodyShape, "bodyImage");
+
+  return (
+    <section className="sketch-preview-card" aria-labelledby="sketch-preview-heading">
+      <h2 id="sketch-preview-heading">Rough Sketch Preview</h2>
+      <div className="sketch-stage">
+        {!isOnePart && (
+          <SketchLayer src={itemImage(bird.headShape, "headImage")} className="sketch-head" alt="" />
+        )}
+        <SketchLayer src={bodySource} className="sketch-body" alt="" />
+        <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" alt="" />
+        <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" alt="" />
+        <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" alt="" />
+        <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" alt="" />
+        <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" alt="" />
+        <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" alt="" />
+        <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" alt="" />
+      </div>
+    </section>
+  );
 }
 
 function PaletteSwatches({ colors }) {
@@ -302,6 +353,8 @@ export default function App() {
           <p className="kicker">Whimsical drawing prompt generator</p>
           <h1 id="bird-title">{birdName(bird)}</h1>
         </header>
+
+        <SketchPreview bird={bird} />
 
         <section className="prompt-card" aria-labelledby="prompt-heading">
           <h2 id="prompt-heading">Draw This Bird</h2>

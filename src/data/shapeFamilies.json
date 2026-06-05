@@ -1,15 +1,67 @@
 [
-  "Circle",
-  "Pebble",
-  "Marshmallow",
-  "Gumdrop",
-  "Tulip",
-  "Bell",
-  "Half Circle",
-  "Cloud",
-  "Acorn",
-  "Teardrop",
-  "Soft Heart",
-  "Bean",
-  "Mushroom Cap"
+  {
+    "name": "Circle",
+    "headImage": "/assets/bird-parts/heads/circle.png",
+    "bodyImage": "/assets/bird-parts/bodies/circle.png"
+  },
+  {
+    "name": "Pebble",
+    "headImage": "/assets/bird-parts/heads/pebble.png",
+    "bodyImage": "/assets/bird-parts/bodies/pebble.png"
+  },
+  {
+    "name": "Marshmallow",
+    "headImage": "/assets/bird-parts/heads/marshmallow.png",
+    "bodyImage": "/assets/bird-parts/bodies/marshmallow.png"
+  },
+  {
+    "name": "Gumdrop",
+    "headImage": "/assets/bird-parts/heads/gumdrop.png",
+    "bodyImage": "/assets/bird-parts/bodies/gumdrop.png"
+  },
+  {
+    "name": "Tulip",
+    "headImage": "/assets/bird-parts/heads/tulip.png",
+    "bodyImage": "/assets/bird-parts/bodies/tulip.png"
+  },
+  {
+    "name": "Bell",
+    "headImage": "/assets/bird-parts/heads/bell.png",
+    "bodyImage": "/assets/bird-parts/bodies/bell.png"
+  },
+  {
+    "name": "Half Circle",
+    "headImage": "/assets/bird-parts/heads/half-circle.png",
+    "bodyImage": "/assets/bird-parts/bodies/half-circle.png"
+  },
+  {
+    "name": "Cloud",
+    "headImage": "/assets/bird-parts/heads/cloud.png",
+    "bodyImage": "/assets/bird-parts/bodies/cloud.png"
+  },
+  {
+    "name": "Acorn",
+    "headImage": "/assets/bird-parts/heads/acorn.png",
+    "bodyImage": "/assets/bird-parts/bodies/acorn.png"
+  },
+  {
+    "name": "Teardrop",
+    "headImage": "/assets/bird-parts/heads/teardrop.png",
+    "bodyImage": "/assets/bird-parts/bodies/teardrop.png"
+  },
+  {
+    "name": "Soft Heart",
+    "headImage": "/assets/bird-parts/heads/soft-heart.png",
+    "bodyImage": "/assets/bird-parts/bodies/soft-heart.png"
+  },
+  {
+    "name": "Bean",
+    "headImage": "/assets/bird-parts/heads/bean.png",
+    "bodyImage": "/assets/bird-parts/bodies/bean.png"
+  },
+  {
+    "name": "Mushroom Cap",
+    "headImage": "/assets/bird-parts/heads/mushroom-cap.png",
+    "bodyImage": "/assets/bird-parts/bodies/mushroom-cap.png"
+  }
 ]

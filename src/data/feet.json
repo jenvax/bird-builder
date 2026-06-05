@@ -1,6 +1,6 @@
 [
-  "Tiny Round Feet",
-  "Boot Feet",
-  "Oval Feet",
-  "Paddle Feet"
+  { "name": "Tiny Round Feet", "image": "/assets/bird-parts/feet/tiny-round-feet.png" },
+  { "name": "Boot Feet", "image": "/assets/bird-parts/feet/boot-feet.png" },
+  { "name": "Oval Feet", "image": "/assets/bird-parts/feet/oval-feet.png" },
+  { "name": "Paddle Feet", "image": "/assets/bird-parts/feet/paddle-feet.png" }
 ]

@@ -1,8 +1,8 @@
 [
-  "Dot",
-  "Circle",
-  "Beady",
-  "Tall Oval",
-  "Triangle",
-  "Side Glance"
+  { "name": "Dot", "image": "/assets/bird-parts/eyes/dot.png" },
+  { "name": "Circle", "image": "/assets/bird-parts/eyes/circle.png" },
+  { "name": "Beady", "image": "/assets/bird-parts/eyes/beady.png" },
+  { "name": "Tall Oval", "image": "/assets/bird-parts/eyes/tall-oval.png" },
+  { "name": "Triangle", "image": "/assets/bird-parts/eyes/triangle.png" },
+  { "name": "Side Glance", "image": "/assets/bird-parts/eyes/side-glance.png" }
 ]

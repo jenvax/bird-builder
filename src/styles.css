@@ -103,7 +103,8 @@ h4 {
 }
 
 .prompt-card,
-.detail-card {
+.detail-card,
+.sketch-preview-card {
   margin-top: 14px;
   padding: 16px;
   border: 2px solid #3b3352;
@@ -121,6 +122,106 @@ h4 {
     linear-gradient(rgba(47, 41, 66, 0.05) 1px, transparent 1px),
     #fffefa;
   background-size: auto, 100% 30px, auto;
+}
+
+.sketch-preview-card {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(174, 232, 211, 0.24), transparent 42%),
+    linear-gradient(rgba(47, 41, 66, 0.05) 1px, transparent 1px),
+    #fffefa;
+  background-size: auto, 100% 30px, auto;
+}
+
+.sketch-stage {
+  position: relative;
+  width: min(100%, 360px);
+  height: 250px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 2px dashed rgba(47, 41, 66, 0.45);
+  border-radius: 8px;
+}
+
+.sketch-layer {
+  position: absolute;
+  display: block;
+  max-width: none;
+  object-fit: contain;
+  filter: grayscale(1) contrast(1.18);
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+.sketch-body {
+  z-index: 2;
+  left: 96px;
+  top: 82px;
+  width: 160px;
+  height: 126px;
+}
+
+.sketch-head {
+  z-index: 4;
+  left: 132px;
+  top: 34px;
+  width: 94px;
+  height: 86px;
+}
+
+.sketch-crest {
+  z-index: 6;
+  left: 146px;
+  top: 8px;
+  width: 68px;
+  height: 54px;
+}
+
+.sketch-tail {
+  z-index: 1;
+  left: 222px;
+  top: 112px;
+  width: 98px;
+  height: 70px;
+}
+
+.sketch-wing {
+  z-index: 5;
+  left: 190px;
+  top: 106px;
+  width: 118px;
+  height: 86px;
+}
+
+.sketch-eyes {
+  z-index: 7;
+  left: 148px;
+  top: 66px;
+  width: 64px;
+  height: 28px;
+}
+
+.sketch-beak {
+  z-index: 8;
+  left: 172px;
+  top: 86px;
+  width: 54px;
+  height: 34px;
+}
+
+.sketch-legs {
+  z-index: 3;
+  left: 132px;
+  top: 186px;
+  width: 92px;
+  height: 52px;
+}
+
+.sketch-feet {
+  z-index: 4;
+  left: 118px;
+  top: 218px;
+  width: 126px;
+  height: 30px;
 }
 
 .prompt-card p {

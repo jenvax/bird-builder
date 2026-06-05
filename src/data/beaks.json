@@ -1,6 +1,6 @@
 [
-  "Tiny Triangle",
-  "Pointy Beak",
-  "Round Beak",
-  "Stubby Beak"
+  { "name": "Tiny Triangle", "image": "/assets/bird-parts/beaks/tiny-triangle.png" },
+  { "name": "Pointy Beak", "image": "/assets/bird-parts/beaks/pointy-beak.png" },
+  { "name": "Round Beak", "image": "/assets/bird-parts/beaks/round-beak.png" },
+  { "name": "Stubby Beak", "image": "/assets/bird-parts/beaks/stubby-beak.png" }
 ]
