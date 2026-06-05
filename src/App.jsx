@@ -163,7 +163,7 @@ function birdName(bird) {
 }
 
 function birdPrompt(bird) {
-  const eyePhrase = `${lower(bird.eyeStyle)} eyes placed ${lower(bird.eyePlacement).replace(" set", "")} and ${lower(bird.eyeSpacing)}`;
+  const eyePhrase = `${lower(bird.eyeStyle)} eyes placed ${lower(bird.eyePlacement)} and ${lower(bird.eyeSpacing)}`;
   const wingText = wingPromptPhrase(bird);
   const wingSegment = wingText ? `${wingText}, ` : "";
   const extras = [
@@ -272,33 +272,6 @@ function ColorPaletteCard({ palette }) {
   );
 }
 
-function PaletteReference() {
-  const collections = palettes.reduce((groups, palette) => {
-    groups[palette.collection] = [...(groups[palette.collection] || []), palette];
-    return groups;
-  }, {});
-
-  return (
-    <section className="palette-reference" aria-labelledby="palette-reference-heading">
-      <h2 id="palette-reference-heading">Palette Reference</h2>
-      {Object.entries(collections).map(([collection, collectionPalettes]) => (
-        <div className="palette-group" key={collection}>
-          <h3>{collection}</h3>
-          <div className="palette-grid">
-            {collectionPalettes.map((palette) => (
-              <article className="palette-reference-card" key={palette.name}>
-                <h4>{palette.name}</h4>
-                <PaletteSwatches colors={palette.colors} />
-                <p>{palette.mood}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      ))}
-    </section>
-  );
-}
-
 export default function App() {
   const [bird, setBird] = useState(() => makeBird());
   const [copyStatus, setCopyStatus] = useState("");
@@ -321,7 +294,9 @@ export default function App() {
   return (
     <main className="page">
       <section className="sketchbook" aria-labelledby="bird-title">
-        <div className="eyebrow">Bird Builder MVP</div>
+        <div className="eyebrow">Whimsical Bird Builder</div>
+
+        <button type="button" className="primary-action" onClick={generateBird}>Create a New Bird Prompt</button>
 
         <header className="result-hero">
           <p className="kicker">Whimsical drawing prompt generator</p>
@@ -331,12 +306,12 @@ export default function App() {
         <section className="prompt-card" aria-labelledby="prompt-heading">
           <h2 id="prompt-heading">Draw This Bird</h2>
           <p>{prompt}</p>
-          <div className="actions">
-            <button type="button" onClick={generateBird}>Generate Bird</button>
-            <button type="button" className="secondary" onClick={copyPrompt}>Copy Prompt</button>
-          </div>
-          <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
         </section>
+
+        <div className="copy-action">
+          <button type="button" className="secondary" onClick={copyPrompt}>Copy Prompt</button>
+          <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
+        </div>
 
         <div className="detail-grid">
           <DetailCard title="Construction" rows={constructionDetails(bird)} />
@@ -346,7 +321,6 @@ export default function App() {
           <ColorPaletteCard palette={bird.colorPalette} />
         </div>
 
-        <PaletteReference />
       </section>
     </main>
   );

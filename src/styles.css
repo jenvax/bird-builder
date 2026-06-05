@@ -62,6 +62,12 @@ button {
   background: #ffe08a;
 }
 
+.primary-action {
+  width: 100%;
+  margin-top: 16px;
+  background: #ff9db5;
+}
+
 .result-hero {
   margin-top: 18px;
 }
@@ -69,8 +75,8 @@ button {
 h1 {
   margin: 6px 0 0;
   color: #241b3a;
-  font-size: clamp(2.4rem, 14vw, 5rem);
-  line-height: 0.92;
+  font-size: clamp(2rem, 9vw, 3.35rem);
+  line-height: 1;
   letter-spacing: 0;
 }
 
@@ -97,8 +103,7 @@ h4 {
 }
 
 .prompt-card,
-.detail-card,
-.palette-reference {
+.detail-card {
   margin-top: 14px;
   padding: 16px;
   border: 2px solid #3b3352;
@@ -110,6 +115,7 @@ h4 {
 }
 
 .prompt-card {
+  padding: 18px;
   background:
     radial-gradient(circle at 100% 0, rgba(255, 224, 138, 0.34), transparent 34%),
     linear-gradient(rgba(47, 41, 66, 0.05) 1px, transparent 1px),
@@ -119,15 +125,15 @@ h4 {
 
 .prompt-card p {
   margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.58;
+  font-size: clamp(1.12rem, 4.2vw, 1.35rem);
+  line-height: 1.55;
 }
 
-.actions {
+.copy-action {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
-  margin-top: 16px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 button {
@@ -167,23 +173,23 @@ button.secondary {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 18px;
 }
 
 .detail-card dl {
   display: grid;
-  gap: 12px;
+  gap: 16px;
   margin: 0;
 }
 
 .detail-row {
   display: grid;
-  gap: 3px;
+  gap: 5px;
 }
 
 dt {
   color: #6a5d7b;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -191,7 +197,7 @@ dt {
 dd {
   margin: 0;
   color: #241b3a;
-  font-size: 1.16rem;
+  font-size: 1.22rem;
   font-weight: 800;
   line-height: 1.2;
 }
@@ -201,8 +207,7 @@ dd {
   gap: 12px;
 }
 
-.palette-detail-card p,
-.palette-reference-card p {
+.palette-detail-card p {
   margin: 0;
   line-height: 1.45;
 }
@@ -220,30 +225,6 @@ dd {
   border-radius: 7px;
 }
 
-.palette-reference {
-  margin-top: 18px;
-}
-
-.palette-group {
-  margin-top: 16px;
-}
-
-.palette-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.palette-reference-card {
-  display: grid;
-  gap: 10px;
-  padding: 12px;
-  border: 2px solid rgba(59, 51, 82, 0.78);
-  border-radius: 8px;
-  background: #fffefa;
-}
-
 @media (min-width: 620px) {
   .page {
     padding: 28px;
@@ -253,8 +234,8 @@ dd {
     padding: 22px;
   }
 
-  .actions {
-    grid-template-columns: 1fr 1fr;
+  .primary-action {
+    max-width: 360px;
   }
 
   .detail-grid {
@@ -265,7 +246,4 @@ dd {
     grid-column: 1 / -1;
   }
 
-  .palette-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
