@@ -1,9 +1,17 @@
 [
-  { "name": "Ribbon Tail", "image": "/assets/bird-parts/tails/ribbon-tail.png" },
-  { "name": "Petal Tail", "image": "/assets/bird-parts/tails/petal-tail.png" },
   { "name": "Fan Tail", "image": "/assets/bird-parts/tails/fan-crest.png" },
   { "name": "Leaf Tail", "image": "/assets/bird-parts/tails/leaf.png" },
   { "name": "Curly Tail", "image": "/assets/bird-parts/tails/curly-q.png" },
-  { "name": "Streamer Tail", "image": "/assets/bird-parts/tails/streamer-tail.png" },
-  { "name": "Cloud Tail", "image": "/assets/bird-parts/tails/cloud-tail.png" }
+  { "name": "Cloud Tail", "image": "/assets/bird-parts/tails/cloud.png" },
+  { "name": "Double Tuft", "image": "/assets/bird-parts/tails/double-tuft.png" },
+  { "name": "Flower", "image": "/assets/bird-parts/tails/flower.png" },
+  { "name": "Leaf Fan", "image": "/assets/bird-parts/tails/leaf-fan.png" },
+  { "name": "Lotus", "image": "/assets/bird-parts/tails/lotus.png" },
+  { "name": "Scallop Crest", "image": "/assets/bird-parts/tails/scallop-crest.png" },
+  { "name": "Single Feather", "image": "/assets/bird-parts/tails/single-feather.png" },
+  { "name": "Spray", "image": "/assets/bird-parts/tails/spray.png" },
+  { "name": "Sunburst", "image": "/assets/bird-parts/tails/sunburst.png" },
+  { "name": "Swirly Crest", "image": "/assets/bird-parts/tails/swirly-crest.png" },
+  { "name": "Triple Tuft", "image": "/assets/bird-parts/tails/triple-tuft.png" },
+  { "name": "Tulip Crest", "image": "/assets/bird-parts/tails/tulip-crest.png" }
 ]

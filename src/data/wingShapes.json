@@ -1,12 +1,17 @@
 [
   { "name": "None" },
   { "name": "Leaf Wing", "image": "/assets/bird-parts/wings/leaf.png" },
-  { "name": "Cloud Wing", "image": "/assets/bird-parts/wings/cloud-wing.png" },
+  { "name": "Cloud Wing", "image": "/assets/bird-parts/wings/cloud.png" },
   { "name": "Petal Wing", "image": "/assets/bird-parts/wings/petal-wing.png" },
   { "name": "Ribbon Wing", "image": "/assets/bird-parts/wings/ribbon-wing.png" },
-  { "name": "Teardrop Wing", "image": "/assets/bird-parts/wings/teardrop-wing.png" },
+  { "name": "Teardrop Wing", "image": "/assets/bird-parts/wings/teardrop.png" },
   { "name": "Fan Wing", "image": "/assets/bird-parts/wings/leaf-fan.png" },
   { "name": "Tulip Wing", "image": "/assets/bird-parts/wings/tulip-crest.png" },
-  { "name": "Bean Wing", "image": "/assets/bird-parts/wings/bean-wing.png" },
-  { "name": "Pebble Wing", "image": "/assets/bird-parts/wings/pebble-wing.png" }
+  { "name": "Bean Wing", "image": "/assets/bird-parts/wings/bean.png" },
+  { "name": "Pebble Wing", "image": "/assets/bird-parts/wings/pebble-wing.png" },
+  { "name": "Double Tuft", "image": "/assets/bird-parts/wings/double-tuft.png" },
+  { "name": "Fan Crest", "image": "/assets/bird-parts/wings/fan-crest.png" },
+  { "name": "Scallop Crest", "image": "/assets/bird-parts/wings/scallop-crest.png" },
+  { "name": "Single Feather", "image": "/assets/bird-parts/wings/single-feather.png" },
+  { "name": "Triple Tuft", "image": "/assets/bird-parts/wings/triple-tuft.png" }
 ]
