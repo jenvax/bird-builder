@@ -152,6 +152,23 @@ h4 {
   pointer-events: none;
 }
 
+.sketch-label {
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border: 1px solid rgba(59, 51, 82, 0.34);
+  border-radius: 8px;
+  background: rgba(255, 254, 250, 0.88);
+  color: #3b3352;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+  filter: none;
+  opacity: 1;
+}
+
 .sketch-body {
   z-index: 2;
   left: 96px;

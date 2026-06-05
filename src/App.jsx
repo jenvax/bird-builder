@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 import constructionTypes from "./data/constructionTypes.json";
 import moods from "./data/moods.json";
-import shapeFamilies from "./data/shapeFamilies.json";
+import heads from "./data/heads.json";
+import bodies from "./data/bodies.json";
 import headSizes from "./data/headSizes.json";
 import bodySizes from "./data/bodySizes.json";
 import crests from "./data/crests.json";
@@ -27,7 +28,8 @@ import critterFriends from "./data/critterFriends.json";
 const tables = {
   constructionTypes,
   moods,
-  shapeFamilies,
+  heads,
+  bodies,
   headSizes,
   bodySizes,
   crests,
@@ -59,8 +61,8 @@ function itemName(item) {
   return typeof item === "string" ? item : item.name;
 }
 
-function itemImage(item, key = "image") {
-  return typeof item === "string" ? "" : item[key] || item.image || "";
+function itemImage(item) {
+  return typeof item === "string" ? "" : item.image || "";
 }
 
 function randomConstructionType() {
@@ -73,11 +75,11 @@ function makeBird() {
   return {
     constructionType,
     mood: randomItem(tables.moods),
-    headShape: randomItem(tables.shapeFamilies),
+    headShape: randomItem(tables.heads),
     headSize: randomItem(tables.headSizes),
-    bodyShape: randomItem(tables.shapeFamilies),
+    bodyShape: randomItem(tables.bodies),
     bodySize: randomItem(tables.bodySizes),
-    singleShape: randomItem(tables.shapeFamilies),
+    singleShape: randomItem(tables.bodies),
     singleShapeSize: randomItem(tables.bodySizes),
     crest: randomItem(tables.crests),
     tail: randomItem(tables.tails),
@@ -243,18 +245,23 @@ function decorationDetails(bird) {
   ];
 }
 
-function SketchLayer({ src, className, alt }) {
-  if (!src) {
-    return null;
+function SketchLayer({ src, className, label }) {
+  const [failed, setFailed] = useState(false);
+
+  if (!src || failed) {
+    return label && label !== "None" ? (
+      <span className={`sketch-layer sketch-label ${className}`}>{label}</span>
+    ) : null;
   }
 
   return (
     <img
       className={`sketch-layer ${className}`}
       src={src}
-      alt={alt}
+      alt=""
       onError={(event) => {
         event.currentTarget.hidden = true;
+        setFailed(true);
       }}
     />
   );
@@ -262,25 +269,23 @@ function SketchLayer({ src, className, alt }) {
 
 function SketchPreview({ bird }) {
   const isOnePart = bird.constructionType === "One-Part Bird";
-  const bodySource = isOnePart
-    ? itemImage(bird.singleShape, "bodyImage")
-    : itemImage(bird.bodyShape, "bodyImage");
+  const bodySource = isOnePart ? itemImage(bird.singleShape) : itemImage(bird.bodyShape);
 
   return (
     <section className="sketch-preview-card" aria-labelledby="sketch-preview-heading">
       <h2 id="sketch-preview-heading">Rough Sketch Preview</h2>
       <div className="sketch-stage">
         {!isOnePart && (
-          <SketchLayer src={itemImage(bird.headShape, "headImage")} className="sketch-head" alt="" />
+          <SketchLayer src={itemImage(bird.headShape)} className="sketch-head" label={itemName(bird.headShape)} />
         )}
-        <SketchLayer src={bodySource} className="sketch-body" alt="" />
-        <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" alt="" />
-        <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" alt="" />
-        <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" alt="" />
-        <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" alt="" />
-        <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" alt="" />
-        <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" alt="" />
-        <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" alt="" />
+        <SketchLayer src={bodySource} className="sketch-body" label={itemName(isOnePart ? bird.singleShape : bird.bodyShape)} />
+        <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" label={itemName(bird.crest)} />
+        <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" label={itemName(bird.tail)} />
+        <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" label={itemName(bird.wingShape)} />
+        <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" label={itemName(bird.eyeStyle)} />
+        <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" label={itemName(bird.beak)} />
+        <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" label={itemName(bird.legType)} />
+        <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" label={itemName(bird.footType)} />
       </div>
     </section>
   );

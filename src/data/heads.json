@@ -1,0 +1,15 @@
+[
+  { "name": "Circle", "image": "/assets/bird-parts/heads/circle.png" },
+  { "name": "Pebble", "image": "/assets/bird-parts/heads/pebble.png" },
+  { "name": "Marshmallow", "image": "/assets/bird-parts/heads/marshmallow.png" },
+  { "name": "Gumdrop", "image": "/assets/bird-parts/heads/gumdrop.png" },
+  { "name": "Tulip", "image": "/assets/bird-parts/heads/tulip.png" },
+  { "name": "Bell", "image": "/assets/bird-parts/heads/bell.png" },
+  { "name": "Half Circle", "image": "/assets/bird-parts/heads/half-circle.png" },
+  { "name": "Cloud", "image": "/assets/bird-parts/heads/cloud.png" },
+  { "name": "Acorn", "image": "/assets/bird-parts/heads/acorn.png" },
+  { "name": "Teardrop", "image": "/assets/bird-parts/heads/teardrop.png" },
+  { "name": "Soft Heart", "image": "/assets/bird-parts/heads/soft-heart.png" },
+  { "name": "Bean", "image": "/assets/bird-parts/heads/bean.png" },
+  { "name": "Mushroom Cap", "image": "/assets/bird-parts/heads/mushroom-cap.png" }
+]
