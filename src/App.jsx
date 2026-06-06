@@ -550,6 +550,7 @@ function SketchPreview({ bird }) {
   const stageClasses = [
     "sketch-stage",
     isOnePart ? "one-part" : "two-part",
+    `energy-${slug(bird.birdEnergy)}`,
     `eye-size-${slug(bird.eyeSize)}`,
     `eye-placement-${slug(bird.eyePlacement)}`,
     `leg-pose-${slug(bird.legPose)}`
@@ -558,8 +559,8 @@ function SketchPreview({ bird }) {
   return (
     <section className="sketch-preview-card" aria-labelledby="sketch-preview-heading">
       <div className="section-heading">
-        <h2 id="sketch-preview-heading">Rough Sketch Preview</h2>
-        <p>A simple construction guide, not final art.</p>
+        <h2 id="sketch-preview-heading">Character Construction Preview</h2>
+        <p>A simple character pose guide, not final art.</p>
       </div>
       <div className={stageClasses}>
         {!isOnePart && (

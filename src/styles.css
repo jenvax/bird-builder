@@ -341,7 +341,7 @@ h4 {
 
 .sketch-tail {
   z-index: 1;
-  left: 62%;
+  left: 66%;
   top: 47%;
   width: 25%;
   height: 28%;
@@ -483,6 +483,34 @@ h4 {
   transform-origin: top center;
 }
 
+.energy-confused .sketch-head {
+  transform: rotate(-9deg);
+  transform-origin: bottom center;
+}
+
+.energy-confused .sketch-crest {
+  transform: rotate(13deg);
+  transform-origin: bottom center;
+}
+
+.energy-confused .sketch-eyes {
+  transform: rotate(8deg) translateX(-4%);
+}
+
+.energy-confused .sketch-beak {
+  transform: rotate(-8deg) translateY(8%);
+}
+
+.energy-confused .sketch-body {
+  transform: rotate(3deg);
+  transform-origin: center;
+}
+
+.energy-confused .sketch-legs {
+  transform: rotate(-12deg) scaleX(1.12);
+  transform-origin: top center;
+}
+
 .sketch-stage.one-part .sketch-body {
   left: 30%;
   top: 26%;
@@ -498,8 +526,8 @@ h4 {
 }
 
 .sketch-stage.one-part .sketch-tail {
-  left: 62%;
-  top: 40%;
+  left: 65%;
+  top: 39%;
   width: 26%;
   height: 32%;
 }
