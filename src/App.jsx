@@ -183,14 +183,25 @@ function birdPrompt(bird) {
     hasValue(bird.footwear) ? lower(bird.footwear) : "",
     hasValue(bird.accessory) ? lower(bird.accessory) : ""
   ].filter(Boolean);
-  const extrasSentence = extras.length > 0 ? ` Add ${sentenceList(extras)}.` : "";
-  const friendSentence = hasValue(bird.critterFriend) ? ` Include ${articleFor(bird.critterFriend)} ${lower(bird.critterFriend)} friend nearby.` : "";
+  const paragraphs = [];
 
   if (bird.constructionType === "One-Part Bird") {
-    return `Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${wingSegment}${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.${extrasSentence}${friendSentence} Use the ${bird.colorPalette.name} palette.`;
+    paragraphs.push(`Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${wingSegment}${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.`);
+  } else {
+    paragraphs.push(`Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, ${wingSegment}a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.`);
   }
 
-  return `Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, ${wingSegment}a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.${extrasSentence}${friendSentence} Use the ${bird.colorPalette.name} palette.`;
+  if (extras.length > 0) {
+    paragraphs.push(`Add ${sentenceList(extras)}.`);
+  }
+
+  if (hasValue(bird.critterFriend)) {
+    paragraphs.push(`Include ${articleFor(bird.critterFriend)} ${lower(bird.critterFriend)} friend nearby.`);
+  }
+
+  paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
+
+  return paragraphs;
 }
 
 function constructionDetails(bird) {
@@ -221,8 +232,8 @@ function constructionDetails(bird) {
 function faceDetails(bird) {
   return [
     ["Eye Style", itemName(bird.eyeStyle)],
-    ["Eye Placement", bird.eyePlacement],
-    ["Eye Spacing", bird.eyeSpacing],
+    ["Eye Placement (vertical)", bird.eyePlacement],
+    ["Eye Spacing (distance)", bird.eyeSpacing],
     ["Beak", itemName(bird.beak)]
   ];
 }
@@ -241,7 +252,8 @@ function decorationDetails(bird) {
     ["Pattern Placement", hasValue(bird.pattern) ? bird.patternPlacement : "None"],
     ["Eyewear", bird.eyewear],
     ["Socks", bird.socks],
-    ["Footwear", bird.footwear]
+    ["Footwear", bird.footwear],
+    ["Palette", bird.colorPalette.name]
   ];
 }
 
@@ -305,22 +317,8 @@ function SketchPreview({ bird }) {
         <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" />
         <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" />
         <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" />
-        <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" />
-        <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" />
-        <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" />
-        <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" />
       </div>
     </section>
-  );
-}
-
-function PaletteSwatches({ colors }) {
-  return (
-    <div className="palette-swatches" aria-label="Palette colors">
-      {colors.map((color) => (
-        <span key={color} style={{ backgroundColor: color }} />
-      ))}
-    </div>
   );
 }
 
@@ -342,17 +340,6 @@ function DetailCard({ title, rows }) {
   );
 }
 
-function ColorPaletteCard({ palette }) {
-  return (
-    <section className="detail-card palette-detail-card" aria-labelledby="color-palette-heading">
-      <h2 id="color-palette-heading"><span>Color Palette</span></h2>
-      <h3>{palette.name}</h3>
-      <PaletteSwatches colors={palette.colors} />
-      <p>{palette.mood}</p>
-    </section>
-  );
-}
-
 export default function App() {
   const [bird, setBird] = useState(() => makeBird());
   const [copyStatus, setCopyStatus] = useState("");
@@ -365,7 +352,7 @@ export default function App() {
 
   async function copyPrompt() {
     try {
-      await navigator.clipboard.writeText(prompt);
+      await navigator.clipboard.writeText(prompt.join("\n\n"));
       setCopyStatus("Prompt copied.");
     } catch {
       setCopyStatus("Copy is blocked here. Select the prompt text to copy it.");
@@ -393,9 +380,15 @@ export default function App() {
           ))}
         </div>
 
+        <SketchPreview bird={bird} />
+
         <section className="prompt-card" aria-labelledby="prompt-heading">
           <h2 id="prompt-heading">Draw This Bird</h2>
-          <p>{prompt}</p>
+          <div className="prompt-text">
+            {prompt.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
         </section>
 
         <div className="copy-action">
@@ -403,14 +396,10 @@ export default function App() {
           <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
         </div>
 
-        <ColorPaletteCard palette={bird.colorPalette} />
-
-        <SketchPreview bird={bird} />
-
         <div className="detail-grid">
           <DetailCard title="Shape & Body" rows={constructionDetails(bird)} />
           <DetailCard title="Face Details" rows={faceDetails(bird)} />
-          <DetailCard title="Personality & Story" rows={personalityDetails(bird)} />
+          <DetailCard title="Personality" rows={personalityDetails(bird)} />
           <DetailCard title="Extras & Decoration" rows={decorationDetails(bird)} />
         </div>
 

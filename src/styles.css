@@ -116,8 +116,8 @@ button.secondary {
 h1 {
   margin: 4px 0 0;
   color: #241b3a;
-  font-size: clamp(1.45rem, 7vw, 2.25rem);
-  line-height: 1.05;
+  font-size: clamp(1.18rem, 5.6vw, 1.68rem);
+  line-height: 1.08;
   letter-spacing: 0;
 }
 
@@ -136,9 +136,11 @@ h2 {
 
 .detail-card h2 span {
   display: inline-block;
-  padding: 5px 9px;
+  padding: 5px 10px;
+  border: 1.5px solid rgba(47, 41, 66, 0.22);
   border-radius: 999px;
-  background: #ffe08a;
+  background: #d9efe6;
+  box-shadow: 2px 2px 0 rgba(47, 41, 66, 0.12);
 }
 
 h3 {
@@ -154,8 +156,8 @@ h4 {
 .prompt-card,
 .detail-card,
 .sketch-preview-card {
-  margin-top: 11px;
-  padding: 13px;
+  margin-top: 10px;
+  padding: 11px;
   border: 2px solid #3b3352;
   border-radius: 8px;
   background:
@@ -165,7 +167,7 @@ h4 {
 }
 
 .prompt-card {
-  padding: 14px;
+  padding: 11px 12px;
   background:
     radial-gradient(circle at 100% 0, rgba(255, 224, 138, 0.3), transparent 34%),
     linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
@@ -173,11 +175,16 @@ h4 {
   background-size: auto, 100% 26px, auto;
 }
 
-.prompt-card p {
-  max-width: 58ch;
+.prompt-text {
+  display: grid;
+  gap: 8px;
+}
+
+.prompt-text p {
+  width: 94%;
   margin: 0;
-  font-size: clamp(0.98rem, 3.7vw, 1.12rem);
-  line-height: 1.48;
+  font-size: clamp(0.92rem, 3.4vw, 1rem);
+  line-height: 1.42;
 }
 
 .recipe-strip {
@@ -221,36 +228,6 @@ h4 {
   font-weight: 800;
 }
 
-.palette-detail-card {
-  display: grid;
-  gap: 9px;
-  background:
-    radial-gradient(circle at 96% 0, rgba(174, 232, 211, 0.28), transparent 34%),
-    #fffefa;
-}
-
-.palette-detail-card p {
-  max-width: 54ch;
-  margin: 0;
-  color: #4b4260;
-  font-size: 0.88rem;
-  line-height: 1.38;
-}
-
-.palette-swatches {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 5px;
-  width: 100%;
-  max-width: 320px;
-}
-
-.palette-swatches span {
-  min-height: 28px;
-  border: 2px solid #2f2942;
-  border-radius: 7px;
-}
-
 .sketch-preview-card {
   background:
     radial-gradient(circle at 50% 35%, rgba(174, 232, 211, 0.2), transparent 42%),
@@ -278,8 +255,8 @@ h4 {
 
 .sketch-stage {
   position: relative;
-  width: min(100%, 320px);
-  height: 220px;
+  width: min(100%, 390px);
+  aspect-ratio: 39 / 25;
   margin: 0 auto;
   overflow: hidden;
   border: 2px dashed rgba(47, 41, 66, 0.42);
@@ -299,86 +276,54 @@ h4 {
 
 .sketch-body {
   z-index: 2;
-  left: 85px;
-  top: 72px;
-  width: 142px;
-  height: 112px;
+  left: 27%;
+  top: 33%;
+  width: 44%;
+  height: 54%;
 }
 
 .sketch-head {
   z-index: 4;
-  left: 117px;
-  top: 30px;
-  width: 84px;
-  height: 76px;
+  left: 36%;
+  top: 12%;
+  width: 27%;
+  height: 38%;
 }
 
 .sketch-crest {
   z-index: 6;
-  left: 130px;
-  top: 7px;
-  width: 60px;
-  height: 48px;
+  left: 40%;
+  top: 2%;
+  width: 19%;
+  height: 24%;
 }
 
 .sketch-tail {
   z-index: 1;
-  left: 198px;
-  top: 99px;
-  width: 87px;
-  height: 62px;
+  left: 65%;
+  top: 44%;
+  width: 29%;
+  height: 32%;
 }
 
 .sketch-wing {
   z-index: 5;
-  left: 169px;
-  top: 93px;
-  width: 105px;
-  height: 76px;
-}
-
-.sketch-eyes {
-  z-index: 7;
-  left: 132px;
-  top: 58px;
-  width: 57px;
-  height: 25px;
-}
-
-.sketch-beak {
-  z-index: 8;
-  left: 153px;
-  top: 76px;
-  width: 48px;
-  height: 30px;
-}
-
-.sketch-legs {
-  z-index: 3;
-  left: 117px;
-  top: 164px;
-  width: 82px;
-  height: 46px;
-}
-
-.sketch-feet {
-  z-index: 4;
-  left: 105px;
-  top: 193px;
-  width: 112px;
-  height: 27px;
+  left: 53%;
+  top: 41%;
+  width: 33%;
+  height: 37%;
 }
 
 .detail-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 8px;
   margin-top: 11px;
 }
 
 .detail-card dl {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
 }
 
@@ -396,7 +341,7 @@ dt {
 dd {
   margin: 0;
   color: #241b3a;
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   font-weight: 800;
   line-height: 1.18;
 }
