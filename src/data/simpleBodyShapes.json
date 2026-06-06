@@ -1,0 +1,10 @@
+[
+  { "name": "Bean", "image": "/assets/bird-parts/bodies/bean.png" },
+  { "name": "Round", "image": "/assets/bird-parts/bodies/circle.png" },
+  { "name": "Fluffy", "image": "/assets/bird-parts/bodies/cloud.png" },
+  { "name": "Tall Skinny", "image": "/assets/bird-parts/bodies/teardrop.png" },
+  { "name": "Marshmallow", "image": "/assets/bird-parts/bodies/marshmallow.png" },
+  { "name": "Pear", "image": "/assets/bird-parts/bodies/teardrop.png" },
+  { "name": "Gumdrop", "image": "/assets/bird-parts/bodies/gumdrop.png" },
+  { "name": "Blob", "image": "/assets/bird-parts/bodies/pebble.png" }
+]

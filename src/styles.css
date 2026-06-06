@@ -317,10 +317,10 @@ h4 {
 
 .sketch-body {
   z-index: 2;
-  left: 31%;
-  top: 36%;
-  width: 44%;
-  height: 50%;
+  left: 29%;
+  top: 25%;
+  width: 46%;
+  height: 58%;
 }
 
 .sketch-head {
@@ -334,33 +334,33 @@ h4 {
 .sketch-crest {
   z-index: 6;
   left: 42%;
-  top: 4%;
+  top: 8%;
   width: 20%;
   height: 21%;
 }
 
 .sketch-tail {
   z-index: 1;
-  left: 66%;
-  top: 47%;
-  width: 25%;
-  height: 28%;
+  left: 63%;
+  top: 42%;
+  width: 27%;
+  height: 31%;
 }
 
 .sketch-wing {
   z-index: 5;
   left: 39%;
-  top: 46%;
-  width: 27%;
-  height: 30%;
+  top: 43%;
+  width: 28%;
+  height: 32%;
 }
 
 .sketch-eyes {
   z-index: 7;
-  left: 45%;
-  top: 29%;
-  width: 14%;
-  height: 10%;
+  left: 43%;
+  top: 38%;
+  width: 17%;
+  height: 12%;
 }
 
 .eye-size-tiny .sketch-eyes {
@@ -399,16 +399,31 @@ h4 {
   height: 18%;
 }
 
-.eye-placement-high .sketch-eyes {
-  top: 25%;
+.expression-wide-eyed-gasp .sketch-eyes,
+.expression-confused-stare .sketch-eyes {
+  left: 39%;
+  top: 34%;
+  width: 26%;
+  height: 18%;
 }
 
-.eye-placement-middle .sketch-eyes {
-  top: 30%;
+.expression-skeptical-squint .sketch-eyes,
+.expression-grumpy-glare .sketch-eyes,
+.expression-sleepy-blink .sketch-eyes {
+  left: 44%;
+  top: 39%;
+  width: 15%;
+  height: 8%;
+  transform: rotate(-4deg);
 }
 
-.eye-placement-low .sketch-eyes {
-  top: 35%;
+.expression-worried-side-glance .sketch-eyes,
+.expression-curious-peek .sketch-eyes {
+  left: 41%;
+  top: 36%;
+  width: 20%;
+  height: 12%;
+  transform: translateX(-3%) rotate(5deg);
 }
 
 .sketch-beak {
@@ -422,7 +437,7 @@ h4 {
 .sketch-legs {
   z-index: 3;
   left: 42%;
-  top: 78%;
+  top: 77%;
   width: 22%;
   height: 16%;
 }
@@ -430,7 +445,7 @@ h4 {
 .sketch-feet {
   z-index: 4;
   left: 39%;
-  top: 91%;
+  top: 90%;
   width: 28%;
   height: 9%;
 }
@@ -442,6 +457,56 @@ h4 {
   width: 14%;
   height: 15%;
   opacity: 0.86;
+}
+
+.pose-splayed-stance .sketch-feet,
+.pose-splayed-stance .sketch-body {
+  transform: scaleX(1.08);
+}
+
+.pose-pigeon-toed-stand .sketch-feet {
+  transform: rotate(-8deg) scaleX(0.86);
+}
+
+.pose-one-foot-up .sketch-feet,
+.pose-mid-step .sketch-feet {
+  transform: rotate(8deg) translateY(-5%);
+}
+
+.pose-tiny-hop .sketch-body {
+  top: 20%;
+  transform: rotate(-4deg);
+}
+
+.pose-tiny-hop .sketch-feet {
+  top: 94%;
+}
+
+.pose-proud-chest-puff .sketch-body {
+  transform: scale(1.08) translateY(-2%);
+}
+
+.pose-leaning-forward .sketch-body,
+.pose-wing-flap .sketch-body {
+  transform: rotate(6deg);
+  transform-origin: bottom center;
+}
+
+.pose-tiptoe-sneak .sketch-body,
+.pose-looking-over-shoulder .sketch-body {
+  transform: rotate(-6deg) translateX(-2%);
+  transform-origin: bottom center;
+}
+
+.pose-belly-sit .sketch-body,
+.pose-tucked-and-cozy .sketch-body {
+  top: 34%;
+  height: 49%;
+  transform: scaleX(1.1);
+}
+
+.pose-slouched .sketch-body {
+  transform: rotate(-8deg) scaleY(0.94);
 }
 
 .leg-pose-splayed .sketch-legs {

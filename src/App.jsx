@@ -1,56 +1,65 @@
 import React, { useMemo, useState } from "react";
-import constructionTypes from "./data/constructionTypes.json";
 import birdEnergy from "./data/birdEnergy.json";
-import heads from "./data/heads.json";
-import bodies from "./data/bodies.json";
-import headSizes from "./data/headSizes.json";
-import bodySizes from "./data/bodySizes.json";
-import crests from "./data/crests.json";
-import tails from "./data/tails.json";
-import wingShapes from "./data/wingShapes.json";
-import eyeStyles from "./data/eyeStyles.json";
-import eyeSizes from "./data/eyeSizes.json";
-import eyePlacement from "./data/eyePlacement.json";
-import eyeSpacing from "./data/eyeSpacing.json";
-import eyeExpressions from "./data/eyeExpressions.json";
-import beaks from "./data/beaks.json";
-import legs from "./data/legs.json";
-import legPoses from "./data/legPoses.json";
-import feet from "./data/feet.json";
+import simpleBodyShapes from "./data/simpleBodyShapes.json";
+import expressions from "./data/expressions.json";
+import poses from "./data/poses.json";
+import wingStyles from "./data/wingStyles.json";
+import simpleCrests from "./data/simpleCrests.json";
+import simpleTails from "./data/simpleTails.json";
+import legLengths from "./data/legLengths.json";
+import simpleFeet from "./data/simpleFeet.json";
 import palettes from "./data/palettes.json";
 import quirks from "./data/quirks.json";
-import critterFriends from "./data/critterFriends.json";
 import storyCues from "./data/storyCues.json";
 import attitudes from "./data/attitudes.json";
 
 const tables = {
-  constructionTypes,
   birdEnergy,
-  heads,
-  bodies,
-  headSizes,
-  bodySizes,
-  crests,
-  tails,
-  wingShapes,
-  eyeStyles,
-  eyeSizes,
-  eyePlacement,
-  eyeSpacing,
-  eyeExpressions,
-  beaks,
-  legs,
-  legPoses,
-  feet,
+  bodyShapes: simpleBodyShapes,
+  expressions,
+  poses,
+  wingStyles,
+  crests: simpleCrests,
+  tails: simpleTails,
+  legLengths,
+  feet: simpleFeet,
   palettes,
   quirks,
-  critterFriends,
   storyCues,
   attitudes
 };
 
 function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
+}
+
+function itemName(item) {
+  return typeof item === "string" ? item : item.name;
+}
+
+function itemImage(item) {
+  return typeof item === "string" ? "" : item.image || "";
+}
+
+function hasValue(value) {
+  return itemName(value) !== "None";
+}
+
+function lower(value) {
+  return itemName(value).toLowerCase();
+}
+
+function slug(value) {
+  return itemName(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function findItem(items, name) {
+  return items.find((item) => itemName(item) === name);
+}
+
+function randomNamedItem(items, names) {
+  const matches = names.map((name) => findItem(items, name)).filter(Boolean);
+  return randomItem(matches.length > 0 ? matches : items);
 }
 
 function randomDifferentItem(items, currentItem) {
@@ -65,314 +74,169 @@ function randomDifferentItem(items, currentItem) {
   return nextItem;
 }
 
-function findItem(items, name) {
-  return items.find((item) => itemName(item) === name);
+function articleFor(value) {
+  return /^[aeiou]/i.test(itemName(value)) ? "an" : "a";
 }
 
-function randomNamedItem(items, names) {
-  const matches = names.map((name) => findItem(items, name)).filter(Boolean);
-  return randomItem(matches.length > 0 ? matches : items);
-}
-
-function itemName(item) {
-  return typeof item === "string" ? item : item.name;
-}
-
-function itemImage(item) {
-  return typeof item === "string" ? "" : item.image || "";
-}
-
-function slug(value) {
-  return itemName(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
-
-function randomConstructionType() {
-  return Math.random() < 0.7 ? "Two-Part Bird" : "One-Part Bird";
-}
-
-function energyBiasedBirdParts(energy) {
-  const bias = {
+function energyProfile(energy) {
+  const profiles = {
     Sleepy: {
-      shapes: ["Marshmallow", "Cloud", "Pebble", "Soft Heart"],
-      eyeSize: ["Tiny", "Small"],
-      eyeStyle: ["Oval", "Tall Oval"],
-      eyePlacement: ["Low"],
-      eyeSpacing: ["Medium Spacing", "Close Together"],
-      eyeExpression: ["Sleepy", "Blank Stare"],
-      crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
-      tail: ["Cloud Tail", "Petal Tail", "Leaf Tail"],
-      wingShape: ["Cloud Wing", "Leaf Wing"],
-      legType: ["Short Stubby"],
-      legPose: ["Belly Sit", "Straight"],
-      beak: ["Tiny Triangle", "Round Beak"]
+      expression: ["Sleepy Blink", "Blank Stare"],
+      pose: ["Belly Sit", "Slouched", "Tucked and Cozy"],
+      bodyShape: ["Fluffy", "Marshmallow", "Blob"],
+      wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
+      crest: ["Floppy Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
+      tail: ["Cloud Tail", "Petal Tail"],
+      legLength: ["Tiny", "Short"],
+      quirk: ["None", "Tiny Scarf"]
     },
     Shy: {
-      shapes: ["Pebble", "Marshmallow", "Gumdrop", "Soft Heart"],
-      eyeSize: ["Medium", "Large"],
-      eyePlacement: ["Low", "Middle"],
-      eyeSpacing: ["Close Together"],
-      eyeExpression: ["Worried", "Open"],
-      crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
+      expression: ["Worried Side Glance", "Nervous Smile", "Curious Peek"],
+      pose: ["Pigeon-Toed Stand", "One Foot Up", "Tucked and Cozy"],
+      bodyShape: ["Bean", "Marshmallow", "Gumdrop", "Blob"],
+      wingStyle: ["Cloud Wings", "Leaf Wings", "Tiny Wings"],
+      crest: ["Pebble Tuft Crest", "Floppy Ribbon Crest", "Single Feather Crest"],
       tail: ["Petal Tail", "Cloud Tail"],
-      wingShape: ["Cloud Wing", "Leaf Wing"],
-      legType: ["Short Stubby"],
-      legPose: ["Pigeon-Toed", "One Foot Up"],
-      beak: ["Tiny Triangle", "Stubby Beak"]
+      legLength: ["Tiny", "Short"],
+      quirk: ["None", "Tiny Scarf", "Round Glasses"]
     },
     Bossy: {
-      shapes: ["Bell", "Tulip", "Circle", "Acorn"],
-      eyeSize: ["Small", "Medium"],
-      eyePlacement: ["High", "Middle"],
-      eyeExpression: ["Open", "Side Glance"],
-      crest: ["Fan Crest", "Sunburst Crest", "Scallop Crest"],
-      tail: ["Fan Tail", "Ribbon Tail"],
-      wingShape: ["Feather Wing", "Scallop Wing"],
-      legType: ["Tall Skinny", "Very Tall"],
-      legPose: ["Straight", "Splayed"],
-      beak: ["Pointy Beak", "Stubby Beak"]
+      expression: ["Skeptical Squint", "Grumpy Glare", "Proud Smile"],
+      pose: ["Proud Chest Puff", "Splayed Stance", "Mid-Step"],
+      bodyShape: ["Round", "Pear", "Tall Skinny"],
+      wingStyle: ["Feather Wings", "Scallop Wings"],
+      crest: ["Fan Crest", "Scallop Crest", "Wild Sunburst Crest"],
+      tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
+      legLength: ["Tall", "Very Tall"],
+      quirk: ["Explorer Hat", "Bow Tie", "Round Glasses"]
     },
     Zippy: {
-      shapes: ["Teardrop", "Gumdrop", "Bell", "Circle"],
-      bodySize: ["Tiny", "Small"],
-      singleShapeSize: ["Tiny", "Small"],
-      eyeSize: ["Small", "Medium"],
-      eyePlacement: ["High"],
-      eyeSpacing: ["Wide Apart", "Close Together"],
-      eyeExpression: ["Open", "Happy"],
-      crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
-      tail: ["Fan Tail", "Ribbon Tail", "Petal Tail"],
-      wingShape: ["Triple Tuft Wing", "Feather Wing"],
-      legType: ["Tall Skinny", "Very Tall"],
-      legPose: ["Tiny Hop", "Mid Step"],
-      beak: ["Pointy Beak", "Tiny Triangle"]
+      expression: ["Wide-Eyed Gasp", "Delighted Smile", "Curious Peek"],
+      pose: ["Tiny Hop", "Wing Flap", "Mid-Step", "Leaning Forward"],
+      bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
+      wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
+      crest: ["Wild Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
+      tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
+      legLength: ["Tall", "Very Tall"],
+      quirk: ["None", "Explorer Hat", "Heart Sunglasses"]
     },
     Nervous: {
-      shapes: ["Bean", "Pebble", "Teardrop", "Marshmallow"],
-      eyeSize: ["Huge", "Gigantic"],
-      eyeSpacing: ["Close Together"],
-      eyeExpression: ["Worried", "Open"],
+      expression: ["Worried Side Glance", "Wide-Eyed Gasp", "Nervous Smile"],
+      pose: ["Frozen Mid-Flinch", "Pigeon-Toed Stand", "One Foot Up"],
+      bodyShape: ["Bean", "Blob", "Marshmallow"],
+      wingStyle: ["Leaf Wings", "Tiny Wings", "Feather Wings"],
       crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Cloud Tail"],
-      wingShape: ["Leaf Wing", "Triple Tuft Wing"],
-      legType: ["Short Stubby"],
-      legPose: ["Pigeon-Toed", "One Foot Up", "Splayed"],
-      footType: ["Tiny Round Feet"],
-      beak: ["Tiny Triangle", "Stubby Beak"]
+      legLength: ["Tiny", "Short"],
+      quirk: ["None", "Round Glasses", "Tiny Scarf"]
     },
     Confused: {
-      shapes: ["Bean", "Half Circle", "Pebble", "Mushroom Cap"],
-      eyeSize: ["Huge", "Gigantic"],
-      eyePlacement: ["Middle", "Low"],
-      eyeExpression: ["Side Glance", "Blank Stare", "Worried"],
-      crest: ["Single Feather Crest", "Triple Tuft Crest"],
+      expression: ["Confused Stare", "Blank Stare", "Worried Side Glance"],
+      pose: ["Looking Over Shoulder", "One Foot Up", "Splayed Stance"],
+      bodyShape: ["Blob", "Bean", "Tall Skinny"],
+      wingStyle: ["Cloud Wings", "Tiny Wings", "Feather Wings"],
+      crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Cloud Tail"],
-      wingShape: ["Cloud Wing", "Triple Tuft Wing"],
-      legPose: ["Splayed", "One Foot Up"],
-      beak: ["Stubby Beak", "Round Beak"]
+      legLength: ["Short", "Medium"],
+      quirk: ["None", "Round Glasses", "Explorer Hat"]
     },
     Startled: {
-      eyeSize: ["Huge", "Gigantic"],
-      eyeStyle: ["Round", "Dot"],
-      eyePlacement: ["High"],
-      eyeSpacing: ["Close Together", "Wide Apart"],
-      eyeExpression: ["Surprised", "Open"],
-      crest: ["Sunburst Crest", "Triple Tuft Crest", "Double Tuft Crest"],
-      tail: ["Fan Tail", "Ribbon Tail"],
-      wingShape: ["Triple Tuft Wing", "Feather Wing"],
-      legPose: ["Splayed", "Tiny Hop"],
-      beak: ["Tiny Triangle", "Pointy Beak"]
+      expression: ["Wide-Eyed Gasp", "Confused Stare"],
+      pose: ["Frozen Mid-Flinch", "Tiny Hop", "Splayed Stance"],
+      bodyShape: ["Bean", "Tall Skinny", "Gumdrop"],
+      wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
+      crest: ["Wild Sunburst Crest", "Triple Tuft Crest"],
+      tail: ["Flared Fan Tail", "Fan Tail", "Ribbon Tail"],
+      legLength: ["Medium", "Tall"],
+      quirk: ["None", "Explorer Hat", "Tiny Scarf"]
     },
     Proud: {
-      shapes: ["Bell", "Circle", "Tulip", "Acorn"],
-      eyeSize: ["Small", "Medium"],
-      eyePlacement: ["High", "Middle"],
-      eyeExpression: ["Happy", "Open"],
-      crest: ["Fan Crest", "Sunburst Crest", "Scallop Crest"],
-      tail: ["Fan Tail", "Petal Tail"],
-      wingShape: ["Scallop Wing", "Feather Wing"],
-      legType: ["Tall Skinny", "Very Tall"],
-      legPose: ["Straight", "Splayed"],
-      beak: ["Pointy Beak", "Round Beak"]
+      expression: ["Proud Smile", "Delighted Smile", "Skeptical Squint"],
+      pose: ["Proud Chest Puff", "Perched", "Splayed Stance"],
+      bodyShape: ["Pear", "Round", "Tall Skinny"],
+      wingStyle: ["Scallop Wings", "Feather Wings"],
+      crest: ["Fan Crest", "Scallop Crest", "Wild Sunburst Crest"],
+      tail: ["Fan Tail", "Flared Fan Tail", "Petal Tail"],
+      legLength: ["Tall", "Very Tall"],
+      quirk: ["Bow Tie", "Flower Crown", "Heart Sunglasses"]
     },
     Grumpy: {
-      shapes: ["Acorn", "Bean", "Bell", "Pebble"],
-      eyeSize: ["Tiny", "Small"],
-      eyePlacement: ["Low"],
-      eyeExpression: ["Side Glance", "Blank Stare"],
-      crest: ["Triple Tuft Crest", "Sunburst Crest", "Scallop Crest"],
+      expression: ["Grumpy Glare", "Skeptical Squint", "Tiny Frown"],
+      pose: ["Splayed Stance", "Slouched", "Perched"],
+      bodyShape: ["Bean", "Blob", "Pear"],
+      wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
+      crest: ["Triple Tuft Crest", "Wild Sunburst Crest", "Scallop Crest"],
       tail: ["Fan Tail", "Curly Tail"],
-      wingShape: ["Pebble Wing", "Feather Wing", "Scallop Wing"],
-      legPose: ["Straight", "Splayed"],
-      beak: ["Stubby Beak", "Pointy Beak"]
+      legLength: ["Short", "Medium", "Tall"],
+      quirk: ["None", "Tiny Scarf", "Round Glasses"]
     },
     Daydreaming: {
-      shapes: ["Cloud", "Soft Heart", "Marshmallow", "Pebble"],
-      eyeSize: ["Small", "Medium"],
-      eyePlacement: ["Middle", "Low"],
-      eyeExpression: ["Sleepy", "Side Glance"],
-      crest: ["Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
+      expression: ["Sleepy Blink", "Blank Stare", "Curious Peek"],
+      pose: ["Tucked and Cozy", "Belly Sit", "Leaning Forward"],
+      bodyShape: ["Fluffy", "Marshmallow", "Blob"],
+      wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
+      crest: ["Floppy Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Cloud Tail", "Petal Tail"],
-      wingShape: ["Cloud Wing", "Leaf Wing", "Fan Wing"],
-      legPose: ["Straight", "Belly Sit", "One Foot Up"],
-      beak: ["Round Beak", "Tiny Triangle"]
+      legLength: ["Tiny", "Short", "Medium"],
+      quirk: ["None", "Flower Crown", "Tiny Scarf"]
     },
     Mischievous: {
-      shapes: ["Bean", "Acorn", "Teardrop", "Gumdrop"],
-      eyeSize: ["Small", "Medium"],
-      eyeExpression: ["Side Glance", "Happy"],
-      crest: ["Triple Tuft Crest", "Pebble Tuft Crest", "Single Feather Crest"],
+      expression: ["Worried Side Glance", "Delighted Smile", "Tiny Frown"],
+      pose: ["Tiptoe Sneak", "Looking Over Shoulder", "Mid-Step"],
+      bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
+      wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
+      crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Ribbon Tail"],
-      wingShape: ["Triple Tuft Wing", "Feather Wing", "Scallop Wing"],
-      legPose: ["One Foot Up", "Mid Step"],
-      beak: ["Pointy Beak", "Stubby Beak"]
+      legLength: ["Short", "Medium", "Tall"],
+      quirk: ["Little Cape", "Heart Sunglasses", "Bow Tie"]
     },
     Curious: {
-      eyeSize: ["Medium", "Large"],
-      eyePlacement: ["Middle", "High"],
-      eyeExpression: ["Open", "Side Glance"],
-      crest: ["Single Feather Crest", "Triple Tuft Crest"],
+      expression: ["Curious Peek", "Wide-Eyed Gasp", "Worried Side Glance"],
+      pose: ["Leaning Forward", "One Foot Up", "Mid-Step"],
+      bodyShape: ["Bean", "Round", "Gumdrop"],
+      wingStyle: ["Leaf Wings", "Feather Wings", "Tiny Wings"],
+      crest: ["Single Feather Crest", "Triple Tuft Crest", "Fan Crest"],
       tail: ["Petal Tail", "Fan Tail", "Cloud Tail"],
-      wingShape: ["Leaf Wing", "Feather Wing", "Triple Tuft Wing"],
-      legPose: ["One Foot Up", "Mid Step"],
-      beak: ["Tiny Triangle", "Pointy Beak"]
+      legLength: ["Medium", "Tall"],
+      quirk: ["None", "Explorer Hat", "Round Glasses"]
     }
   };
-  const profile = bias[energy] || {};
 
-  const pick = (items, names, chance = 0.74) => (names && Math.random() < chance ? randomNamedItem(items, names) : randomItem(items));
-  const shapeNames = profile.shapes;
-
-  return {
-    headShape: pick(tables.heads, shapeNames),
-    bodyShape: pick(tables.bodies, shapeNames),
-    singleShape: pick(tables.bodies, shapeNames),
-    bodySize: pick(tables.bodySizes, profile.bodySize),
-    singleShapeSize: pick(tables.bodySizes, profile.singleShapeSize || profile.bodySize),
-    eyeSize: pick(tables.eyeSizes, profile.eyeSize),
-    eyeStyle: pick(tables.eyeStyles, profile.eyeStyle),
-    eyePlacement: pick(tables.eyePlacement, profile.eyePlacement),
-    eyeSpacing: pick(tables.eyeSpacing, profile.eyeSpacing),
-    eyeExpression: pick(tables.eyeExpressions, profile.eyeExpression),
-    beak: pick(tables.beaks, profile.beak),
-    legType: pick(tables.legs, profile.legType),
-    legPose: pick(tables.legPoses, profile.legPose),
-    footType: pick(tables.feet, profile.footType),
-    crest: pick(tables.crests, profile.crest),
-    tail: pick(tables.tails, profile.tail),
-    wingShape: pick(tables.wingShapes, profile.wingShape)
-  };
-}
-
-function randomStoryCue(energy) {
-  return randomItem(tables.storyCues[energy] || tables.storyCues.Curious);
+  return profiles[energy] || profiles.Curious;
 }
 
 function randomAttitude(energy) {
   return randomItem(tables.attitudes[energy] || tables.attitudes.Curious);
 }
 
-function findStoryCueByText(text) {
-  return Object.values(tables.storyCues).flat().find((cue) => cue.text === text);
+function randomStoryCue(energy) {
+  return randomItem(tables.storyCues[energy] || tables.storyCues.Curious);
 }
 
-function randomCritterFriend(storyCue) {
-  if (Math.random() < 0.65) {
-    return "None";
-  }
-
-  if (storyCue?.critter) {
-    return storyCue.critter;
-  }
-
-  const choices = tables.critterFriends.filter((critter) => critter !== "None");
-  return randomItem(choices);
+function weightedPick(items, names, chance = 0.78) {
+  return names && Math.random() < chance ? randomNamedItem(items, names) : randomItem(items);
 }
 
 function makeBird() {
-  const constructionType = randomConstructionType();
   const energy = randomItem(tables.birdEnergy);
-  const energyParts = energyBiasedBirdParts(energy);
+  const profile = energyProfile(energy);
   const storyCue = randomStoryCue(energy);
 
   return {
-    constructionType,
     birdEnergy: energy,
     attitude: randomAttitude(energy),
-    headShape: energyParts.headShape,
-    headSize: randomItem(tables.headSizes),
-    bodyShape: energyParts.bodyShape,
-    bodySize: energyParts.bodySize,
-    singleShape: energyParts.singleShape,
-    singleShapeSize: energyParts.singleShapeSize,
-    crest: energyParts.crest,
-    tail: energyParts.tail,
-    wingShape: energyParts.wingShape,
-    eyeSize: energyParts.eyeSize,
-    eyeStyle: energyParts.eyeStyle,
-    eyePlacement: energyParts.eyePlacement,
-    eyeSpacing: energyParts.eyeSpacing,
-    eyeExpression: energyParts.eyeExpression,
-    beak: energyParts.beak,
-    legType: energyParts.legType,
-    legPose: energyParts.legPose,
-    footType: energyParts.footType,
-    colorPalette: randomItem(tables.palettes),
-    quirk: randomItem(tables.quirks),
+    expression: weightedPick(tables.expressions, profile.expression),
+    pose: weightedPick(tables.poses, profile.pose),
     storyCue: storyCue.text,
-    critterFriend: randomCritterFriend(storyCue)
+    bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
+    wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
+    crest: weightedPick(tables.crests, profile.crest),
+    tail: weightedPick(tables.tails, profile.tail),
+    legLength: weightedPick(tables.legLengths, profile.legLength),
+    feet: randomItem(tables.feet),
+    quirk: weightedPick(tables.quirks, profile.quirk, 0.65),
+    colorPalette: randomItem(tables.palettes)
   };
-}
-
-function lower(value) {
-  return itemName(value).toLowerCase();
-}
-
-function hasValue(value) {
-  return itemName(value) !== "None";
-}
-
-function withSuffix(value, suffix) {
-  const normalized = lower(value);
-  return normalized.endsWith(suffix) ? normalized : `${normalized} ${suffix}`;
-}
-
-function articleFor(value) {
-  return /^[aeiou]/i.test(itemName(value)) ? "an" : "a";
-}
-
-function wingValue(bird) {
-  if (!hasValue(bird.wingShape)) {
-    return "None";
-  }
-
-  return itemName(bird.wingShape);
-}
-
-function wingPromptPhrase(bird) {
-  if (!hasValue(bird.wingShape)) {
-    return "";
-  }
-
-  return `a ${lower(bird.wingShape)}`;
-}
-
-function energyModifier(energy, part) {
-  const modifiers = {
-    Grumpy: { crest: "stiff", tail: "bristly", legs: "planted" },
-    Curious: { crest: "alert", tail: "perky", legs: "leaning" },
-    Mischievous: { crest: "jaunty", tail: "sneaky", legs: "ready-to-dart" },
-    Proud: { crest: "showy", tail: "fancy", legs: "confident" },
-    Shy: { crest: "small", tail: "tucked-looking", legs: "careful" },
-    Startled: { crest: "wild", tail: "flared", legs: "startled" },
-    Zippy: { crest: "springy", tail: "bouncy", legs: "quick" },
-    Sleepy: { crest: "droopy", tail: "soft", legs: "sleepy" },
-    Nervous: { crest: "fidgety", tail: "wobbly", legs: "uneasy" },
-    Confused: { crest: "crooked", tail: "puzzled", legs: "awkward" },
-    Daydreaming: { crest: "floaty", tail: "soft", legs: "drifty" },
-    Bossy: { crest: "important", tail: "commanding", legs: "firm" }
-  };
-
-  return modifiers[energy]?.[part] || "";
 }
 
 function paletteWord(palette) {
@@ -383,148 +247,102 @@ function birdName(bird) {
   return `${bird.birdEnergy} ${paletteWord(bird.colorPalette)} Bird`;
 }
 
-function expressionPhrase(expression) {
-  const value = lower(expression);
-  if (value === "blank stare" || value === "side glance") {
-    return `with a ${value}`;
-  }
-
-  return `with ${articleFor(expression)} ${value} expression`;
-}
-
-function eyePhrase(bird) {
-  return `${lower(bird.eyeSize)} ${lower(bird.eyeStyle)} eyes ${expressionPhrase(bird.eyeExpression)} placed ${lower(bird.eyePlacement)} and ${lower(bird.eyeSpacing)}`;
-}
-
 function quirkPhrase(quirk) {
   const value = lower(quirk);
-  return /(glasses|sunglasses|socks|boots)$/.test(value) ? value : `${articleFor(quirk)} ${value}`;
+  return /(glasses|sunglasses|boots)$/.test(value) ? value : `${articleFor(quirk)} ${value}`;
 }
 
-function modifiedPart(energy, part, value) {
-  const modifier = energyModifier(energy, part);
-  return modifier ? `${modifier} ${lower(value)}` : lower(value);
+function wingPhrase(wingStyle) {
+  return hasValue(wingStyle) ? lower(wingStyle) : "no visible wings";
 }
 
-function constructionPhrase(bird) {
-  const wingText = wingPromptPhrase(bird);
-  const wingSegment = wingText ? `, ${wingText}` : "";
-  const crestText = modifiedPart(bird.birdEnergy, "crest", bird.crest);
-  const tailText = modifiedPart(bird.birdEnergy, "tail", bird.tail);
-  const legLead = energyModifier(bird.birdEnergy, "legs");
-  const legsText = legLead ? `${legLead} ${lower(bird.legType)} legs` : `${lower(bird.legType)} legs`;
-
-  if (bird.constructionType === "One-Part Bird") {
-    return `It has one simple ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape${wingSegment}, a ${crestText}, a ${tailText}, and ${legsText} in a ${lower(bird.legPose)} pose.`;
-  }
-
-  return `It has a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}${wingSegment}, a ${crestText}, a ${tailText}, and ${legsText} in a ${lower(bird.legPose)} pose.`;
+function crestPhrase(crest) {
+  return hasValue(crest) ? `a ${lower(crest)}` : "no crest";
 }
 
-function storyParagraph(bird) {
-  if (hasValue(bird.critterFriend)) {
-    const critter = lower(bird.critterFriend);
-    const critterKeyword = critter.split(" ").at(-1);
-    if (bird.storyCue.toLowerCase().includes(critterKeyword)) {
-      return bird.storyCue;
-    }
+function tailPhrase(tail) {
+  return hasValue(tail) ? `a ${lower(tail)}` : "no tail";
+}
 
-    return `${bird.storyCue} It appears to be reacting to ${articleFor(bird.critterFriend)} ${critter} nearby.`;
-  }
-
-  return bird.storyCue;
+function storySentence(bird) {
+  return bird.storyCue || `It is ${bird.attitude}.`;
 }
 
 function birdPrompt(bird) {
-  const paragraphs = [];
-
-  paragraphs.push(`Draw a ${lower(bird.birdEnergy)} bird that looks like it is ${bird.attitude}. ${constructionPhrase(bird)}`);
-  paragraphs.push(`Give it ${eyePhrase(bird)}, plus a ${withSuffix(bird.beak, "beak")} and ${lower(bird.footType)}.`);
+  const paragraphs = [
+    `Draw a ${lower(bird.birdEnergy)} bird that looks like it is ${lower(bird.pose)}. ${storySentence(bird)}`,
+    `It has a ${lower(bird.bodyShape)} shaped body, ${wingPhrase(bird.wingStyle)}, ${crestPhrase(bird.crest)}, ${tailPhrase(bird.tail)}, and ${lower(bird.legLength)} legs.`,
+    `Give it a ${lower(bird.expression)} expression and ${lower(bird.feet)}.`
+  ];
 
   if (hasValue(bird.quirk)) {
     paragraphs.push(`Add ${quirkPhrase(bird.quirk)}.`);
   }
 
-  paragraphs.push(storyParagraph(bird));
   paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
-
   return paragraphs;
 }
 
-function constructionDetails(bird) {
-  if (bird.constructionType === "One-Part Bird") {
-    return [
-      ["Construction Type", bird.constructionType],
-      ["Shape Size", bird.singleShapeSize, "", "singleShapeSize"],
-      ["Shape", itemName(bird.singleShape), itemImage(bird.singleShape), "singleShape"],
-      ["Wing", wingValue(bird), itemImage(bird.wingShape), "wingShape"],
-      ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
-      ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"],
-      ["Legs", itemName(bird.legType), itemImage(bird.legType), "legType"],
-      ["Leg Pose", bird.legPose, "", "legPose"],
-      ["Feet", itemName(bird.footType), itemImage(bird.footType), "footType"]
-    ];
-  }
-
+function recipeChips(bird) {
   return [
-    ["Construction Type", bird.constructionType],
-    ["Head Size", bird.headSize, "", "headSize"],
-    ["Head Shape", itemName(bird.headShape), itemImage(bird.headShape), "headShape"],
-    ["Body Size", bird.bodySize, "", "bodySize"],
-    ["Body Shape", itemName(bird.bodyShape), itemImage(bird.bodyShape), "bodyShape"],
-    ["Wing", wingValue(bird), itemImage(bird.wingShape), "wingShape"],
-    ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
-    ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"],
-    ["Legs", itemName(bird.legType), itemImage(bird.legType), "legType"],
-    ["Leg Pose", bird.legPose, "", "legPose"],
-    ["Feet", itemName(bird.footType), itemImage(bird.footType), "footType"]
-  ];
-}
-
-function faceDetails(bird) {
-  return [
-    ["Eye Size", bird.eyeSize, "", "eyeSize"],
-    ["Eye Style", itemName(bird.eyeStyle), itemImage(bird.eyeStyle), "eyeStyle"],
-    ["Eye Placement (vertical)", bird.eyePlacement, "", "eyePlacement"],
-    ["Eye Spacing (distance)", bird.eyeSpacing, "", "eyeSpacing"],
-    ["Eye Expression", bird.eyeExpression, "", "eyeExpression"],
-    ["Beak", itemName(bird.beak), itemImage(bird.beak), "beak"]
+    bird.birdEnergy,
+    bird.expression,
+    bird.pose,
+    itemName(bird.bodyShape),
+    itemName(bird.crest),
+    itemName(bird.tail),
+    bird.quirk,
+    bird.colorPalette.name
   ];
 }
 
 function personalityDetails(bird) {
   return [
     ["Bird Energy", bird.birdEnergy, "", "birdEnergy"],
-    ["Quirk", bird.quirk, "", "quirk"],
-    ["Story Cue", bird.storyCue, "", "storyCue"],
-    ["Critter Friend", bird.critterFriend, "", "critterFriend"]
+    ["Expression", bird.expression, "", "expression"],
+    ["Pose", bird.pose, "", "pose"]
   ];
 }
 
-function recipeChips(bird) {
-  if (bird.constructionType === "One-Part Bird") {
-    return [
-      bird.birdEnergy,
-      bird.constructionType,
-      `${bird.singleShapeSize} ${itemName(bird.singleShape)} Shape`,
-      `${bird.eyeSize} ${itemName(bird.eyeStyle)} Eyes`,
-      itemName(bird.crest),
-      itemName(bird.tail),
-      `${bird.legPose} Legs`,
-      bird.colorPalette.name
-    ];
-  }
+function storyDetails(bird) {
+  return [["Story Cue", bird.storyCue, "", "storyCue"]];
+}
 
+function featureDetails(bird) {
   return [
-    bird.birdEnergy,
-    bird.constructionType,
-    `${bird.headSize} ${itemName(bird.headShape)} Head + ${bird.bodySize} ${itemName(bird.bodyShape)} Body`,
-    `${bird.eyeSize} ${itemName(bird.eyeStyle)} Eyes`,
-    itemName(bird.crest),
-    itemName(bird.tail),
-    `${bird.legPose} Legs`,
-    bird.colorPalette.name
+    ["Body Shape", itemName(bird.bodyShape), itemImage(bird.bodyShape), "bodyShape"],
+    ["Wing Style", itemName(bird.wingStyle), itemImage(bird.wingStyle), "wingStyle"],
+    ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
+    ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"],
+    ["Leg Length", bird.legLength, "", "legLength"],
+    ["Feet", itemName(bird.feet), itemImage(bird.feet), "feet"]
   ];
+}
+
+function stylingDetails(bird) {
+  return [
+    ["Quirk", bird.quirk, "", "quirk"],
+    ["Palette", bird.colorPalette.name, "", "colorPalette"]
+  ];
+}
+
+function expressionImage(expression) {
+  const images = {
+    "Wide-Eyed Gasp": "/assets/bird-parts/eyes/round.png",
+    "Worried Side Glance": "/assets/bird-parts/eyes/oval.png",
+    "Sleepy Blink": "/assets/bird-parts/eyes/tall.png",
+    "Skeptical Squint": "/assets/bird-parts/eyes/tall.png",
+    "Blank Stare": "/assets/bird-parts/eyes/simple.png",
+    "Delighted Smile": "/assets/bird-parts/eyes/round.png",
+    "Tiny Frown": "/assets/bird-parts/eyes/simple.png",
+    "Proud Smile": "/assets/bird-parts/eyes/gumdrop.png",
+    "Nervous Smile": "/assets/bird-parts/eyes/oval.png",
+    "Confused Stare": "/assets/bird-parts/eyes/round.png",
+    "Grumpy Glare": "/assets/bird-parts/eyes/tall.png",
+    "Curious Peek": "/assets/bird-parts/eyes/round.png"
+  };
+
+  return images[expression] || "/assets/bird-parts/eyes/simple.png";
 }
 
 function SketchLayer({ src, className }) {
@@ -545,15 +363,12 @@ function SketchLayer({ src, className }) {
 }
 
 function SketchPreview({ bird }) {
-  const isOnePart = bird.constructionType === "One-Part Bird";
-  const bodySource = isOnePart ? itemImage(bird.singleShape) : itemImage(bird.bodyShape);
   const stageClasses = [
     "sketch-stage",
-    isOnePart ? "one-part" : "two-part",
+    "simple-bird",
     `energy-${slug(bird.birdEnergy)}`,
-    `eye-size-${slug(bird.eyeSize)}`,
-    `eye-placement-${slug(bird.eyePlacement)}`,
-    `leg-pose-${slug(bird.legPose)}`
+    `expression-${slug(bird.expression)}`,
+    `pose-${slug(bird.pose)}`
   ].join(" ");
 
   return (
@@ -563,18 +378,12 @@ function SketchPreview({ bird }) {
         <p>A simple character pose guide, not final art.</p>
       </div>
       <div className={stageClasses}>
-        {!isOnePart && (
-          <SketchLayer src={itemImage(bird.headShape)} className="sketch-head" />
-        )}
-        <SketchLayer src={bodySource} className="sketch-body" />
+        <SketchLayer src={itemImage(bird.bodyShape)} className="sketch-body" />
         <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" />
         <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" />
-        <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" />
-        <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" />
-        <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" />
-        <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" />
-        <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" />
-        <SketchLayer src={itemImage(bird.critterFriend)} className="sketch-critter" />
+        <SketchLayer src={itemImage(bird.wingStyle)} className="sketch-wing" />
+        <SketchLayer src={expressionImage(bird.expression)} className="sketch-eyes" />
+        <SketchLayer src={itemImage(bird.feet)} className="sketch-feet" />
       </div>
     </section>
   );
@@ -659,13 +468,21 @@ export default function App() {
     if (field === "birdEnergy") {
       setBird((currentBird) => {
         const nextEnergy = randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy);
+        const profile = energyProfile(nextEnergy);
         const cue = randomStoryCue(nextEnergy);
         return {
           ...currentBird,
           birdEnergy: nextEnergy,
           attitude: randomAttitude(nextEnergy),
+          expression: weightedPick(tables.expressions, profile.expression),
+          pose: weightedPick(tables.poses, profile.pose),
           storyCue: cue.text,
-          critterFriend: randomCritterFriend(cue)
+          bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
+          wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
+          crest: weightedPick(tables.crests, profile.crest),
+          tail: weightedPick(tables.tails, profile.tail),
+          legLength: weightedPick(tables.legLengths, profile.legLength),
+          quirk: weightedPick(tables.quirks, profile.quirk, 0.65)
         };
       });
       setCopyStatus("");
@@ -675,47 +492,25 @@ export default function App() {
     if (field === "storyCue") {
       setBird((currentBird) => {
         const cues = tables.storyCues[currentBird.birdEnergy] || tables.storyCues.Curious;
-        const choices = cues.filter((cueOption) => cueOption.text !== currentBird.storyCue);
-        const cue = randomItem(choices.length > 0 ? choices : cues);
+        const choices = cues.filter((cue) => cue.text !== currentBird.storyCue);
         return {
           ...currentBird,
-          storyCue: cue.text,
-          critterFriend: hasValue(currentBird.critterFriend) && cue.critter ? cue.critter : currentBird.critterFriend
+          storyCue: randomItem(choices.length > 0 ? choices : cues).text
         };
       });
       setCopyStatus("");
       return;
     }
 
-    if (field === "critterFriend") {
-      setBird((currentBird) => ({
-        ...currentBird,
-        critterFriend: randomCritterFriend(findStoryCueByText(currentBird.storyCue))
-      }));
-      setCopyStatus("");
-      return;
-    }
-
     const fieldTables = {
-      birdEnergy: tables.birdEnergy,
-      headShape: tables.heads,
-      headSize: tables.headSizes,
-      bodyShape: tables.bodies,
-      bodySize: tables.bodySizes,
-      singleShape: tables.bodies,
-      singleShapeSize: tables.bodySizes,
+      expression: tables.expressions,
+      pose: tables.poses,
+      bodyShape: tables.bodyShapes,
+      wingStyle: tables.wingStyles,
       crest: tables.crests,
       tail: tables.tails,
-      wingShape: tables.wingShapes,
-      eyeSize: tables.eyeSizes,
-      eyeStyle: tables.eyeStyles,
-      eyePlacement: tables.eyePlacement,
-      eyeSpacing: tables.eyeSpacing,
-      eyeExpression: tables.eyeExpressions,
-      beak: tables.beaks,
-      legType: tables.legs,
-      legPose: tables.legPoses,
-      footType: tables.feet,
+      legLength: tables.legLengths,
+      feet: tables.feet,
       quirk: tables.quirks,
       colorPalette: tables.palettes
     };
@@ -785,9 +580,10 @@ export default function App() {
         <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
 
         <div className="detail-grid">
-          <DetailCard title="Shape & Body" rows={constructionDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Face Details" rows={faceDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Personality & Story" rows={personalityDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Personality" rows={personalityDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Story" rows={storyDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Bird Features" rows={featureDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Styling" rows={stylingDetails(bird)} onShuffle={shuffleField} />
         </div>
 
       </section>

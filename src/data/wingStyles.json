@@ -1,0 +1,9 @@
+[
+  { "name": "None" },
+  { "name": "Fluffy Wings", "image": "/assets/bird-parts/wings/cloud.png" },
+  { "name": "Cloud Wings", "image": "/assets/bird-parts/wings/cloud.png" },
+  { "name": "Leaf Wings", "image": "/assets/bird-parts/wings/leaf.png" },
+  { "name": "Tiny Wings", "image": "/assets/bird-parts/wings/bean.png" },
+  { "name": "Scallop Wings", "image": "/assets/bird-parts/wings/scallop-crest.png" },
+  { "name": "Feather Wings", "image": "/assets/bird-parts/wings/single-feather.png" }
+]
