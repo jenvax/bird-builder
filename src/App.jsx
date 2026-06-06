@@ -391,6 +391,30 @@ function SketchPreview({ bird }) {
   );
 }
 
+function CharacterSnapshot({ bird }) {
+  return (
+    <section className="snapshot-card" aria-labelledby="snapshot-heading">
+      <div className="section-heading">
+        <h2 id="snapshot-heading">Character Snapshot</h2>
+      </div>
+      <div className="snapshot-main">
+        <p className="snapshot-energy">{bird.birdEnergy} Bird</p>
+        <p className="snapshot-pose">{bird.pose}</p>
+      </div>
+      <dl className="snapshot-details">
+        <div>
+          <dt>Expression</dt>
+          <dd>{bird.expression}</dd>
+        </div>
+        <div>
+          <dt>Story</dt>
+          <dd>{bird.storyCue}</dd>
+        </div>
+      </dl>
+    </section>
+  );
+}
+
 function PaletteSwatches({ colors }) {
   return (
     <div className="palette-swatches" aria-label="Palette colors">
@@ -568,6 +592,8 @@ export default function App() {
         </div>
 
         <div className="feature-grid">
+          <CharacterSnapshot bird={bird} />
+
           <div className="prompt-column">
             <section className="prompt-card" aria-labelledby="prompt-heading">
               <h2 id="prompt-heading">Draw This Bird</h2>
@@ -583,8 +609,6 @@ export default function App() {
               <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
             </div>
           </div>
-
-          <SketchPreview bird={bird} />
         </div>
 
         <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />

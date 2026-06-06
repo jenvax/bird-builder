@@ -157,6 +157,7 @@ h4 {
 .prompt-card,
 .detail-card,
 .sketch-preview-card,
+.snapshot-card,
 .palette-card {
   margin-top: 8px;
   padding: 8px;
@@ -175,6 +176,69 @@ h4 {
     linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
     #fffefa;
   background-size: auto, 100% 26px, auto;
+}
+
+.snapshot-card {
+  order: -1;
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  background:
+    radial-gradient(circle at 92% 0, rgba(255, 157, 181, 0.26), transparent 32%),
+    linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
+    #fffefa;
+  background-size: auto, 100% 26px, auto;
+}
+
+.snapshot-main {
+  display: grid;
+  gap: 3px;
+  padding: 6px 0;
+}
+
+.snapshot-energy,
+.snapshot-pose {
+  margin: 0;
+  color: #241b3a;
+  line-height: 1.06;
+  letter-spacing: 0;
+}
+
+.snapshot-energy {
+  font-size: clamp(1.15rem, 5vw, 1.65rem);
+  font-weight: 950;
+}
+
+.snapshot-pose {
+  font-size: clamp(0.98rem, 4.2vw, 1.28rem);
+  font-weight: 900;
+  color: #7a3e58;
+}
+
+.snapshot-details {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.snapshot-details div {
+  display: grid;
+  gap: 2px;
+}
+
+.snapshot-details dt {
+  color: #6a5d7b;
+  font-size: 0.62rem;
+  font-weight: 900;
+}
+
+.snapshot-details dd {
+  display: block;
+  margin: 0;
+  color: #2f2942;
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.28;
 }
 
 .prompt-text {
@@ -753,13 +817,22 @@ dd {
 
 @media (min-width: 760px) {
   .feature-grid {
-    grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
     align-items: stretch;
   }
 
+  .snapshot-card {
+    order: 0;
+  }
+
   .feature-grid .prompt-card,
+  .feature-grid .snapshot-card,
   .feature-grid .sketch-preview-card {
     margin-top: 0;
+  }
+
+  .feature-grid .prompt-column {
+    order: -1;
   }
 
   .feature-grid .sketch-preview-card {
