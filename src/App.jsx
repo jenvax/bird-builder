@@ -317,6 +317,9 @@ function SketchPreview({ bird }) {
         <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" />
         <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" />
         <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" />
+        <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" />
+        <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" />
+        <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" />
       </div>
     </section>
   );
@@ -409,26 +412,24 @@ export default function App() {
           <h1 id="bird-title">{birdName(bird)}</h1>
         </section>
 
-        <div className="recipe-strip" aria-label="Bird recipe highlights">
-          {recipeChips(bird).map((chip, index) => (
-            <span key={`${chip}-${index}`}>{chip}</span>
-          ))}
-        </div>
+        <div className="feature-grid">
+          <div className="prompt-column">
+            <section className="prompt-card" aria-labelledby="prompt-heading">
+              <h2 id="prompt-heading">Draw This Bird</h2>
+              <div className="prompt-text">
+                {prompt.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </section>
 
-        <SketchPreview bird={bird} />
-
-        <section className="prompt-card" aria-labelledby="prompt-heading">
-          <h2 id="prompt-heading">Draw This Bird</h2>
-          <div className="prompt-text">
-            {prompt.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+            <div className="copy-action">
+              <button type="button" className="secondary" onClick={copyPrompt}>Copy Prompt</button>
+              <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
+            </div>
           </div>
-        </section>
 
-        <div className="copy-action">
-          <button type="button" className="secondary" onClick={copyPrompt}>Copy Prompt</button>
-          <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
+          <SketchPreview bird={bird} />
         </div>
 
         <ColorPaletteCard palette={bird.colorPalette} />

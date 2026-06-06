@@ -1,8 +1,7 @@
 [
-  { "name": "Dot", "image": "/assets/bird-parts/eyes/dot.png" },
-  { "name": "Circle", "image": "/assets/bird-parts/eyes/circle.png" },
-  { "name": "Beady", "image": "/assets/bird-parts/eyes/beady.png" },
-  { "name": "Tall Oval", "image": "/assets/bird-parts/eyes/tall-oval.png" },
-  { "name": "Triangle", "image": "/assets/bird-parts/eyes/triangle.png" },
-  { "name": "Side Glance", "image": "/assets/bird-parts/eyes/side-glance.png" }
+  { "name": "Dot", "image": "/assets/bird-parts/eyes/simple.png" },
+  { "name": "Round", "image": "/assets/bird-parts/eyes/round.png" },
+  { "name": "Gumdrop", "image": "/assets/bird-parts/eyes/gumdrop.png" },
+  { "name": "Oval", "image": "/assets/bird-parts/eyes/oval.png" },
+  { "name": "Tall Oval", "image": "/assets/bird-parts/eyes/tall.png" }
 ]

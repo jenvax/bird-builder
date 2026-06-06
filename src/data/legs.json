@@ -1,6 +1,6 @@
 [
-  { "name": "Short Stubby", "image": "/assets/bird-parts/legs/short-stubby.png" },
+  { "name": "Short Stubby", "image": "/assets/bird-parts/legs/short.png" },
   { "name": "Medium", "image": "/assets/bird-parts/legs/medium.png" },
-  { "name": "Tall Skinny", "image": "/assets/bird-parts/legs/tall-skinny.png" },
+  { "name": "Tall Skinny", "image": "/assets/bird-parts/legs/tall.png" },
   { "name": "Very Tall", "image": "/assets/bird-parts/legs/very-tall.png" }
 ]
