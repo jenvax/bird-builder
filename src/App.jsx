@@ -322,6 +322,16 @@ function SketchPreview({ bird }) {
   );
 }
 
+function PaletteSwatches({ colors }) {
+  return (
+    <div className="palette-swatches" aria-label="Palette colors">
+      {colors.map((color) => (
+        <span key={color} style={{ backgroundColor: color }} />
+      ))}
+    </div>
+  );
+}
+
 function DetailCard({ title, rows }) {
   return (
     <section className="detail-card" aria-labelledby={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
@@ -348,6 +358,19 @@ function DetailCard({ title, rows }) {
           </div>
         ))}
       </dl>
+    </section>
+  );
+}
+
+function ColorPaletteCard({ palette }) {
+  return (
+    <section className="palette-card" aria-labelledby="color-palette-heading">
+      <div className="section-heading">
+        <h2 id="color-palette-heading">Color Palette</h2>
+        <p>{palette.mood}</p>
+      </div>
+      <h3>{palette.name}</h3>
+      <PaletteSwatches colors={palette.colors} />
     </section>
   );
 }
@@ -407,6 +430,8 @@ export default function App() {
           <button type="button" className="secondary" onClick={copyPrompt}>Copy Prompt</button>
           <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
         </div>
+
+        <ColorPaletteCard palette={bird.colorPalette} />
 
         <div className="detail-grid">
           <DetailCard title="Shape & Body" rows={constructionDetails(bird)} />

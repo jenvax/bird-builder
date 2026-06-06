@@ -155,7 +155,8 @@ h4 {
 
 .prompt-card,
 .detail-card,
-.sketch-preview-card {
+.sketch-preview-card,
+.palette-card {
   margin-top: 10px;
   padding: 11px;
   border: 2px solid #3b3352;
@@ -226,6 +227,33 @@ h4 {
   color: #3f7a59;
   font-size: 0.78rem;
   font-weight: 800;
+}
+
+.palette-card {
+  display: grid;
+  gap: 8px;
+  background:
+    radial-gradient(circle at 96% 0, rgba(174, 232, 211, 0.28), transparent 34%),
+    linear-gradient(rgba(47, 41, 66, 0.048) 1px, transparent 1px),
+    #fffefa;
+  background-size: auto, 100% 24px, auto;
+}
+
+.palette-card h3 {
+  font-size: 1rem;
+}
+
+.palette-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+  width: min(100%, 320px);
+}
+
+.palette-swatches span {
+  min-height: 28px;
+  border: 2px solid #2f2942;
+  border-radius: 7px;
 }
 
 .sketch-preview-card {
