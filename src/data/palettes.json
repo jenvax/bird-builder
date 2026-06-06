@@ -82,5 +82,71 @@
     "name": "Winter Cocoa",
     "colors": ["#5B4636", "#A77C5B", "#D8C3A5", "#F4EDE4", "#8CBFD1"],
     "mood": "Snuggly, calm, and cocoa-sweet."
+  },
+  {
+    "collection": "Candy Collection",
+    "name": "Lemon Lollipop",
+    "colors": ["#FFF06A", "#FFD23F", "#FF9F1C", "#FDFCDC", "#9EE493"],
+    "mood": "Zesty, bright, and full of happy fizz."
+  },
+  {
+    "collection": "Candy Collection",
+    "name": "Peppermint Parade",
+    "colors": ["#E63946", "#FFCAD4", "#FFFFFF", "#B8F2E6", "#457B9D"],
+    "mood": "Crisp, cheerful, and candy-striped."
+  },
+  {
+    "collection": "Candy Collection",
+    "name": "Grape Soda",
+    "colors": ["#4B1D95", "#7B2CBF", "#C77DFF", "#E0AAFF", "#BDE0FE"],
+    "mood": "Bubbly, bold, and a little theatrical."
+  },
+  {
+    "collection": "Garden Collection",
+    "name": "Peach Greenhouse",
+    "colors": ["#FFB4A2", "#FFCDB2", "#B7E4C7", "#74C69D", "#FFF8E8"],
+    "mood": "Soft, leafy, and sun-warmed."
+  },
+  {
+    "collection": "Garden Collection",
+    "name": "Lavender Sprout",
+    "colors": ["#B8A1E3", "#D8C7FF", "#A7DCA5", "#F7E8A4", "#FFFDF2"],
+    "mood": "Gentle, curious, and freshly planted."
+  },
+  {
+    "collection": "Woodland Collection",
+    "name": "Pinecone Path",
+    "colors": ["#3A5A40", "#588157", "#A3B18A", "#DAD7CD", "#7F5539"],
+    "mood": "Woodsy, quiet, and ramble-ready."
+  },
+  {
+    "collection": "Woodland Collection",
+    "name": "Fern & Foxglove",
+    "colors": ["#2D6A4F", "#52B788", "#B7E4C7", "#E5989B", "#FFCDB2"],
+    "mood": "Secret-garden bright with woodland charm."
+  },
+  {
+    "collection": "Sky Collection",
+    "name": "Moonbeam Marshmallow",
+    "colors": ["#EEF4FF", "#D6E4FF", "#A9BCE8", "#F6E6FF", "#FFF7D6"],
+    "mood": "Sleepy, soft, and moonlit."
+  },
+  {
+    "collection": "Sky Collection",
+    "name": "Kite Festival",
+    "colors": ["#EF476F", "#FFD166", "#06D6A0", "#118AB2", "#F8FFE5"],
+    "mood": "Windy, festive, and full of motion."
+  },
+  {
+    "collection": "Seasonal Collection",
+    "name": "Pumpkin Moon",
+    "colors": ["#D95D39", "#F4A261", "#F6D365", "#264653", "#FFF3D6"],
+    "mood": "Glowy, autumnal, and a tiny bit mysterious."
+  },
+  {
+    "collection": "Seasonal Collection",
+    "name": "Snowdrop Tea",
+    "colors": ["#F8FBFF", "#DDEAF6", "#BFD7EA", "#CDEAC0", "#F7D9C4"],
+    "mood": "Quiet, delicate, and teacup-warm."
   }
 ]

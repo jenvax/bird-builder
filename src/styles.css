@@ -463,12 +463,20 @@ dt {
 dd {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 6px;
   margin: 0;
   color: #241b3a;
   font-size: 0.84rem;
   font-weight: 800;
   line-height: 1.18;
+}
+
+.detail-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
 .detail-thumb {
@@ -478,6 +486,25 @@ dd {
   object-fit: contain;
   filter: grayscale(1) contrast(1.14);
   opacity: 0.9;
+}
+
+.shuffle-button {
+  min-height: 24px;
+  padding: 3px 7px;
+  border-width: 1.5px;
+  border-radius: 999px;
+  background: #fff7c9;
+  box-shadow: 2px 2px 0 rgba(47, 41, 66, 0.25);
+  color: #4d4263;
+  font-size: 0.66rem;
+  font-weight: 850;
+}
+
+.palette-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 @media (min-width: 620px) {

@@ -53,6 +53,18 @@ function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
+function randomDifferentItem(items, currentItem) {
+  if (items.length < 2) {
+    return items[0];
+  }
+
+  let nextItem = randomItem(items);
+  while (itemName(nextItem) === itemName(currentItem)) {
+    nextItem = randomItem(items);
+  }
+  return nextItem;
+}
+
 function itemName(item) {
   return typeof item === "string" ? item : item.name;
 }
@@ -202,52 +214,55 @@ function constructionDetails(bird) {
   if (bird.constructionType === "One-Part Bird") {
     return [
       ["Construction Type", bird.constructionType],
-      ["Shape", `${bird.singleShapeSize} ${itemName(bird.singleShape)}`, itemImage(bird.singleShape)],
-      ["Wings", wingValue(bird), itemImage(bird.wingShape)],
-      ["Crest", itemName(bird.crest), itemImage(bird.crest)],
-      ["Tail", itemName(bird.tail), itemImage(bird.tail)],
-      ["Legs", itemName(bird.legType), itemImage(bird.legType)],
-      ["Feet", itemName(bird.footType), itemImage(bird.footType)]
+      ["Shape Size", bird.singleShapeSize, "", "singleShapeSize"],
+      ["Shape", itemName(bird.singleShape), itemImage(bird.singleShape), "singleShape"],
+      ["Wings", wingValue(bird), itemImage(bird.wingShape), "wingShape"],
+      ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
+      ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"],
+      ["Legs", itemName(bird.legType), itemImage(bird.legType), "legType"],
+      ["Feet", itemName(bird.footType), itemImage(bird.footType), "footType"]
     ];
   }
 
   return [
     ["Construction Type", bird.constructionType],
-    ["Head", `${bird.headSize} ${itemName(bird.headShape)}`, itemImage(bird.headShape)],
-    ["Body", `${bird.bodySize} ${itemName(bird.bodyShape)}`, itemImage(bird.bodyShape)],
-    ["Wings", wingValue(bird), itemImage(bird.wingShape)],
-    ["Crest", itemName(bird.crest), itemImage(bird.crest)],
-    ["Tail", itemName(bird.tail), itemImage(bird.tail)],
-    ["Legs", itemName(bird.legType), itemImage(bird.legType)],
-    ["Feet", itemName(bird.footType), itemImage(bird.footType)]
+    ["Head Size", bird.headSize, "", "headSize"],
+    ["Head Shape", itemName(bird.headShape), itemImage(bird.headShape), "headShape"],
+    ["Body Size", bird.bodySize, "", "bodySize"],
+    ["Body Shape", itemName(bird.bodyShape), itemImage(bird.bodyShape), "bodyShape"],
+    ["Wings", wingValue(bird), itemImage(bird.wingShape), "wingShape"],
+    ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
+    ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"],
+    ["Legs", itemName(bird.legType), itemImage(bird.legType), "legType"],
+    ["Feet", itemName(bird.footType), itemImage(bird.footType), "footType"]
   ];
 }
 
 function faceDetails(bird) {
   return [
-    ["Eye Style", itemName(bird.eyeStyle), itemImage(bird.eyeStyle)],
-    ["Eye Placement (vertical)", bird.eyePlacement],
-    ["Eye Spacing (distance)", bird.eyeSpacing],
-    ["Beak", itemName(bird.beak), itemImage(bird.beak)]
+    ["Eye Style", itemName(bird.eyeStyle), itemImage(bird.eyeStyle), "eyeStyle"],
+    ["Eye Placement (vertical)", bird.eyePlacement, "", "eyePlacement"],
+    ["Eye Spacing (distance)", bird.eyeSpacing, "", "eyeSpacing"],
+    ["Beak", itemName(bird.beak), itemImage(bird.beak), "beak"]
   ];
 }
 
 function personalityDetails(bird) {
   return [
-    ["Mood", bird.mood],
-    ["Accessory", bird.accessory],
-    ["Critter Friend", bird.critterFriend]
+    ["Mood", bird.mood, "", "mood"],
+    ["Accessory", bird.accessory, "", "accessory"],
+    ["Critter Friend", bird.critterFriend, "", "critterFriend"]
   ];
 }
 
 function decorationDetails(bird) {
   return [
-    ["Pattern", bird.pattern],
-    ["Pattern Placement", hasValue(bird.pattern) ? bird.patternPlacement : "None"],
-    ["Eyewear", bird.eyewear],
-    ["Socks", bird.socks],
-    ["Footwear", bird.footwear],
-    ["Palette", bird.colorPalette.name]
+    ["Pattern", bird.pattern, "", "pattern"],
+    ["Pattern Placement", hasValue(bird.pattern) ? bird.patternPlacement : "None", "", "patternPlacement"],
+    ["Eyewear", bird.eyewear, "", "eyewear"],
+    ["Socks", bird.socks, "", "socks"],
+    ["Footwear", bird.footwear, "", "footwear"],
+    ["Palette", bird.colorPalette.name, "", "colorPalette"]
   ];
 }
 
@@ -330,28 +345,35 @@ function PaletteSwatches({ colors }) {
   );
 }
 
-function DetailCard({ title, rows }) {
+function DetailCard({ title, rows, onShuffle }) {
   return (
     <section className="detail-card" aria-labelledby={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
       <h2 id={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
         <span>{title}</span>
       </h2>
       <dl>
-        {rows.map(([label, value, image]) => (
+        {rows.map(([label, value, image, field]) => (
           <div className="detail-row" key={label}>
             <dt>{label}</dt>
             <dd>
-              {image && (
-                <img
-                  className="detail-thumb"
-                  src={image}
-                  alt=""
-                  onError={(event) => {
-                    event.currentTarget.hidden = true;
-                  }}
-                />
+              <span className="detail-value">
+                {image && (
+                  <img
+                    className="detail-thumb"
+                    src={image}
+                    alt=""
+                    onError={(event) => {
+                      event.currentTarget.hidden = true;
+                    }}
+                  />
+                )}
+                <span>{value}</span>
+              </span>
+              {field && (
+                <button type="button" className="shuffle-button" onClick={() => onShuffle(field)}>
+                  Shuffle
+                </button>
               )}
-              <span>{value}</span>
             </dd>
           </div>
         ))}
@@ -360,14 +382,19 @@ function DetailCard({ title, rows }) {
   );
 }
 
-function ColorPaletteCard({ palette }) {
+function ColorPaletteCard({ palette, onShuffle }) {
   return (
     <section className="palette-card" aria-labelledby="color-palette-heading">
       <div className="section-heading">
         <h2 id="color-palette-heading">Color Palette</h2>
         <p>{palette.mood}</p>
       </div>
-      <h3>{palette.name}</h3>
+      <div className="palette-heading-row">
+        <h3>{palette.name}</h3>
+        <button type="button" className="shuffle-button" onClick={() => onShuffle("colorPalette")}>
+          Shuffle
+        </button>
+      </div>
       <PaletteSwatches colors={palette.colors} />
     </section>
   );
@@ -380,6 +407,46 @@ export default function App() {
 
   function generateBird() {
     setBird(makeBird());
+    setCopyStatus("");
+  }
+
+  function shuffleField(field) {
+    const fieldTables = {
+      mood: tables.moods,
+      headShape: tables.heads,
+      headSize: tables.headSizes,
+      bodyShape: tables.bodies,
+      bodySize: tables.bodySizes,
+      singleShape: tables.bodies,
+      singleShapeSize: tables.bodySizes,
+      crest: tables.crests,
+      tail: tables.tails,
+      wingShape: tables.wingShapes,
+      eyeStyle: tables.eyeStyles,
+      eyePlacement: tables.eyePlacement,
+      eyeSpacing: tables.eyeSpacing,
+      beak: tables.beaks,
+      legType: tables.legs,
+      footType: tables.feet,
+      pattern: tables.patterns,
+      patternPlacement: tables.patternPlacement,
+      eyewear: tables.eyewear,
+      socks: tables.socks,
+      footwear: tables.footwear,
+      accessory: tables.accessories,
+      critterFriend: tables.critterFriends,
+      colorPalette: tables.palettes
+    };
+
+    const items = fieldTables[field];
+    if (!items) {
+      return;
+    }
+
+    setBird((currentBird) => ({
+      ...currentBird,
+      [field]: randomDifferentItem(items, currentBird[field])
+    }));
     setCopyStatus("");
   }
 
@@ -433,13 +500,13 @@ export default function App() {
           <SketchPreview bird={bird} />
         </div>
 
-        <ColorPaletteCard palette={bird.colorPalette} />
+        <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
 
         <div className="detail-grid">
-          <DetailCard title="Shape & Body" rows={constructionDetails(bird)} />
-          <DetailCard title="Face Details" rows={faceDetails(bird)} />
-          <DetailCard title="Personality" rows={personalityDetails(bird)} />
-          <DetailCard title="Extras & Decoration" rows={decorationDetails(bird)} />
+          <DetailCard title="Shape & Body" rows={constructionDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Face Details" rows={faceDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Personality" rows={personalityDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Extras & Decoration" rows={decorationDetails(bird)} onShuffle={shuffleField} />
         </div>
 
       </section>
