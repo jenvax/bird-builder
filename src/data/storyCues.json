@@ -1,0 +1,62 @@
+{
+  "Curious": [
+    { "text": "It has stopped to inspect a tiny beetle on the path.", "critter": "Friendly Beetle" },
+    { "text": "It is peeking into a flower to see who lives there." },
+    { "text": "It is watching a snail cross the ground.", "critter": "Tiny Snail" }
+  ],
+  "Shy": [
+    { "text": "It is pretending not to notice you looking at it." },
+    { "text": "It is hiding slightly behind its scarf." },
+    { "text": "It is peeking around a mushroom." }
+  ],
+  "Startled": [
+    { "text": "It just heard a strange noise in the bushes." },
+    { "text": "It has spotted something unexpected." },
+    { "text": "It nearly tripped over a tiny pebble." }
+  ],
+  "Proud": [
+    { "text": "It is showing off a shiny treasure it found." },
+    { "text": "It is posing like it just won a tiny parade." },
+    { "text": "It is standing very tall and waiting to be admired." }
+  ],
+  "Sleepy": [
+    { "text": "It is trying very hard not to fall asleep." },
+    { "text": "It is dozing in the sunshine." },
+    { "text": "It looks like it just woke up from a nap." }
+  ],
+  "Zippy": [
+    { "text": "It looks like it is about to dash off after something exciting." },
+    { "text": "It is bouncing in place and can barely stand still." },
+    { "text": "It just spotted a butterfly and is ready to chase it." }
+  ],
+  "Nervous": [
+    { "text": "It is unsure whether the little bug is a friend." },
+    { "text": "It is standing very still so nobody notices it." },
+    { "text": "It looks like it forgot why it came here." }
+  ],
+  "Mischievous": [
+    { "text": "It looks like it just stole a shiny button." },
+    { "text": "It is sneaking away from a tiny mess." },
+    { "text": "It knows something you do not know." }
+  ],
+  "Grumpy": [
+    { "text": "It does not approve of the weather." },
+    { "text": "It is annoyed that someone moved its favorite pebble." },
+    { "text": "It is glaring at a very cheerful flower." }
+  ],
+  "Confused": [
+    { "text": "It is trying to understand a mysterious footprint." },
+    { "text": "It is staring at something upside down." },
+    { "text": "It seems to have forgotten where it was going." }
+  ],
+  "Daydreaming": [
+    { "text": "It is imagining a tiny world inside a cloud." },
+    { "text": "It is listening to the wind like it is music." },
+    { "text": "It is staring at nothing in particular and enjoying it." }
+  ],
+  "Bossy": [
+    { "text": "It is giving important instructions to a tiny bug." },
+    { "text": "It is organizing a very small parade." },
+    { "text": "It is telling the flowers where to stand." }
+  ]
+}

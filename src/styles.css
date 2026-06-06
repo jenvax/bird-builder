@@ -435,6 +435,15 @@ h4 {
   height: 9%;
 }
 
+.sketch-critter {
+  z-index: 9;
+  left: 13%;
+  top: 73%;
+  width: 14%;
+  height: 15%;
+  opacity: 0.86;
+}
+
 .leg-pose-splayed .sketch-legs {
   transform: rotate(10deg) scaleX(1.28);
   transform-origin: top center;

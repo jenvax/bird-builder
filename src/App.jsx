@@ -20,6 +20,7 @@ import feet from "./data/feet.json";
 import palettes from "./data/palettes.json";
 import quirks from "./data/quirks.json";
 import critterFriends from "./data/critterFriends.json";
+import storyCues from "./data/storyCues.json";
 
 const tables = {
   constructionTypes,
@@ -42,7 +43,8 @@ const tables = {
   feet,
   palettes,
   quirks,
-  critterFriends
+  critterFriends,
+  storyCues
 };
 
 function randomItem(items) {
@@ -70,15 +72,6 @@ function randomNamedItem(items, names) {
   return randomItem(matches.length > 0 ? matches : items);
 }
 
-function randomWeightedNone(items, noneWeight = 0.65) {
-  if (Math.random() < noneWeight) {
-    return findItem(items, "None") || "None";
-  }
-
-  const choices = items.filter((item) => itemName(item) !== "None");
-  return randomItem(choices.length > 0 ? choices : items);
-}
-
 function itemName(item) {
   return typeof item === "string" ? item : item.name;
 }
@@ -96,97 +89,203 @@ function randomConstructionType() {
 }
 
 function energyBiasedBirdParts(energy) {
-  const defaults = {
-    eyeSize: randomItem(tables.eyeSizes),
-    eyeStyle: randomItem(tables.eyeStyles),
-    eyePlacement: randomItem(tables.eyePlacement),
-    eyeSpacing: randomItem(tables.eyeSpacing),
-    eyeExpression: randomItem(tables.eyeExpressions),
-    beak: randomItem(tables.beaks),
-    legType: randomItem(tables.legs),
-    legPose: randomItem(tables.legPoses),
-    footType: randomItem(tables.feet),
-    bodySize: randomItem(tables.bodySizes),
-    singleShapeSize: randomItem(tables.bodySizes),
-    crest: randomItem(tables.crests)
+  const bias = {
+    Sleepy: {
+      shapes: ["Marshmallow", "Cloud", "Pebble", "Soft Heart"],
+      eyeSize: ["Tiny", "Small"],
+      eyeStyle: ["Oval", "Tall Oval"],
+      eyePlacement: ["Low"],
+      eyeSpacing: ["Medium Spacing", "Close Together"],
+      eyeExpression: ["Sleepy", "Blank Stare"],
+      crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
+      tail: ["Cloud Tail", "Petal Tail", "Leaf Tail"],
+      legType: ["Short Stubby"],
+      legPose: ["Belly Sit", "Straight"],
+      beak: ["Tiny Triangle", "Round Beak"]
+    },
+    Shy: {
+      shapes: ["Pebble", "Marshmallow", "Gumdrop", "Soft Heart"],
+      eyeSize: ["Medium", "Large"],
+      eyePlacement: ["Low", "Middle"],
+      eyeSpacing: ["Close Together"],
+      eyeExpression: ["Worried", "Open"],
+      crest: ["Pebble Tuft Crest", "Single Feather Crest", "Ribbon Crest"],
+      tail: ["Petal Tail", "Cloud Tail"],
+      legType: ["Short Stubby"],
+      legPose: ["Pigeon-Toed", "One Foot Up"],
+      beak: ["Tiny Triangle", "Stubby Beak"]
+    },
+    Bossy: {
+      shapes: ["Bell", "Tulip", "Circle", "Acorn"],
+      eyeSize: ["Small", "Medium"],
+      eyePlacement: ["High", "Middle"],
+      eyeExpression: ["Open", "Side Glance"],
+      crest: ["Fan Crest", "Sunburst Crest", "Scallop Crest"],
+      tail: ["Fan Tail", "Ribbon Tail"],
+      legType: ["Tall Skinny", "Very Tall"],
+      legPose: ["Straight", "Splayed"],
+      beak: ["Pointy Beak", "Stubby Beak"]
+    },
+    Zippy: {
+      shapes: ["Teardrop", "Gumdrop", "Bell", "Circle"],
+      bodySize: ["Tiny", "Small"],
+      singleShapeSize: ["Tiny", "Small"],
+      eyeSize: ["Small", "Medium"],
+      eyePlacement: ["High"],
+      eyeSpacing: ["Wide Apart", "Close Together"],
+      eyeExpression: ["Open", "Happy"],
+      crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
+      tail: ["Fan Tail", "Ribbon Tail", "Petal Tail"],
+      legType: ["Tall Skinny", "Very Tall"],
+      legPose: ["Tiny Hop", "Mid Step"],
+      beak: ["Pointy Beak", "Tiny Triangle"]
+    },
+    Nervous: {
+      shapes: ["Bean", "Pebble", "Teardrop", "Marshmallow"],
+      eyeSize: ["Huge", "Gigantic"],
+      eyeSpacing: ["Close Together"],
+      eyeExpression: ["Worried", "Open"],
+      crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+      tail: ["Curly Tail", "Cloud Tail"],
+      legType: ["Short Stubby"],
+      legPose: ["Pigeon-Toed", "One Foot Up", "Splayed"],
+      footType: ["Tiny Round Feet"],
+      beak: ["Tiny Triangle", "Stubby Beak"]
+    },
+    Confused: {
+      shapes: ["Bean", "Half Circle", "Pebble", "Mushroom Cap"],
+      eyeSize: ["Huge", "Gigantic"],
+      eyePlacement: ["Middle", "Low"],
+      eyeExpression: ["Side Glance", "Blank Stare", "Worried"],
+      crest: ["Single Feather Crest", "Triple Tuft Crest"],
+      tail: ["Curly Tail", "Cloud Tail"],
+      legPose: ["Splayed", "One Foot Up"],
+      beak: ["Stubby Beak", "Round Beak"]
+    },
+    Startled: {
+      eyeSize: ["Huge", "Gigantic"],
+      eyeStyle: ["Round", "Dot"],
+      eyePlacement: ["High"],
+      eyeSpacing: ["Close Together", "Wide Apart"],
+      eyeExpression: ["Surprised", "Open"],
+      crest: ["Sunburst Crest", "Triple Tuft Crest", "Double Tuft Crest"],
+      tail: ["Fan Tail", "Ribbon Tail"],
+      legPose: ["Splayed", "Tiny Hop"],
+      beak: ["Tiny Triangle", "Pointy Beak"]
+    },
+    Proud: {
+      shapes: ["Bell", "Circle", "Tulip", "Acorn"],
+      eyeSize: ["Small", "Medium"],
+      eyePlacement: ["High", "Middle"],
+      eyeExpression: ["Happy", "Open"],
+      crest: ["Fan Crest", "Sunburst Crest", "Scallop Crest"],
+      tail: ["Fan Tail", "Petal Tail"],
+      legType: ["Tall Skinny", "Very Tall"],
+      legPose: ["Straight", "Splayed"],
+      beak: ["Pointy Beak", "Round Beak"]
+    },
+    Grumpy: {
+      shapes: ["Acorn", "Bean", "Bell", "Pebble"],
+      eyeSize: ["Tiny", "Small"],
+      eyePlacement: ["Low"],
+      eyeExpression: ["Side Glance", "Blank Stare"],
+      crest: ["Triple Tuft Crest", "Fan Crest", "Scallop Crest"],
+      tail: ["Fan Tail", "Cloud Tail"],
+      legPose: ["Straight", "Splayed"],
+      beak: ["Stubby Beak", "Pointy Beak"]
+    },
+    Daydreaming: {
+      shapes: ["Cloud", "Soft Heart", "Marshmallow", "Pebble"],
+      eyeSize: ["Small", "Medium"],
+      eyePlacement: ["Middle", "Low"],
+      eyeExpression: ["Sleepy", "Side Glance"],
+      crest: ["Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+      tail: ["Cloud Tail", "Petal Tail"],
+      legPose: ["Straight", "Belly Sit", "One Foot Up"],
+      beak: ["Round Beak", "Tiny Triangle"]
+    },
+    Mischievous: {
+      shapes: ["Bean", "Acorn", "Teardrop", "Gumdrop"],
+      eyeSize: ["Small", "Medium"],
+      eyeExpression: ["Side Glance", "Happy"],
+      crest: ["Triple Tuft Crest", "Pebble Tuft Crest", "Single Feather Crest"],
+      tail: ["Curly Tail", "Ribbon Tail"],
+      legPose: ["One Foot Up", "Mid Step"],
+      beak: ["Pointy Beak", "Stubby Beak"]
+    },
+    Curious: {
+      eyeSize: ["Medium", "Large"],
+      eyePlacement: ["Middle", "High"],
+      eyeExpression: ["Open", "Side Glance"],
+      crest: ["Single Feather Crest", "Triple Tuft Crest"],
+      tail: ["Petal Tail", "Fan Tail", "Cloud Tail"],
+      legPose: ["One Foot Up", "Mid Step"],
+      beak: ["Tiny Triangle", "Pointy Beak"]
+    }
   };
+  const profile = bias[energy] || {};
 
-  const pick = (items, names, fallback = randomItem(items)) => (Math.random() < 0.72 ? randomNamedItem(items, names) : fallback);
+  const pick = (items, names, chance = 0.74) => (names && Math.random() < chance ? randomNamedItem(items, names) : randomItem(items));
+  const shapeNames = profile.shapes;
 
-  switch (energy) {
-    case "Startled":
-      return {
-        ...defaults,
-        eyeSize: pick(tables.eyeSizes, ["Huge", "Gigantic"]),
-        eyeStyle: pick(tables.eyeStyles, ["Round", "Dot"]),
-        eyePlacement: pick(tables.eyePlacement, ["High"]),
-        eyeSpacing: pick(tables.eyeSpacing, ["Close Together", "Wide Apart"]),
-        eyeExpression: pick(tables.eyeExpressions, ["Surprised", "Open"]),
-        beak: pick(tables.beaks, ["Tiny Triangle"]),
-        legPose: pick(tables.legPoses, ["Splayed", "Tiny Hop"]),
-        crest: pick(tables.crests, ["Sunburst Crest", "Triple Tuft Crest", "Double Tuft Crest"])
-      };
-    case "Nervous":
-      return {
-        ...defaults,
-        eyeSize: pick(tables.eyeSizes, ["Large", "Huge"]),
-        eyeSpacing: pick(tables.eyeSpacing, ["Close Together"]),
-        eyeExpression: pick(tables.eyeExpressions, ["Worried", "Blank Stare"]),
-        legType: pick(tables.legs, ["Short Stubby"]),
-        legPose: pick(tables.legPoses, ["Pigeon Toed", "Straight"]),
-        footType: pick(tables.feet, ["Tiny Round Feet"])
-      };
-    case "Proud":
-      return {
-        ...defaults,
-        eyeSize: pick(tables.eyeSizes, ["Tiny", "Small"]),
-        eyePlacement: pick(tables.eyePlacement, ["High"]),
-        eyeExpression: pick(tables.eyeExpressions, ["Happy", "Open"]),
-        legType: pick(tables.legs, ["Tall Skinny", "Very Tall"]),
-        legPose: pick(tables.legPoses, ["Straight", "Splayed"]),
-        crest: pick(tables.crests, ["Fan Crest", "Sunburst Crest", "Flower Crown"])
-      };
-    case "Sleepy":
-      return {
-        ...defaults,
-        eyeSize: pick(tables.eyeSizes, ["Tiny", "Small"]),
-        eyePlacement: pick(tables.eyePlacement, ["Low"]),
-        eyeExpression: pick(tables.eyeExpressions, ["Sleepy", "Blank Stare"]),
-        eyeStyle: pick(tables.eyeStyles, ["Oval", "Tall Oval"]),
-        legPose: pick(tables.legPoses, ["Belly Sit", "Straight"])
-      };
-    case "Zippy":
-      return {
-        ...defaults,
-        bodySize: pick(tables.bodySizes, ["Tiny", "Small"]),
-        singleShapeSize: pick(tables.bodySizes, ["Tiny", "Small"]),
-        eyeSize: pick(tables.eyeSizes, ["Small", "Medium"]),
-        beak: pick(tables.beaks, ["Pointy Beak", "Tiny Triangle"]),
-        legType: pick(tables.legs, ["Tall Skinny", "Very Tall"]),
-        legPose: pick(tables.legPoses, ["Mid Step", "Tiny Hop"]),
-        crest: pick(tables.crests, ["Sunburst Crest", "Single Feather Crest", "Triple Tuft Crest"])
-      };
-    default:
-      return defaults;
+  return {
+    headShape: pick(tables.heads, shapeNames),
+    bodyShape: pick(tables.bodies, shapeNames),
+    singleShape: pick(tables.bodies, shapeNames),
+    bodySize: pick(tables.bodySizes, profile.bodySize),
+    singleShapeSize: pick(tables.bodySizes, profile.singleShapeSize || profile.bodySize),
+    eyeSize: pick(tables.eyeSizes, profile.eyeSize),
+    eyeStyle: pick(tables.eyeStyles, profile.eyeStyle),
+    eyePlacement: pick(tables.eyePlacement, profile.eyePlacement),
+    eyeSpacing: pick(tables.eyeSpacing, profile.eyeSpacing),
+    eyeExpression: pick(tables.eyeExpressions, profile.eyeExpression),
+    beak: pick(tables.beaks, profile.beak),
+    legType: pick(tables.legs, profile.legType),
+    legPose: pick(tables.legPoses, profile.legPose),
+    footType: pick(tables.feet, profile.footType),
+    crest: pick(tables.crests, profile.crest),
+    tail: pick(tables.tails, profile.tail)
+  };
+}
+
+function randomStoryCue(energy) {
+  return randomItem(tables.storyCues[energy] || tables.storyCues.Curious);
+}
+
+function findStoryCueByText(text) {
+  return Object.values(tables.storyCues).flat().find((cue) => cue.text === text);
+}
+
+function randomCritterFriend(storyCue) {
+  if (Math.random() < 0.65) {
+    return "None";
   }
+
+  if (storyCue?.critter) {
+    return storyCue.critter;
+  }
+
+  const choices = tables.critterFriends.filter((critter) => critter !== "None");
+  return randomItem(choices);
 }
 
 function makeBird() {
   const constructionType = randomConstructionType();
   const energy = randomItem(tables.birdEnergy);
   const energyParts = energyBiasedBirdParts(energy);
+  const storyCue = randomStoryCue(energy);
 
   return {
     constructionType,
     birdEnergy: energy,
-    headShape: randomItem(tables.heads),
+    headShape: energyParts.headShape,
     headSize: randomItem(tables.headSizes),
-    bodyShape: randomItem(tables.bodies),
+    bodyShape: energyParts.bodyShape,
     bodySize: energyParts.bodySize,
-    singleShape: randomItem(tables.bodies),
+    singleShape: energyParts.singleShape,
     singleShapeSize: energyParts.singleShapeSize,
     crest: energyParts.crest,
-    tail: randomItem(tables.tails),
+    tail: energyParts.tail,
     wingShape: randomItem(tables.wingShapes),
     eyeSize: energyParts.eyeSize,
     eyeStyle: energyParts.eyeStyle,
@@ -199,7 +298,8 @@ function makeBird() {
     footType: energyParts.footType,
     colorPalette: randomItem(tables.palettes),
     quirk: randomItem(tables.quirks),
-    critterFriend: randomWeightedNone(tables.critterFriends, 0.65)
+    storyCue: storyCue.text,
+    critterFriend: randomCritterFriend(storyCue)
   };
 }
 
@@ -273,7 +373,9 @@ function birdPrompt(bird) {
   }
 
   if (hasValue(bird.critterFriend)) {
-    paragraphs.push(`Include ${articleFor(bird.critterFriend)} ${lower(bird.critterFriend)} friend nearby.`);
+    paragraphs.push(`${bird.storyCue} Include ${articleFor(bird.critterFriend)} ${lower(bird.critterFriend)} friend nearby.`);
+  } else {
+    paragraphs.push(bird.storyCue);
   }
 
   paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
@@ -287,7 +389,7 @@ function constructionDetails(bird) {
       ["Construction Type", bird.constructionType],
       ["Shape Size", bird.singleShapeSize, "", "singleShapeSize"],
       ["Shape", itemName(bird.singleShape), itemImage(bird.singleShape), "singleShape"],
-      ["Wings", wingValue(bird), itemImage(bird.wingShape), "wingShape"],
+      ["Wing", wingValue(bird), itemImage(bird.wingShape), "wingShape"],
       ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
       ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"],
       ["Legs", itemName(bird.legType), itemImage(bird.legType), "legType"],
@@ -302,7 +404,7 @@ function constructionDetails(bird) {
     ["Head Shape", itemName(bird.headShape), itemImage(bird.headShape), "headShape"],
     ["Body Size", bird.bodySize, "", "bodySize"],
     ["Body Shape", itemName(bird.bodyShape), itemImage(bird.bodyShape), "bodyShape"],
-    ["Wings", wingValue(bird), itemImage(bird.wingShape), "wingShape"],
+    ["Wing", wingValue(bird), itemImage(bird.wingShape), "wingShape"],
     ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
     ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"],
     ["Legs", itemName(bird.legType), itemImage(bird.legType), "legType"],
@@ -326,6 +428,7 @@ function personalityDetails(bird) {
   return [
     ["Bird Energy", bird.birdEnergy, "", "birdEnergy"],
     ["Quirk", bird.quirk, "", "quirk"],
+    ["Story Cue", bird.storyCue, "", "storyCue"],
     ["Critter Friend", bird.critterFriend, "", "critterFriend"]
   ];
 }
@@ -339,7 +442,7 @@ function recipeChips(bird) {
       `${bird.eyeSize} ${itemName(bird.eyeStyle)} Eyes`,
       itemName(bird.crest),
       itemName(bird.tail),
-      bird.legPose,
+      `${bird.legPose} Legs`,
       bird.colorPalette.name
     ];
   }
@@ -351,7 +454,7 @@ function recipeChips(bird) {
     `${bird.eyeSize} ${itemName(bird.eyeStyle)} Eyes`,
     itemName(bird.crest),
     itemName(bird.tail),
-    bird.legPose,
+    `${bird.legPose} Legs`,
     bird.colorPalette.name
   ];
 }
@@ -402,6 +505,7 @@ function SketchPreview({ bird }) {
         <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" />
         <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" />
         <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" />
+        <SketchLayer src={itemImage(bird.critterFriend)} className="sketch-critter" />
       </div>
     </section>
   );
@@ -483,6 +587,30 @@ export default function App() {
   }
 
   function shuffleField(field) {
+    if (field === "storyCue") {
+      setBird((currentBird) => {
+        const cues = tables.storyCues[currentBird.birdEnergy] || tables.storyCues.Curious;
+        const choices = cues.filter((cueOption) => cueOption.text !== currentBird.storyCue);
+        const cue = randomItem(choices.length > 0 ? choices : cues);
+        return {
+          ...currentBird,
+          storyCue: cue.text,
+          critterFriend: hasValue(currentBird.critterFriend) && cue.critter ? cue.critter : currentBird.critterFriend
+        };
+      });
+      setCopyStatus("");
+      return;
+    }
+
+    if (field === "critterFriend") {
+      setBird((currentBird) => ({
+        ...currentBird,
+        critterFriend: randomCritterFriend(findStoryCueByText(currentBird.storyCue))
+      }));
+      setCopyStatus("");
+      return;
+    }
+
     const fieldTables = {
       birdEnergy: tables.birdEnergy,
       headShape: tables.heads,
@@ -504,7 +632,6 @@ export default function App() {
       legPose: tables.legPoses,
       footType: tables.feet,
       quirk: tables.quirks,
-      critterFriend: tables.critterFriends,
       colorPalette: tables.palettes
     };
 
