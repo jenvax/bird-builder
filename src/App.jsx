@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import birdEnergy from "./data/birdEnergy.json";
 import simpleBodyShapes from "./data/simpleBodyShapes.json";
 import expressions from "./data/expressions.json";
+import expressionPools from "./data/expressionPools.json";
 import poses from "./data/poses.json";
 import wingStyles from "./data/wingStyles.json";
 import simpleCrests from "./data/simpleCrests.json";
@@ -17,6 +18,7 @@ const tables = {
   birdEnergy,
   bodyShapes: simpleBodyShapes,
   expressions,
+  expressionPools,
   poses,
   wingStyles,
   crests: simpleCrests,
@@ -81,7 +83,6 @@ function articleFor(value) {
 function energyProfile(energy) {
   const profiles = {
     Sleepy: {
-      expression: ["Sleepy Blink", "Blank Stare"],
       pose: ["Belly Sit", "Slouched", "Tucked and Cozy"],
       bodyShape: ["Fluffy", "Marshmallow", "Blob"],
       wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
@@ -91,7 +92,6 @@ function energyProfile(energy) {
       quirk: ["None", "Tiny Scarf"]
     },
     Shy: {
-      expression: ["Worried Side Glance", "Nervous Smile", "Curious Peek"],
       pose: ["Pigeon-Toed Stand", "One Foot Up", "Tucked and Cozy"],
       bodyShape: ["Bean", "Marshmallow", "Gumdrop", "Blob"],
       wingStyle: ["Cloud Wings", "Leaf Wings", "Tiny Wings"],
@@ -101,7 +101,6 @@ function energyProfile(energy) {
       quirk: ["None", "Tiny Scarf", "Round Glasses"]
     },
     Bossy: {
-      expression: ["Skeptical Squint", "Grumpy Glare", "Proud Smile"],
       pose: ["Proud Chest Puff", "Splayed Stance", "Mid-Step"],
       bodyShape: ["Round", "Pear", "Tall Skinny"],
       wingStyle: ["Feather Wings", "Scallop Wings"],
@@ -111,7 +110,6 @@ function energyProfile(energy) {
       quirk: ["Explorer Hat", "Bow Tie", "Round Glasses"]
     },
     Zippy: {
-      expression: ["Wide-Eyed Gasp", "Delighted Smile", "Curious Peek"],
       pose: ["Tiny Hop", "Wing Flap", "Mid-Step", "Leaning Forward"],
       bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
       wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
@@ -121,7 +119,6 @@ function energyProfile(energy) {
       quirk: ["None", "Explorer Hat", "Heart Sunglasses"]
     },
     Nervous: {
-      expression: ["Worried Side Glance", "Wide-Eyed Gasp", "Nervous Smile"],
       pose: ["Frozen Mid-Flinch", "Pigeon-Toed Stand", "One Foot Up"],
       bodyShape: ["Bean", "Blob", "Marshmallow"],
       wingStyle: ["Leaf Wings", "Tiny Wings", "Feather Wings"],
@@ -131,7 +128,6 @@ function energyProfile(energy) {
       quirk: ["None", "Round Glasses", "Tiny Scarf"]
     },
     Confused: {
-      expression: ["Confused Stare", "Blank Stare", "Worried Side Glance"],
       pose: ["Looking Over Shoulder", "One Foot Up", "Splayed Stance"],
       bodyShape: ["Blob", "Bean", "Tall Skinny"],
       wingStyle: ["Cloud Wings", "Tiny Wings", "Feather Wings"],
@@ -141,7 +137,6 @@ function energyProfile(energy) {
       quirk: ["None", "Round Glasses", "Explorer Hat"]
     },
     Startled: {
-      expression: ["Wide-Eyed Gasp", "Confused Stare"],
       pose: ["Frozen Mid-Flinch", "Tiny Hop", "Splayed Stance"],
       bodyShape: ["Bean", "Tall Skinny", "Gumdrop"],
       wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
@@ -151,7 +146,6 @@ function energyProfile(energy) {
       quirk: ["None", "Explorer Hat", "Tiny Scarf"]
     },
     Proud: {
-      expression: ["Proud Smile", "Delighted Smile", "Skeptical Squint"],
       pose: ["Proud Chest Puff", "Perched", "Splayed Stance"],
       bodyShape: ["Pear", "Round", "Tall Skinny"],
       wingStyle: ["Scallop Wings", "Feather Wings"],
@@ -161,7 +155,6 @@ function energyProfile(energy) {
       quirk: ["Bow Tie", "Flower Crown", "Heart Sunglasses"]
     },
     Grumpy: {
-      expression: ["Grumpy Glare", "Skeptical Squint", "Tiny Frown"],
       pose: ["Splayed Stance", "Slouched", "Perched"],
       bodyShape: ["Bean", "Blob", "Pear"],
       wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
@@ -171,7 +164,6 @@ function energyProfile(energy) {
       quirk: ["None", "Tiny Scarf", "Round Glasses"]
     },
     Daydreaming: {
-      expression: ["Sleepy Blink", "Blank Stare", "Curious Peek"],
       pose: ["Tucked and Cozy", "Belly Sit", "Leaning Forward"],
       bodyShape: ["Fluffy", "Marshmallow", "Blob"],
       wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
@@ -181,7 +173,6 @@ function energyProfile(energy) {
       quirk: ["None", "Flower Crown", "Tiny Scarf"]
     },
     Mischievous: {
-      expression: ["Worried Side Glance", "Delighted Smile", "Tiny Frown"],
       pose: ["Tiptoe Sneak", "Looking Over Shoulder", "Mid-Step"],
       bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
       wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
@@ -191,7 +182,6 @@ function energyProfile(energy) {
       quirk: ["Little Cape", "Heart Sunglasses", "Bow Tie"]
     },
     Curious: {
-      expression: ["Curious Peek", "Wide-Eyed Gasp", "Worried Side Glance"],
       pose: ["Leaning Forward", "One Foot Up", "Mid-Step"],
       bodyShape: ["Bean", "Round", "Gumdrop"],
       wingStyle: ["Leaf Wings", "Feather Wings", "Tiny Wings"],
@@ -217,6 +207,15 @@ function weightedPick(items, names, chance = 0.78) {
   return names && Math.random() < chance ? randomNamedItem(items, names) : randomItem(items);
 }
 
+function randomExpressionForEnergy(energy, currentExpression = "") {
+  const pool = tables.expressionPools[energy] || {};
+  const primary = pool.primary || [];
+  const secondary = pool.secondary || tables.expressions;
+  const candidates = Math.random() < 0.8 ? primary : secondary;
+  const choices = candidates.filter((expression) => expression !== currentExpression);
+  return randomItem(choices.length > 0 ? choices : candidates.length > 0 ? candidates : tables.expressions);
+}
+
 function makeBird() {
   const energy = randomItem(tables.birdEnergy);
   const profile = energyProfile(energy);
@@ -225,7 +224,7 @@ function makeBird() {
   return {
     birdEnergy: energy,
     attitude: randomAttitude(energy),
-    expression: weightedPick(tables.expressions, profile.expression),
+    expression: randomExpressionForEnergy(energy),
     pose: weightedPick(tables.poses, profile.pose),
     storyCue: storyCue.text,
     bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
@@ -327,22 +326,25 @@ function stylingDetails(bird) {
 }
 
 function expressionImage(expression) {
-  const images = {
-    "Wide-Eyed Gasp": "/assets/bird-parts/eyes/round.png",
-    "Worried Side Glance": "/assets/bird-parts/eyes/oval.png",
-    "Sleepy Blink": "/assets/bird-parts/eyes/tall.png",
-    "Skeptical Squint": "/assets/bird-parts/eyes/tall.png",
-    "Blank Stare": "/assets/bird-parts/eyes/simple.png",
-    "Delighted Smile": "/assets/bird-parts/eyes/round.png",
-    "Tiny Frown": "/assets/bird-parts/eyes/simple.png",
-    "Proud Smile": "/assets/bird-parts/eyes/gumdrop.png",
-    "Nervous Smile": "/assets/bird-parts/eyes/oval.png",
-    "Confused Stare": "/assets/bird-parts/eyes/round.png",
-    "Grumpy Glare": "/assets/bird-parts/eyes/tall.png",
-    "Curious Peek": "/assets/bird-parts/eyes/round.png"
-  };
+  const value = lower(expression);
 
-  return images[expression] || "/assets/bird-parts/eyes/simple.png";
+  if (/(gasp|wide|spark|surprised|scream|question)/.test(value)) {
+    return "/assets/bird-parts/eyes/round.png";
+  }
+
+  if (/(squint|blink|glare|unimpressed|dozy|sleepy|heavy)/.test(value)) {
+    return "/assets/bird-parts/eyes/tall.png";
+  }
+
+  if (/(side|peek|looking away|worried|unsure|nervous|tilted)/.test(value)) {
+    return "/assets/bird-parts/eyes/oval.png";
+  }
+
+  if (/(smile|grin|smirk|pleased|proud|royal|delighted|guilty)/.test(value)) {
+    return "/assets/bird-parts/eyes/gumdrop.png";
+  }
+
+  return "/assets/bird-parts/eyes/simple.png";
 }
 
 function SketchLayer({ src, className }) {
@@ -474,7 +476,7 @@ export default function App() {
           ...currentBird,
           birdEnergy: nextEnergy,
           attitude: randomAttitude(nextEnergy),
-          expression: weightedPick(tables.expressions, profile.expression),
+          expression: randomExpressionForEnergy(nextEnergy, currentBird.expression),
           pose: weightedPick(tables.poses, profile.pose),
           storyCue: cue.text,
           bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
@@ -502,8 +504,16 @@ export default function App() {
       return;
     }
 
+    if (field === "expression") {
+      setBird((currentBird) => ({
+        ...currentBird,
+        expression: randomExpressionForEnergy(currentBird.birdEnergy, currentBird.expression)
+      }));
+      setCopyStatus("");
+      return;
+    }
+
     const fieldTables = {
-      expression: tables.expressions,
       pose: tables.poses,
       bodyShape: tables.bodyShapes,
       wingStyle: tables.wingStyles,

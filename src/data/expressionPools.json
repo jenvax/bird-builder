@@ -1,0 +1,50 @@
+{
+  "Sleepy": {
+    "primary": ["Dozy Blink", "Heavy-Lidded Stare", "Tiny Yawn", "Half-Asleep Smile", "Sleepy Squint"],
+    "secondary": ["Faraway Stare", "Dreamy Blink", "Soft Blink", "Blank Stare"]
+  },
+  "Shy": {
+    "primary": ["Shy Peek", "Worried Side Glance", "Tiny Nervous Smile", "Looking Away", "Soft Blink"],
+    "secondary": ["Tiny Frown", "Curious Peek", "Tiny Nervous Smile", "Blank Stare"]
+  },
+  "Bossy": {
+    "primary": ["Commanding Squint", "Important Frown", "Pointed Stare", "Bossy Smile", "Not Impressed"],
+    "secondary": ["Skeptical Squint", "Proud Smile", "Judging Stare", "Royal Stare"]
+  },
+  "Zippy": {
+    "primary": ["Wide-Eyed Spark", "Excited Grin", "Ready-To-Dash Look", "Delighted Smile", "Bright Gasp"],
+    "secondary": ["Wide-Eyed Gasp", "Tiny Aha Face", "Peeking Smile", "Surprised O"]
+  },
+  "Nervous": {
+    "primary": ["Huge Worried Eyes", "Frozen Smile", "Panic Blink", "Tiny Gulp", "Unsure Stare"],
+    "secondary": ["Worried Side Glance", "Wide-Eyed Gasp", "Confused Stare", "Tiny Nervous Smile"]
+  },
+  "Confused": {
+    "primary": ["Confused Stare", "Blank Stare", "Tilted Side Look", "Puzzled Squint", "Lost In Thought"],
+    "secondary": ["Unsure Stare", "Tiny Aha Face", "Worried Side Glance", "Faraway Stare"]
+  },
+  "Startled": {
+    "primary": ["Wide-Eyed Gasp", "Startled Blink", "Tiny Scream Face", "Frozen Stare", "Surprised O"],
+    "secondary": ["Huge Worried Eyes", "Bright Gasp", "Panic Blink", "Confused Stare"]
+  },
+  "Proud": {
+    "primary": ["Proud Smile", "Chin-Up Smile", "Satisfied Squint", "Royal Stare", "Showing-Off Grin"],
+    "secondary": ["Bossy Smile", "Delighted Smile", "Skeptical Squint", "Pointed Stare"]
+  },
+  "Grumpy": {
+    "primary": ["Grumpy Glare", "Skeptical Squint", "Tiny Frown", "Judging Stare", "Deeply Unimpressed"],
+    "secondary": ["Not Impressed", "Important Frown", "Pointed Stare", "Blank Stare"]
+  },
+  "Daydreaming": {
+    "primary": ["Faraway Stare", "Dreamy Blink", "Cloudy Smile", "Soft Side Glance", "Wondering Look"],
+    "secondary": ["Sleepy Squint", "Half-Asleep Smile", "Curious Peek", "Blank Stare"]
+  },
+  "Mischievous": {
+    "primary": ["Smirk", "Side Grin", "Trying Not To Laugh", "Guilty Smile", "Sneaky Look"],
+    "secondary": ["Delighted Smile", "Tiny Frown", "Looking Away", "Peeking Smile"]
+  },
+  "Curious": {
+    "primary": ["Curious Peek", "Inspecting Squint", "Bright Question Face", "Peeking Smile", "Tiny Aha Face"],
+    "secondary": ["Wide-Eyed Spark", "Wondering Look", "Tilted Side Look", "Worried Side Glance"]
+  }
+}
