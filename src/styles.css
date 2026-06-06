@@ -15,68 +15,109 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    linear-gradient(90deg, rgba(98, 143, 120, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(98, 143, 120, 0.08) 1px, transparent 1px),
-    radial-gradient(circle at 12% 8%, rgba(255, 224, 138, 0.58), transparent 28%),
-    radial-gradient(circle at 94% 18%, rgba(189, 224, 254, 0.62), transparent 30%),
-    radial-gradient(circle at 72% 92%, rgba(255, 198, 213, 0.55), transparent 34%),
+    linear-gradient(90deg, rgba(98, 143, 120, 0.07) 1px, transparent 1px),
+    linear-gradient(rgba(98, 143, 120, 0.07) 1px, transparent 1px),
+    radial-gradient(circle at 10% 8%, rgba(255, 224, 138, 0.48), transparent 26%),
+    radial-gradient(circle at 94% 18%, rgba(189, 224, 254, 0.54), transparent 28%),
+    radial-gradient(circle at 75% 92%, rgba(255, 198, 213, 0.46), transparent 32%),
     #fff8e8;
-  background-size: 24px 24px, 24px 24px, auto, auto, auto, auto;
+  background-size: 22px 22px, 22px 22px, auto, auto, auto, auto;
 }
 
 button {
+  min-height: 42px;
+  padding: 9px 13px;
+  border: 2px solid #2f2942;
+  border-radius: 8px;
+  color: #241b3a;
   font: inherit;
+  font-size: 0.92rem;
+  font-weight: 900;
+  background: #ff9db5;
+  box-shadow: 3px 3px 0 #2f2942;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible {
+  background: #ffe08a;
+}
+
+button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 #2f2942;
+}
+
+button.secondary {
+  width: fit-content;
+  background: #aee8d3;
 }
 
 .page {
   width: 100%;
   min-height: 100vh;
-  padding: 14px;
+  padding: 11px;
 }
 
 .sketchbook {
-  width: min(100%, 820px);
+  width: min(100%, 860px);
   margin: 0 auto;
-  padding: 16px;
+  padding: 13px;
   border: 2px solid #3b3352;
   border-radius: 8px;
   background: rgba(255, 252, 242, 0.96);
-  box-shadow: 7px 7px 0 rgba(47, 41, 66, 0.14);
+  box-shadow: 5px 5px 0 rgba(47, 41, 66, 0.13);
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px 10px;
 }
 
 .eyebrow,
-.kicker {
+.kicker,
+.today-label {
   margin: 0;
   color: #635879;
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0;
-  text-transform: uppercase;
 }
 
 .eyebrow {
   display: inline-block;
-  padding: 5px 9px;
+  padding: 4px 8px;
   border: 2px solid #3b3352;
   border-radius: 999px;
   background: #ffe08a;
 }
 
+.kicker {
+  color: #6e637c;
+}
+
 .primary-action {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 12px;
   background: #ff9db5;
 }
 
 .result-hero {
-  margin-top: 18px;
+  margin-top: 13px;
+}
+
+.today-label {
+  color: #94664d;
+  font-weight: 900;
 }
 
 h1 {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
   color: #241b3a;
-  font-size: clamp(2rem, 9vw, 3.35rem);
-  line-height: 1;
+  font-size: clamp(1.45rem, 7vw, 2.25rem);
+  line-height: 1.05;
   letter-spacing: 0;
 }
 
@@ -87,59 +128,163 @@ h4 {
 }
 
 h2 {
-  margin: 0 0 12px;
-  font-size: 1rem;
-  text-transform: uppercase;
+  margin: 0 0 9px;
+  color: #241b3a;
+  font-size: 0.86rem;
+  line-height: 1.2;
+}
+
+.detail-card h2 span {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #ffe08a;
 }
 
 h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 0.98rem;
 }
 
 h4 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.88rem;
 }
 
 .prompt-card,
 .detail-card,
 .sketch-preview-card {
-  margin-top: 14px;
-  padding: 16px;
+  margin-top: 11px;
+  padding: 13px;
   border: 2px solid #3b3352;
   border-radius: 8px;
   background:
-    linear-gradient(rgba(47, 41, 66, 0.055) 1px, transparent 1px),
+    linear-gradient(rgba(47, 41, 66, 0.048) 1px, transparent 1px),
     #fffefa;
-  background-size: 100% 28px;
+  background-size: 100% 24px;
 }
 
 .prompt-card {
-  padding: 18px;
+  padding: 14px;
   background:
-    radial-gradient(circle at 100% 0, rgba(255, 224, 138, 0.34), transparent 34%),
-    linear-gradient(rgba(47, 41, 66, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 100% 0, rgba(255, 224, 138, 0.3), transparent 34%),
+    linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
     #fffefa;
-  background-size: auto, 100% 30px, auto;
+  background-size: auto, 100% 26px, auto;
+}
+
+.prompt-card p {
+  max-width: 58ch;
+  margin: 0;
+  font-size: clamp(0.98rem, 3.7vw, 1.12rem);
+  line-height: 1.48;
+}
+
+.recipe-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.recipe-strip span {
+  padding: 5px 8px;
+  border: 1.5px solid rgba(47, 41, 66, 0.58);
+  border-radius: 999px;
+  background: #f7d7e2;
+  color: #2f2942;
+  font-size: 0.74rem;
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+.recipe-strip span:nth-child(3n + 2) {
+  background: #d9efe6;
+}
+
+.recipe-strip span:nth-child(3n) {
+  background: #ffe8a9;
+}
+
+.copy-action {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.copy-status {
+  min-height: 1.2em;
+  margin: 0;
+  color: #3f7a59;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.palette-detail-card {
+  display: grid;
+  gap: 9px;
+  background:
+    radial-gradient(circle at 96% 0, rgba(174, 232, 211, 0.28), transparent 34%),
+    #fffefa;
+}
+
+.palette-detail-card p {
+  max-width: 54ch;
+  margin: 0;
+  color: #4b4260;
+  font-size: 0.88rem;
+  line-height: 1.38;
+}
+
+.palette-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 5px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.palette-swatches span {
+  min-height: 28px;
+  border: 2px solid #2f2942;
+  border-radius: 7px;
 }
 
 .sketch-preview-card {
   background:
-    radial-gradient(circle at 50% 35%, rgba(174, 232, 211, 0.24), transparent 42%),
-    linear-gradient(rgba(47, 41, 66, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 50% 35%, rgba(174, 232, 211, 0.2), transparent 42%),
+    linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
     #fffefa;
-  background-size: auto, 100% 30px, auto;
+  background-size: auto, 100% 24px, auto;
+}
+
+.section-heading {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.section-heading h2 {
+  margin: 0;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #6e637c;
+  font-size: 0.76rem;
+  line-height: 1.3;
 }
 
 .sketch-stage {
   position: relative;
-  width: min(100%, 360px);
-  height: 250px;
+  width: min(100%, 320px);
+  height: 220px;
   margin: 0 auto;
   overflow: hidden;
-  border: 2px dashed rgba(47, 41, 66, 0.45);
+  border: 2px dashed rgba(47, 41, 66, 0.42);
   border-radius: 8px;
+  background: rgba(255, 254, 250, 0.5);
 }
 
 .sketch-layer {
@@ -152,216 +297,125 @@ h4 {
   pointer-events: none;
 }
 
-.sketch-label {
-  display: grid;
-  place-items: center;
-  padding: 4px;
-  border: 1px solid rgba(59, 51, 82, 0.34);
-  border-radius: 8px;
-  background: rgba(255, 254, 250, 0.88);
-  color: #3b3352;
-  font-family: "Georgia", "Times New Roman", serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  line-height: 1.05;
-  text-align: center;
-  filter: none;
-  opacity: 1;
-}
-
 .sketch-body {
   z-index: 2;
-  left: 96px;
-  top: 82px;
-  width: 160px;
-  height: 126px;
+  left: 85px;
+  top: 72px;
+  width: 142px;
+  height: 112px;
 }
 
 .sketch-head {
   z-index: 4;
-  left: 132px;
-  top: 34px;
-  width: 94px;
-  height: 86px;
+  left: 117px;
+  top: 30px;
+  width: 84px;
+  height: 76px;
 }
 
 .sketch-crest {
   z-index: 6;
-  left: 146px;
-  top: 8px;
-  width: 68px;
-  height: 54px;
+  left: 130px;
+  top: 7px;
+  width: 60px;
+  height: 48px;
 }
 
 .sketch-tail {
   z-index: 1;
-  left: 222px;
-  top: 112px;
-  width: 98px;
-  height: 70px;
+  left: 198px;
+  top: 99px;
+  width: 87px;
+  height: 62px;
 }
 
 .sketch-wing {
   z-index: 5;
-  left: 190px;
-  top: 106px;
-  width: 118px;
-  height: 86px;
+  left: 169px;
+  top: 93px;
+  width: 105px;
+  height: 76px;
 }
 
 .sketch-eyes {
   z-index: 7;
-  left: 148px;
-  top: 66px;
-  width: 64px;
-  height: 28px;
+  left: 132px;
+  top: 58px;
+  width: 57px;
+  height: 25px;
 }
 
 .sketch-beak {
   z-index: 8;
-  left: 172px;
-  top: 86px;
-  width: 54px;
-  height: 34px;
+  left: 153px;
+  top: 76px;
+  width: 48px;
+  height: 30px;
 }
 
 .sketch-legs {
   z-index: 3;
-  left: 132px;
-  top: 186px;
-  width: 92px;
-  height: 52px;
+  left: 117px;
+  top: 164px;
+  width: 82px;
+  height: 46px;
 }
 
 .sketch-feet {
   z-index: 4;
-  left: 118px;
-  top: 218px;
-  width: 126px;
-  height: 30px;
-}
-
-.prompt-card p {
-  margin: 0;
-  font-size: clamp(1.12rem, 4.2vw, 1.35rem);
-  line-height: 1.55;
-}
-
-.copy-action {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-button {
-  min-height: 52px;
-  padding: 12px 16px;
-  border: 2px solid #2f2942;
-  border-radius: 8px;
-  color: #241b3a;
-  font-weight: 900;
-  background: #ff9db5;
-  box-shadow: 4px 4px 0 #2f2942;
-  cursor: pointer;
-}
-
-button:hover,
-button:focus-visible {
-  background: #ffe08a;
-}
-
-button:active {
-  transform: translate(3px, 3px);
-  box-shadow: 1px 1px 0 #2f2942;
-}
-
-button.secondary {
-  background: #aee8d3;
-}
-
-.copy-status {
-  min-height: 1.35em;
-  margin-top: 10px;
-  color: #3f7a59;
-  font-weight: 800;
+  left: 105px;
+  top: 193px;
+  width: 112px;
+  height: 27px;
 }
 
 .detail-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 11px;
 }
 
 .detail-card dl {
   display: grid;
-  gap: 16px;
+  gap: 10px;
   margin: 0;
 }
 
 .detail-row {
   display: grid;
-  gap: 5px;
+  gap: 3px;
 }
 
 dt {
   color: #6a5d7b;
-  font-size: 0.74rem;
+  font-size: 0.68rem;
   font-weight: 900;
-  text-transform: uppercase;
 }
 
 dd {
   margin: 0;
   color: #241b3a;
-  font-size: 1.22rem;
+  font-size: 0.98rem;
   font-weight: 800;
-  line-height: 1.2;
-}
-
-.palette-detail-card {
-  display: grid;
-  gap: 12px;
-}
-
-.palette-detail-card p {
-  margin: 0;
-  line-height: 1.45;
-}
-
-.palette-swatches {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 6px;
-  width: 100%;
-}
-
-.palette-swatches span {
-  min-height: 34px;
-  border: 2px solid #2f2942;
-  border-radius: 7px;
+  line-height: 1.18;
 }
 
 @media (min-width: 620px) {
   .page {
-    padding: 28px;
-  }
-
-  .sketchbook {
     padding: 22px;
   }
 
+  .sketchbook {
+    padding: 18px;
+  }
+
   .primary-action {
-    max-width: 360px;
+    width: auto;
+    min-width: 220px;
   }
 
   .detail-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .palette-detail-card {
-    grid-column: 1 / -1;
-  }
-
 }

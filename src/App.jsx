@@ -245,13 +245,34 @@ function decorationDetails(bird) {
   ];
 }
 
-function SketchLayer({ src, className, label }) {
-  const [failed, setFailed] = useState(false);
+function recipeChips(bird) {
+  if (bird.constructionType === "One-Part Bird") {
+    return [
+      bird.mood,
+      bird.constructionType,
+      `${bird.singleShapeSize} ${itemName(bird.singleShape)} Shape`,
+      itemName(bird.crest),
+      itemName(bird.tail),
+      wingValue(bird),
+      bird.colorPalette.name
+    ];
+  }
 
-  if (!src || failed) {
-    return label && label !== "None" ? (
-      <span className={`sketch-layer sketch-label ${className}`}>{label}</span>
-    ) : null;
+  return [
+    bird.mood,
+    bird.constructionType,
+    `${bird.headSize} ${itemName(bird.headShape)} Head`,
+    `${bird.bodySize} ${itemName(bird.bodyShape)} Body`,
+    itemName(bird.crest),
+    itemName(bird.tail),
+    wingValue(bird),
+    bird.colorPalette.name
+  ];
+}
+
+function SketchLayer({ src, className }) {
+  if (!src) {
+    return null;
   }
 
   return (
@@ -261,7 +282,6 @@ function SketchLayer({ src, className, label }) {
       alt=""
       onError={(event) => {
         event.currentTarget.hidden = true;
-        setFailed(true);
       }}
     />
   );
@@ -273,19 +293,22 @@ function SketchPreview({ bird }) {
 
   return (
     <section className="sketch-preview-card" aria-labelledby="sketch-preview-heading">
-      <h2 id="sketch-preview-heading">Rough Sketch Preview</h2>
+      <div className="section-heading">
+        <h2 id="sketch-preview-heading">Rough Sketch Preview</h2>
+        <p>A simple construction guide, not final art.</p>
+      </div>
       <div className="sketch-stage">
         {!isOnePart && (
-          <SketchLayer src={itemImage(bird.headShape)} className="sketch-head" label={itemName(bird.headShape)} />
+          <SketchLayer src={itemImage(bird.headShape)} className="sketch-head" />
         )}
-        <SketchLayer src={bodySource} className="sketch-body" label={itemName(isOnePart ? bird.singleShape : bird.bodyShape)} />
-        <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" label={itemName(bird.crest)} />
-        <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" label={itemName(bird.tail)} />
-        <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" label={itemName(bird.wingShape)} />
-        <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" label={itemName(bird.eyeStyle)} />
-        <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" label={itemName(bird.beak)} />
-        <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" label={itemName(bird.legType)} />
-        <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" label={itemName(bird.footType)} />
+        <SketchLayer src={bodySource} className="sketch-body" />
+        <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" />
+        <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" />
+        <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" />
+        <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" />
+        <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" />
+        <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" />
+        <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" />
       </div>
     </section>
   );
@@ -304,7 +327,9 @@ function PaletteSwatches({ colors }) {
 function DetailCard({ title, rows }) {
   return (
     <section className="detail-card" aria-labelledby={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
-      <h2 id={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>{title}</h2>
+      <h2 id={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
+        <span>{title}</span>
+      </h2>
       <dl>
         {rows.map(([label, value]) => (
           <div className="detail-row" key={label}>
@@ -320,7 +345,7 @@ function DetailCard({ title, rows }) {
 function ColorPaletteCard({ palette }) {
   return (
     <section className="detail-card palette-detail-card" aria-labelledby="color-palette-heading">
-      <h2 id="color-palette-heading">Color Palette</h2>
+      <h2 id="color-palette-heading"><span>Color Palette</span></h2>
       <h3>{palette.name}</h3>
       <PaletteSwatches colors={palette.colors} />
       <p>{palette.mood}</p>
@@ -350,16 +375,23 @@ export default function App() {
   return (
     <main className="page">
       <section className="sketchbook" aria-labelledby="bird-title">
-        <div className="eyebrow">Whimsical Bird Builder</div>
-
-        <button type="button" className="primary-action" onClick={generateBird}>Create a New Bird Prompt</button>
-
-        <header className="result-hero">
-          <p className="kicker">Whimsical drawing prompt generator</p>
-          <h1 id="bird-title">{birdName(bird)}</h1>
+        <header className="page-header">
+          <div className="eyebrow">Whimsical Bird Builder</div>
+          <p className="kicker">Whimsical Drawing Prompt Generator</p>
         </header>
 
-        <SketchPreview bird={bird} />
+        <button type="button" className="primary-action" onClick={generateBird}>Build Another Bird</button>
+
+        <section className="result-hero">
+          <p className="today-label">Today's Bird</p>
+          <h1 id="bird-title">{birdName(bird)}</h1>
+        </section>
+
+        <div className="recipe-strip" aria-label="Bird recipe highlights">
+          {recipeChips(bird).map((chip, index) => (
+            <span key={`${chip}-${index}`}>{chip}</span>
+          ))}
+        </div>
 
         <section className="prompt-card" aria-labelledby="prompt-heading">
           <h2 id="prompt-heading">Draw This Bird</h2>
@@ -371,12 +403,15 @@ export default function App() {
           <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
         </div>
 
+        <ColorPaletteCard palette={bird.colorPalette} />
+
+        <SketchPreview bird={bird} />
+
         <div className="detail-grid">
-          <DetailCard title="Construction" rows={constructionDetails(bird)} />
-          <DetailCard title="Face" rows={faceDetails(bird)} />
-          <DetailCard title="Personality" rows={personalityDetails(bird)} />
-          <DetailCard title="Decoration" rows={decorationDetails(bird)} />
-          <ColorPaletteCard palette={bird.colorPalette} />
+          <DetailCard title="Shape & Body" rows={constructionDetails(bird)} />
+          <DetailCard title="Face Details" rows={faceDetails(bird)} />
+          <DetailCard title="Personality & Story" rows={personalityDetails(bird)} />
+          <DetailCard title="Extras & Decoration" rows={decorationDetails(bird)} />
         </div>
 
       </section>
