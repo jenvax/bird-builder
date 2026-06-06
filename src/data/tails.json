@@ -8,11 +8,11 @@
   { "name": "Flower", "image": "/assets/bird-parts/tails/flower.png" },
   { "name": "Leaf Fan", "image": "/assets/bird-parts/tails/leaf-fan.png" },
   { "name": "Lotus", "image": "/assets/bird-parts/tails/lotus.png" },
-  { "name": "Scallop Crest", "image": "/assets/bird-parts/tails/scallop-crest.png" },
+  { "name": "Scallop Tail", "image": "/assets/bird-parts/tails/scallop-crest.png" },
   { "name": "Single Feather", "image": "/assets/bird-parts/tails/single-feather.png" },
   { "name": "Spray", "image": "/assets/bird-parts/tails/spray.png" },
   { "name": "Sunburst", "image": "/assets/bird-parts/tails/sunburst.png" },
-  { "name": "Swirly Crest", "image": "/assets/bird-parts/tails/swirly-crest.png" },
+  { "name": "Swirly Tail", "image": "/assets/bird-parts/tails/swirly-crest.png" },
   { "name": "Triple Tuft", "image": "/assets/bird-parts/tails/triple-tuft.png" },
-  { "name": "Tulip Crest", "image": "/assets/bird-parts/tails/tulip-crest.png" }
+  { "name": "Tulip Tail", "image": "/assets/bird-parts/tails/tulip-crest.png" }
 ]

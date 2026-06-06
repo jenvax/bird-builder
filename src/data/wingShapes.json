@@ -7,8 +7,6 @@
   { "name": "Tulip Wing", "image": "/assets/bird-parts/wings/tulip-crest.png" },
   { "name": "Bean Wing", "image": "/assets/bird-parts/wings/bean.png" },
   { "name": "Double Tuft", "image": "/assets/bird-parts/wings/double-tuft.png" },
-  { "name": "Fan Crest", "image": "/assets/bird-parts/wings/fan-crest.png" },
-  { "name": "Scallop Crest", "image": "/assets/bird-parts/wings/scallop-crest.png" },
   { "name": "Single Feather", "image": "/assets/bird-parts/wings/single-feather.png" },
   { "name": "Triple Tuft", "image": "/assets/bird-parts/wings/triple-tuft.png" }
 ]

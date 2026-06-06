@@ -309,7 +309,7 @@ function SketchPreview({ bird }) {
         <h2 id="sketch-preview-heading">Rough Sketch Preview</h2>
         <p>A simple construction guide, not final art.</p>
       </div>
-      <div className="sketch-stage">
+      <div className={`sketch-stage ${isOnePart ? "one-part" : "two-part"}`}>
         {!isOnePart && (
           <SketchLayer src={itemImage(bird.headShape)} className="sketch-head" />
         )}
@@ -318,6 +318,7 @@ function SketchPreview({ bird }) {
         <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" />
         <SketchLayer src={itemImage(bird.wingShape)} className="sketch-wing" />
         <SketchLayer src={itemImage(bird.eyeStyle)} className="sketch-eyes" />
+        <SketchLayer src={itemImage(bird.beak)} className="sketch-beak" />
         <SketchLayer src={itemImage(bird.legType)} className="sketch-legs" />
         <SketchLayer src={itemImage(bird.footType)} className="sketch-feet" />
       </div>

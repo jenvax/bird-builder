@@ -315,16 +315,16 @@ h4 {
 
 .sketch-tail {
   z-index: 1;
-  left: 68%;
-  top: 48%;
+  left: 62%;
+  top: 47%;
   width: 25%;
   height: 28%;
 }
 
 .sketch-wing {
   z-index: 5;
-  left: 43%;
-  top: 48%;
+  left: 39%;
+  top: 46%;
   width: 27%;
   height: 30%;
 }
@@ -334,6 +334,14 @@ h4 {
   left: 45%;
   top: 29%;
   width: 14%;
+  height: 10%;
+}
+
+.sketch-beak {
+  z-index: 8;
+  left: 55%;
+  top: 34%;
+  width: 13%;
   height: 10%;
 }
 
@@ -351,6 +359,55 @@ h4 {
   top: 91%;
   width: 28%;
   height: 9%;
+}
+
+.sketch-stage.one-part .sketch-body {
+  left: 30%;
+  top: 26%;
+  width: 45%;
+  height: 58%;
+}
+
+.sketch-stage.one-part .sketch-crest {
+  left: 42%;
+  top: 8%;
+  width: 20%;
+  height: 21%;
+}
+
+.sketch-stage.one-part .sketch-tail {
+  left: 62%;
+  top: 40%;
+  width: 26%;
+  height: 32%;
+}
+
+.sketch-stage.one-part .sketch-wing {
+  left: 39%;
+  top: 42%;
+  width: 28%;
+  height: 32%;
+}
+
+.sketch-stage.one-part .sketch-eyes {
+  left: 43%;
+  top: 37%;
+  width: 15%;
+  height: 11%;
+}
+
+.sketch-stage.one-part .sketch-beak {
+  left: 55%;
+  top: 43%;
+  width: 13%;
+  height: 10%;
+}
+
+.sketch-stage.one-part .sketch-legs {
+  left: 42%;
+  top: 78%;
+  width: 22%;
+  height: 16%;
 }
 
 .detail-grid {
