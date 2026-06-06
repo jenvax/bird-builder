@@ -1,19 +1,11 @@
 [
   { "name": "Fan Crest", "image": "/assets/bird-parts/crests/fan-crest.png" },
-  { "name": "Leaf Crest", "image": "/assets/bird-parts/crests/leaf.png" },
-  { "name": "Flower Crest", "image": "/assets/bird-parts/crests/flower.png" },
   { "name": "Sunburst Crest", "image": "/assets/bird-parts/crests/sunburst.png" },
-  { "name": "Bubble Crest", "image": "/assets/bird-parts/crests/bubble-crest.png" },
-  { "name": "Crown", "image": "/assets/bird-parts/crests/crown.png" },
-  { "name": "Curly-Q", "image": "/assets/bird-parts/crests/curly-q.png" },
-  { "name": "Double Tuft", "image": "/assets/bird-parts/crests/double-tuft.png" },
-  { "name": "Leaf Fan", "image": "/assets/bird-parts/crests/leaf-fan.png" },
-  { "name": "Lotus", "image": "/assets/bird-parts/crests/lotus.png" },
-  { "name": "Mushroom", "image": "/assets/bird-parts/crests/mushroom.png" },
-  { "name": "Scallop Crest", "image": "/assets/bird-parts/crests/scallop-crest.png" },
-  { "name": "Single Feather", "image": "/assets/bird-parts/crests/single-feather.png" },
-  { "name": "Spray", "image": "/assets/bird-parts/crests/spray.png" },
-  { "name": "Swirly Crest", "image": "/assets/bird-parts/crests/swirly-crest.png" },
-  { "name": "Triple Tuft", "image": "/assets/bird-parts/crests/triple-tuft.png" },
-  { "name": "Tulip Crest", "image": "/assets/bird-parts/crests/tulip-crest.png" }
+  { "name": "Triple Tuft Crest", "image": "/assets/bird-parts/crests/triple-tuft.png" },
+  { "name": "Double Tuft Crest", "image": "/assets/bird-parts/crests/double-tuft.png" },
+  { "name": "Pebble Tuft Crest" },
+  { "name": "Single Feather Crest", "image": "/assets/bird-parts/crests/single-feather.png" },
+  { "name": "Ribbon Crest" },
+  { "name": "Flower Crown", "image": "/assets/bird-parts/crests/flower.png" },
+  { "name": "Scallop Crest", "image": "/assets/bird-parts/crests/scallop-crest.png" }
 ]

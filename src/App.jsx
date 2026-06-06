@@ -8,8 +8,6 @@ import bodySizes from "./data/bodySizes.json";
 import crests from "./data/crests.json";
 import tails from "./data/tails.json";
 import wingShapes from "./data/wingShapes.json";
-import wingSizes from "./data/wingSizes.json";
-import wingPlacement from "./data/wingPlacement.json";
 import eyeStyles from "./data/eyeStyles.json";
 import eyePlacement from "./data/eyePlacement.json";
 import eyeSpacing from "./data/eyeSpacing.json";
@@ -35,8 +33,6 @@ const tables = {
   crests,
   tails,
   wingShapes,
-  wingSizes,
-  wingPlacement,
   eyeStyles,
   eyePlacement,
   eyeSpacing,
@@ -84,8 +80,6 @@ function makeBird() {
     crest: randomItem(tables.crests),
     tail: randomItem(tables.tails),
     wingShape: randomItem(tables.wingShapes),
-    wingSize: randomItem(tables.wingSizes),
-    wingPlacement: randomItem(tables.wingPlacement),
     eyeStyle: randomItem(tables.eyeStyles),
     eyePlacement: randomItem(tables.eyePlacement),
     eyeSpacing: randomItem(tables.eyeSpacing),
@@ -153,7 +147,7 @@ function wingValue(bird) {
     return "None";
   }
 
-  return `${bird.wingSize} ${itemName(bird.wingShape)} / ${bird.wingPlacement}`;
+  return itemName(bird.wingShape);
 }
 
 function wingPromptPhrase(bird) {
@@ -161,7 +155,7 @@ function wingPromptPhrase(bird) {
     return "";
   }
 
-  return `a ${lower(bird.wingSize)} ${lower(bird.wingShape)}`;
+  return `a ${lower(bird.wingShape)}`;
 }
 
 function paletteWord(palette) {
@@ -186,9 +180,9 @@ function birdPrompt(bird) {
   const paragraphs = [];
 
   if (bird.constructionType === "One-Part Bird") {
-    paragraphs.push(`Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${wingSegment}${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.`);
+    paragraphs.push(`Draw a ${lower(bird.mood)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${wingSegment}${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, a ${lower(bird.crest)}, ${lower(bird.tail)}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.`);
   } else {
-    paragraphs.push(`Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, ${wingSegment}a ${withSuffix(bird.crest, "crest")}, ${lower(bird.tail)}, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.`);
+    paragraphs.push(`Draw a ${lower(bird.mood)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, ${wingSegment}a ${lower(bird.crest)}, ${lower(bird.tail)}, ${eyePhrase}, a ${withSuffix(bird.beak, "beak")}, ${lower(bird.legType)} legs, and ${lower(bird.footType)}.`);
   }
 
   if (extras.length > 0) {
@@ -412,6 +406,12 @@ export default function App() {
           <p className="today-label">Today's Bird</p>
           <h1 id="bird-title">{birdName(bird)}</h1>
         </section>
+
+        <div className="recipe-strip" aria-label="Bird recipe highlights">
+          {recipeChips(bird).map((chip, index) => (
+            <span key={`${chip}-${index}`}>{chip}</span>
+          ))}
+        </div>
 
         <div className="feature-grid">
           <div className="prompt-column">
