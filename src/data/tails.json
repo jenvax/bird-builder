@@ -3,6 +3,7 @@
   { "name": "Leaf Tail", "image": "/assets/bird-parts/tails/leaf.png" },
   { "name": "Curly Tail", "image": "/assets/bird-parts/tails/curly-q.png" },
   { "name": "Cloud Tail", "image": "/assets/bird-parts/tails/cloud.png" },
+  { "name": "Teardrop Tail", "image": "/assets/bird-parts/tails/teardrop.png" },
   { "name": "Double Tuft", "image": "/assets/bird-parts/tails/double-tuft.png" },
   { "name": "Flower", "image": "/assets/bird-parts/tails/flower.png" },
   { "name": "Leaf Fan", "image": "/assets/bird-parts/tails/leaf-fan.png" },

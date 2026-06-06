@@ -208,33 +208,33 @@ function constructionDetails(bird) {
   if (bird.constructionType === "One-Part Bird") {
     return [
       ["Construction Type", bird.constructionType],
-      ["Shape", `${bird.singleShapeSize} ${itemName(bird.singleShape)}`],
-      ["Wings", wingValue(bird)],
-      ["Crest", itemName(bird.crest)],
-      ["Tail", itemName(bird.tail)],
-      ["Legs", itemName(bird.legType)],
-      ["Feet", itemName(bird.footType)]
+      ["Shape", `${bird.singleShapeSize} ${itemName(bird.singleShape)}`, itemImage(bird.singleShape)],
+      ["Wings", wingValue(bird), itemImage(bird.wingShape)],
+      ["Crest", itemName(bird.crest), itemImage(bird.crest)],
+      ["Tail", itemName(bird.tail), itemImage(bird.tail)],
+      ["Legs", itemName(bird.legType), itemImage(bird.legType)],
+      ["Feet", itemName(bird.footType), itemImage(bird.footType)]
     ];
   }
 
   return [
     ["Construction Type", bird.constructionType],
-    ["Head", `${bird.headSize} ${itemName(bird.headShape)}`],
-    ["Body", `${bird.bodySize} ${itemName(bird.bodyShape)}`],
-    ["Wings", wingValue(bird)],
-    ["Crest", itemName(bird.crest)],
-    ["Tail", itemName(bird.tail)],
-    ["Legs", itemName(bird.legType)],
-    ["Feet", itemName(bird.footType)]
+    ["Head", `${bird.headSize} ${itemName(bird.headShape)}`, itemImage(bird.headShape)],
+    ["Body", `${bird.bodySize} ${itemName(bird.bodyShape)}`, itemImage(bird.bodyShape)],
+    ["Wings", wingValue(bird), itemImage(bird.wingShape)],
+    ["Crest", itemName(bird.crest), itemImage(bird.crest)],
+    ["Tail", itemName(bird.tail), itemImage(bird.tail)],
+    ["Legs", itemName(bird.legType), itemImage(bird.legType)],
+    ["Feet", itemName(bird.footType), itemImage(bird.footType)]
   ];
 }
 
 function faceDetails(bird) {
   return [
-    ["Eye Style", itemName(bird.eyeStyle)],
+    ["Eye Style", itemName(bird.eyeStyle), itemImage(bird.eyeStyle)],
     ["Eye Placement (vertical)", bird.eyePlacement],
     ["Eye Spacing (distance)", bird.eyeSpacing],
-    ["Beak", itemName(bird.beak)]
+    ["Beak", itemName(bird.beak), itemImage(bird.beak)]
   ];
 }
 
@@ -329,10 +329,22 @@ function DetailCard({ title, rows }) {
         <span>{title}</span>
       </h2>
       <dl>
-        {rows.map(([label, value]) => (
+        {rows.map(([label, value, image]) => (
           <div className="detail-row" key={label}>
             <dt>{label}</dt>
-            <dd>{value}</dd>
+            <dd>
+              {image && (
+                <img
+                  className="detail-thumb"
+                  src={image}
+                  alt=""
+                  onError={(event) => {
+                    event.currentTarget.hidden = true;
+                  }}
+                />
+              )}
+              <span>{value}</span>
+            </dd>
           </div>
         ))}
       </dl>
