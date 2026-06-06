@@ -1,62 +1,62 @@
 {
   "Curious": [
-    { "text": "It has stopped to inspect a tiny beetle on the path.", "critter": "Friendly Beetle" },
-    { "text": "It is peeking into a flower to see who lives there." },
-    { "text": "It is watching a snail cross the ground.", "critter": "Tiny Snail" }
+    { "text": "It has stopped to inspect a beetle carrying something much too large.", "critter": "Friendly Beetle" },
+    { "text": "It is peeking into a flower as if someone tiny lives inside." },
+    { "text": "It is watching a snail cross the ground like it is the most important parade.", "critter": "Tiny Snail" }
   ],
   "Shy": [
-    { "text": "It is pretending not to notice you looking at it." },
-    { "text": "It is hiding slightly behind its scarf." },
-    { "text": "It is peeking around a mushroom." }
+    { "text": "It is pretending not to notice anyone while peeking at a snail from a distance.", "critter": "Tiny Snail" },
+    { "text": "It is hiding slightly behind its scarf and hoping nobody asks it to sing." },
+    { "text": "It is peeking around a mushroom at a beetle passing by.", "critter": "Friendly Beetle" }
   ],
   "Startled": [
-    { "text": "It just heard a strange noise in the bushes." },
-    { "text": "It has spotted something unexpected." },
-    { "text": "It nearly tripped over a tiny pebble." }
+    { "text": "It just heard a strange noise in the bushes and is frozen mid-flinch." },
+    { "text": "It has spotted something unexpected and is staring at a ladybug like it might explode.", "critter": "Little Ladybug" },
+    { "text": "It nearly tripped over a tiny pebble and is trying to look dignified." }
   ],
   "Proud": [
-    { "text": "It is showing off a shiny treasure it found." },
-    { "text": "It is posing like it just won a tiny parade." },
-    { "text": "It is standing very tall and waiting to be admired." }
+    { "text": "It is showing a shiny treasure to a mouse as if unveiling a masterpiece.", "critter": "Acorn Mouse" },
+    { "text": "It is posing like it just won a tiny parade and expects applause." },
+    { "text": "It is standing very tall while a frog admires its excellent posture.", "critter": "Pocket Frog" }
   ],
   "Sleepy": [
-    { "text": "It is trying very hard not to fall asleep." },
-    { "text": "It is dozing in the sunshine." },
-    { "text": "It looks like it just woke up from a nap." }
+    { "text": "It is trying very hard not to fall asleep while a snail slowly passes by.", "critter": "Tiny Snail" },
+    { "text": "It is dozing in the sunshine and slowly sinking toward the ground." },
+    { "text": "It looks like it just woke up from a nap and forgot where its feet are." }
   ],
   "Zippy": [
-    { "text": "It looks like it is about to dash off after something exciting." },
-    { "text": "It is bouncing in place and can barely stand still." },
-    { "text": "It just spotted a butterfly and is ready to chase it." }
+    { "text": "It looks ready to dash off after a beetle that is already regretting the race.", "critter": "Friendly Beetle" },
+    { "text": "It is bouncing in place so hard its feet barely remember the ground." },
+    { "text": "It just spotted a frog hopping away and is absolutely ready to follow.", "critter": "Pocket Frog" }
   ],
   "Nervous": [
-    { "text": "It is unsure whether the little bug is a friend." },
-    { "text": "It is standing very still so nobody notices it." },
-    { "text": "It looks like it forgot why it came here." }
+    { "text": "It is unsure whether the little beetle is a friend or a very small problem.", "critter": "Friendly Beetle" },
+    { "text": "It is standing very still so nobody, especially the ladybug, notices it.", "critter": "Little Ladybug" },
+    { "text": "It looks like it forgot why it came here and is quietly panicking." }
   ],
   "Mischievous": [
-    { "text": "It looks like it just stole a shiny button." },
-    { "text": "It is sneaking away from a tiny mess." },
-    { "text": "It knows something you do not know." }
+    { "text": "It looks like it just stole a shiny button and is hiding it from a frog.", "critter": "Pocket Frog" },
+    { "text": "It is sneaking away from a tiny mess while a beetle looks suspicious.", "critter": "Friendly Beetle" },
+    { "text": "It knows something you do not know and is trying not to smile." }
   ],
   "Grumpy": [
-    { "text": "It does not approve of the weather." },
-    { "text": "It is annoyed that someone moved its favorite pebble." },
-    { "text": "It is glaring at a very cheerful flower." }
+    { "text": "It does not approve of the weather and is silently judging a cheerful beetle.", "critter": "Friendly Beetle" },
+    { "text": "It is annoyed that a ladybug moved its favorite pebble half an inch.", "critter": "Little Ladybug" },
+    { "text": "It is glaring at a flower that is being much too cheerful." }
   ],
   "Confused": [
-    { "text": "It is trying to understand a mysterious footprint." },
-    { "text": "It is staring at something upside down." },
-    { "text": "It seems to have forgotten where it was going." }
+    { "text": "It is trying to understand a mysterious footprint while a snail calmly ignores the problem.", "critter": "Tiny Snail" },
+    { "text": "It is staring at a beetle upside down and pretending that helps.", "critter": "Friendly Beetle" },
+    { "text": "It seems to have forgotten where it was going and is blaming the path." }
   ],
   "Daydreaming": [
-    { "text": "It is imagining a tiny world inside a cloud." },
-    { "text": "It is listening to the wind like it is music." },
-    { "text": "It is staring at nothing in particular and enjoying it." }
+    { "text": "It is imagining a tiny world inside a cloud while a mouse waits patiently.", "critter": "Acorn Mouse" },
+    { "text": "It is listening to the wind like it is music and swaying very slightly." },
+    { "text": "It is staring at nothing in particular while a snail passes unnoticed.", "critter": "Tiny Snail" }
   ],
   "Bossy": [
-    { "text": "It is giving important instructions to a tiny bug." },
-    { "text": "It is organizing a very small parade." },
-    { "text": "It is telling the flowers where to stand." }
+    { "text": "It is giving important instructions to a beetle that did not ask.", "critter": "Friendly Beetle" },
+    { "text": "It is organizing a very small parade and putting the frog in charge of hopping.", "critter": "Pocket Frog" },
+    { "text": "It is telling the flowers exactly where to stand." }
   ]
 }

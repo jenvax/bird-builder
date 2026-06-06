@@ -101,6 +101,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Sleepy", "Blank Stare"],
       crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
       tail: ["Cloud Tail", "Petal Tail", "Leaf Tail"],
+      wingShape: ["Cloud Wing", "Leaf Wing"],
       legType: ["Short Stubby"],
       legPose: ["Belly Sit", "Straight"],
       beak: ["Tiny Triangle", "Round Beak"]
@@ -111,8 +112,9 @@ function energyBiasedBirdParts(energy) {
       eyePlacement: ["Low", "Middle"],
       eyeSpacing: ["Close Together"],
       eyeExpression: ["Worried", "Open"],
-      crest: ["Pebble Tuft Crest", "Single Feather Crest", "Ribbon Crest"],
+      crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
       tail: ["Petal Tail", "Cloud Tail"],
+      wingShape: ["Cloud Wing", "Leaf Wing"],
       legType: ["Short Stubby"],
       legPose: ["Pigeon-Toed", "One Foot Up"],
       beak: ["Tiny Triangle", "Stubby Beak"]
@@ -124,6 +126,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Open", "Side Glance"],
       crest: ["Fan Crest", "Sunburst Crest", "Scallop Crest"],
       tail: ["Fan Tail", "Ribbon Tail"],
+      wingShape: ["Feather Wing", "Scallop Wing"],
       legType: ["Tall Skinny", "Very Tall"],
       legPose: ["Straight", "Splayed"],
       beak: ["Pointy Beak", "Stubby Beak"]
@@ -138,6 +141,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Open", "Happy"],
       crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
       tail: ["Fan Tail", "Ribbon Tail", "Petal Tail"],
+      wingShape: ["Triple Tuft Wing", "Feather Wing"],
       legType: ["Tall Skinny", "Very Tall"],
       legPose: ["Tiny Hop", "Mid Step"],
       beak: ["Pointy Beak", "Tiny Triangle"]
@@ -149,6 +153,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Worried", "Open"],
       crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Cloud Tail"],
+      wingShape: ["Leaf Wing", "Triple Tuft Wing"],
       legType: ["Short Stubby"],
       legPose: ["Pigeon-Toed", "One Foot Up", "Splayed"],
       footType: ["Tiny Round Feet"],
@@ -161,6 +166,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Side Glance", "Blank Stare", "Worried"],
       crest: ["Single Feather Crest", "Triple Tuft Crest"],
       tail: ["Curly Tail", "Cloud Tail"],
+      wingShape: ["Cloud Wing", "Triple Tuft Wing"],
       legPose: ["Splayed", "One Foot Up"],
       beak: ["Stubby Beak", "Round Beak"]
     },
@@ -172,6 +178,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Surprised", "Open"],
       crest: ["Sunburst Crest", "Triple Tuft Crest", "Double Tuft Crest"],
       tail: ["Fan Tail", "Ribbon Tail"],
+      wingShape: ["Triple Tuft Wing", "Feather Wing"],
       legPose: ["Splayed", "Tiny Hop"],
       beak: ["Tiny Triangle", "Pointy Beak"]
     },
@@ -182,6 +189,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Happy", "Open"],
       crest: ["Fan Crest", "Sunburst Crest", "Scallop Crest"],
       tail: ["Fan Tail", "Petal Tail"],
+      wingShape: ["Scallop Wing", "Feather Wing"],
       legType: ["Tall Skinny", "Very Tall"],
       legPose: ["Straight", "Splayed"],
       beak: ["Pointy Beak", "Round Beak"]
@@ -191,8 +199,9 @@ function energyBiasedBirdParts(energy) {
       eyeSize: ["Tiny", "Small"],
       eyePlacement: ["Low"],
       eyeExpression: ["Side Glance", "Blank Stare"],
-      crest: ["Triple Tuft Crest", "Fan Crest", "Scallop Crest"],
-      tail: ["Fan Tail", "Cloud Tail"],
+      crest: ["Triple Tuft Crest", "Sunburst Crest", "Scallop Crest"],
+      tail: ["Fan Tail", "Curly Tail"],
+      wingShape: ["Pebble Wing", "Feather Wing", "Scallop Wing"],
       legPose: ["Straight", "Splayed"],
       beak: ["Stubby Beak", "Pointy Beak"]
     },
@@ -201,8 +210,9 @@ function energyBiasedBirdParts(energy) {
       eyeSize: ["Small", "Medium"],
       eyePlacement: ["Middle", "Low"],
       eyeExpression: ["Sleepy", "Side Glance"],
-      crest: ["Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+      crest: ["Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
       tail: ["Cloud Tail", "Petal Tail"],
+      wingShape: ["Cloud Wing", "Leaf Wing", "Fan Wing"],
       legPose: ["Straight", "Belly Sit", "One Foot Up"],
       beak: ["Round Beak", "Tiny Triangle"]
     },
@@ -212,6 +222,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Side Glance", "Happy"],
       crest: ["Triple Tuft Crest", "Pebble Tuft Crest", "Single Feather Crest"],
       tail: ["Curly Tail", "Ribbon Tail"],
+      wingShape: ["Triple Tuft Wing", "Feather Wing", "Scallop Wing"],
       legPose: ["One Foot Up", "Mid Step"],
       beak: ["Pointy Beak", "Stubby Beak"]
     },
@@ -221,6 +232,7 @@ function energyBiasedBirdParts(energy) {
       eyeExpression: ["Open", "Side Glance"],
       crest: ["Single Feather Crest", "Triple Tuft Crest"],
       tail: ["Petal Tail", "Fan Tail", "Cloud Tail"],
+      wingShape: ["Leaf Wing", "Feather Wing", "Triple Tuft Wing"],
       legPose: ["One Foot Up", "Mid Step"],
       beak: ["Tiny Triangle", "Pointy Beak"]
     }
@@ -246,7 +258,8 @@ function energyBiasedBirdParts(energy) {
     legPose: pick(tables.legPoses, profile.legPose),
     footType: pick(tables.feet, profile.footType),
     crest: pick(tables.crests, profile.crest),
-    tail: pick(tables.tails, profile.tail)
+    tail: pick(tables.tails, profile.tail),
+    wingShape: pick(tables.wingShapes, profile.wingShape)
   };
 }
 
@@ -293,7 +306,7 @@ function makeBird() {
     singleShapeSize: energyParts.singleShapeSize,
     crest: energyParts.crest,
     tail: energyParts.tail,
-    wingShape: randomItem(tables.wingShapes),
+    wingShape: energyParts.wingShape,
     eyeSize: energyParts.eyeSize,
     eyeStyle: energyParts.eyeStyle,
     eyePlacement: energyParts.eyePlacement,
@@ -410,7 +423,13 @@ function constructionPhrase(bird) {
 
 function storyParagraph(bird) {
   if (hasValue(bird.critterFriend)) {
-    return `${bird.storyCue} It appears to be reacting to ${articleFor(bird.critterFriend)} ${lower(bird.critterFriend)} nearby.`;
+    const critter = lower(bird.critterFriend);
+    const critterKeyword = critter.split(" ").at(-1);
+    if (bird.storyCue.toLowerCase().includes(critterKeyword)) {
+      return bird.storyCue;
+    }
+
+    return `${bird.storyCue} It appears to be reacting to ${articleFor(bird.critterFriend)} ${critter} nearby.`;
   }
 
   return bird.storyCue;
