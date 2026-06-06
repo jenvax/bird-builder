@@ -1,0 +1,76 @@
+{
+  "Grumpy": [
+    "judging the weather",
+    "unimpressed by everything",
+    "skeptically inspecting everything nearby",
+    "being annoyed by something very small",
+    "silently disapproving"
+  ],
+  "Curious": [
+    "investigating a tiny mystery",
+    "peeking at something just out of view",
+    "observing the ground very carefully",
+    "inspecting a tiny clue",
+    "wondering what is inside a flower"
+  ],
+  "Mischievous": [
+    "sneaking away from something",
+    "plotting a tiny plan",
+    "hiding something shiny",
+    "pleased with itself"
+  ],
+  "Proud": [
+    "posing for an invisible audience",
+    "showing off",
+    "presenting something important",
+    "waiting to be admired"
+  ],
+  "Shy": [
+    "hiding in plain sight",
+    "pretending not to notice you",
+    "peeking around an imaginary corner",
+    "shrinking back politely"
+  ],
+  "Startled": [
+    "freezing in place",
+    "jumping at a tiny sound",
+    "staring wide-eyed",
+    "nearly tripping over its own feet"
+  ],
+  "Zippy": [
+    "bouncing in place",
+    "dashing off at any second",
+    "caught mid-hop",
+    "unable to stand still"
+  ],
+  "Sleepy": [
+    "dozing while standing up",
+    "trying to stay awake",
+    "blinking very slowly",
+    "slumping into a nap"
+  ],
+  "Nervous": [
+    "unsure what to do next",
+    "fidgeting in place",
+    "frozen very still",
+    "startled by something tiny"
+  ],
+  "Confused": [
+    "puzzled by a simple object",
+    "staring at the wrong thing",
+    "tilting its head at the mystery",
+    "trying very hard to understand"
+  ],
+  "Daydreaming": [
+    "drifting through a tiny thought",
+    "staring into space",
+    "listening to the wind",
+    "imagining something wonderful"
+  ],
+  "Bossy": [
+    "giving important instructions",
+    "organizing everyone nearby",
+    "pointing with great authority",
+    "very important"
+  ]
+}

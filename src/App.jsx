@@ -21,6 +21,7 @@ import palettes from "./data/palettes.json";
 import quirks from "./data/quirks.json";
 import critterFriends from "./data/critterFriends.json";
 import storyCues from "./data/storyCues.json";
+import attitudes from "./data/attitudes.json";
 
 const tables = {
   constructionTypes,
@@ -44,7 +45,8 @@ const tables = {
   palettes,
   quirks,
   critterFriends,
-  storyCues
+  storyCues,
+  attitudes
 };
 
 function randomItem(items) {
@@ -252,6 +254,10 @@ function randomStoryCue(energy) {
   return randomItem(tables.storyCues[energy] || tables.storyCues.Curious);
 }
 
+function randomAttitude(energy) {
+  return randomItem(tables.attitudes[energy] || tables.attitudes.Curious);
+}
+
 function findStoryCueByText(text) {
   return Object.values(tables.storyCues).flat().find((cue) => cue.text === text);
 }
@@ -278,6 +284,7 @@ function makeBird() {
   return {
     constructionType,
     birdEnergy: energy,
+    attitude: randomAttitude(energy),
     headShape: energyParts.headShape,
     headSize: randomItem(tables.headSizes),
     bodyShape: energyParts.bodyShape,
@@ -336,6 +343,25 @@ function wingPromptPhrase(bird) {
   return `a ${lower(bird.wingShape)}`;
 }
 
+function energyModifier(energy, part) {
+  const modifiers = {
+    Grumpy: { crest: "stiff", tail: "bristly", legs: "planted" },
+    Curious: { crest: "alert", tail: "perky", legs: "leaning" },
+    Mischievous: { crest: "jaunty", tail: "sneaky", legs: "ready-to-dart" },
+    Proud: { crest: "showy", tail: "fancy", legs: "confident" },
+    Shy: { crest: "small", tail: "tucked-looking", legs: "careful" },
+    Startled: { crest: "wild", tail: "flared", legs: "startled" },
+    Zippy: { crest: "springy", tail: "bouncy", legs: "quick" },
+    Sleepy: { crest: "droopy", tail: "soft", legs: "sleepy" },
+    Nervous: { crest: "fidgety", tail: "wobbly", legs: "uneasy" },
+    Confused: { crest: "crooked", tail: "puzzled", legs: "awkward" },
+    Daydreaming: { crest: "floaty", tail: "soft", legs: "drifty" },
+    Bossy: { crest: "important", tail: "commanding", legs: "firm" }
+  };
+
+  return modifiers[energy]?.[part] || "";
+}
+
 function paletteWord(palette) {
   return palette.name.split(" ")[0];
 }
@@ -344,12 +370,17 @@ function birdName(bird) {
   return `${bird.birdEnergy} ${paletteWord(bird.colorPalette)} Bird`;
 }
 
-function eyePhrase(bird) {
-  return `${lower(bird.eyeSize)} ${lower(bird.eyeStyle)} eyes with ${articleFor(bird.eyeExpression)} ${lower(bird.eyeExpression)} expression placed ${lower(bird.eyePlacement)} and ${lower(bird.eyeSpacing)}`;
+function expressionPhrase(expression) {
+  const value = lower(expression);
+  if (value === "blank stare" || value === "side glance") {
+    return `with a ${value}`;
+  }
+
+  return `with ${articleFor(expression)} ${value} expression`;
 }
 
-function legPhrase(bird) {
-  return `${lower(bird.legType)} legs in a ${lower(bird.legPose)} pose`;
+function eyePhrase(bird) {
+  return `${lower(bird.eyeSize)} ${lower(bird.eyeStyle)} eyes ${expressionPhrase(bird.eyeExpression)} placed ${lower(bird.eyePlacement)} and ${lower(bird.eyeSpacing)}`;
 }
 
 function quirkPhrase(quirk) {
@@ -357,27 +388,45 @@ function quirkPhrase(quirk) {
   return /(glasses|sunglasses|socks|boots)$/.test(value) ? value : `${articleFor(quirk)} ${value}`;
 }
 
-function birdPrompt(bird) {
+function modifiedPart(energy, part, value) {
+  const modifier = energyModifier(energy, part);
+  return modifier ? `${modifier} ${lower(value)}` : lower(value);
+}
+
+function constructionPhrase(bird) {
   const wingText = wingPromptPhrase(bird);
-  const wingSegment = wingText ? `${wingText}, ` : "";
-  const paragraphs = [];
+  const wingSegment = wingText ? `, ${wingText}` : "";
+  const crestText = modifiedPart(bird.birdEnergy, "crest", bird.crest);
+  const tailText = modifiedPart(bird.birdEnergy, "tail", bird.tail);
+  const legLead = energyModifier(bird.birdEnergy, "legs");
+  const legsText = legLead ? `${legLead} ${lower(bird.legType)} legs` : `${lower(bird.legType)} legs`;
 
   if (bird.constructionType === "One-Part Bird") {
-    paragraphs.push(`Draw a ${lower(bird.birdEnergy)} one-part bird with a ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape, ${wingSegment}${eyePhrase(bird)}, a ${withSuffix(bird.beak, "beak")}, a ${lower(bird.crest)}, ${lower(bird.tail)}, ${legPhrase(bird)}, and ${lower(bird.footType)}.`);
-  } else {
-    paragraphs.push(`Draw a ${lower(bird.birdEnergy)} bird with a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}, ${wingSegment}a ${lower(bird.crest)}, ${lower(bird.tail)}, ${eyePhrase(bird)}, a ${withSuffix(bird.beak, "beak")}, ${legPhrase(bird)}, and ${lower(bird.footType)}.`);
+    return `It has one simple ${lower(bird.singleShapeSize)} ${lower(bird.singleShape)} shape${wingSegment}, a ${crestText}, a ${tailText}, and ${legsText} in a ${lower(bird.legPose)} pose.`;
   }
+
+  return `It has a ${lower(bird.headSize)} ${withSuffix(bird.headShape, "head")}, a ${lower(bird.bodySize)} ${withSuffix(bird.bodyShape, "body")}${wingSegment}, a ${crestText}, a ${tailText}, and ${legsText} in a ${lower(bird.legPose)} pose.`;
+}
+
+function storyParagraph(bird) {
+  if (hasValue(bird.critterFriend)) {
+    return `${bird.storyCue} It appears to be reacting to ${articleFor(bird.critterFriend)} ${lower(bird.critterFriend)} nearby.`;
+  }
+
+  return bird.storyCue;
+}
+
+function birdPrompt(bird) {
+  const paragraphs = [];
+
+  paragraphs.push(`Draw a ${lower(bird.birdEnergy)} bird that looks like it is ${bird.attitude}. ${constructionPhrase(bird)}`);
+  paragraphs.push(`Give it ${eyePhrase(bird)}, plus a ${withSuffix(bird.beak, "beak")} and ${lower(bird.footType)}.`);
 
   if (hasValue(bird.quirk)) {
     paragraphs.push(`Add ${quirkPhrase(bird.quirk)}.`);
   }
 
-  if (hasValue(bird.critterFriend)) {
-    paragraphs.push(`${bird.storyCue} Include ${articleFor(bird.critterFriend)} ${lower(bird.critterFriend)} friend nearby.`);
-  } else {
-    paragraphs.push(bird.storyCue);
-  }
-
+  paragraphs.push(storyParagraph(bird));
   paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
 
   return paragraphs;
@@ -587,6 +636,22 @@ export default function App() {
   }
 
   function shuffleField(field) {
+    if (field === "birdEnergy") {
+      setBird((currentBird) => {
+        const nextEnergy = randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy);
+        const cue = randomStoryCue(nextEnergy);
+        return {
+          ...currentBird,
+          birdEnergy: nextEnergy,
+          attitude: randomAttitude(nextEnergy),
+          storyCue: cue.text,
+          critterFriend: randomCritterFriend(cue)
+        };
+      });
+      setCopyStatus("");
+      return;
+    }
+
     if (field === "storyCue") {
       setBird((currentBird) => {
         const cues = tables.storyCues[currentBird.birdEnergy] || tables.storyCues.Curious;
