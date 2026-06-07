@@ -1,152 +1,80 @@
 [
   {
-    "collection": "Berry Collection",
-    "name": "Blueberry Pie",
-    "colors": ["#2F3A8F", "#4C63B6", "#7A8FE3", "#D8E2FF", "#F7E7B4"],
-    "mood": "Cozy, sweet, and storybook-soft with a little dusk."
+    "collection": "Floral",
+    "name": "Spring Tulips",
+    "colors": ["#FF6F91", "#FF9671", "#FFC75F", "#A0E7A0", "#F8F7FF"],
+    "mood": "Fresh, bright, and full of garden bounce."
   },
   {
-    "collection": "Berry Collection",
-    "name": "Strawberry Shortcake",
-    "colors": ["#F25F7A", "#FF9BAA", "#FFD6DC", "#FFF3C7", "#A7D7A9"],
-    "mood": "Cheerful, tender, and bakery-bright."
+    "collection": "Floral",
+    "name": "Fern & Foxglove",
+    "colors": ["#2D6A4F", "#52B788", "#B7E4C7", "#E5989B", "#FFCDB2"],
+    "mood": "Secret-garden green with soft foxglove pinks."
   },
   {
-    "collection": "Berry Collection",
-    "name": "Blackberry Jam",
-    "colors": ["#2D183F", "#5D2E7A", "#9A5ABF", "#F08CAE", "#F6D6FF"],
-    "mood": "Rich, magical, and a little mischievous."
-  },
-  {
-    "collection": "Garden Collection",
-    "name": "Cottage Garden",
-    "colors": ["#8BC6A3", "#F4A7B9", "#F8D98B", "#B7DDE8", "#FFF7E8"],
-    "mood": "Gentle, flowery, and hand-painted."
-  },
-  {
-    "collection": "Garden Collection",
+    "collection": "Floral",
     "name": "Wildflower Meadow",
     "colors": ["#6FBF73", "#F2C94C", "#EB5757", "#56CCF2", "#F9F1D5"],
     "mood": "Playful, sunny, and happily untamed."
   },
   {
-    "collection": "Garden Collection",
-    "name": "Spring Tulips",
-    "colors": ["#FF6F91", "#FF9671", "#FFC75F", "#A0E7A0", "#F8F7FF"],
-    "mood": "Fresh, bright, and full of bounce."
+    "collection": "Floral",
+    "name": "Buttercup Picnic",
+    "colors": ["#F7D84B", "#FFF3A3", "#FFB6B9", "#8FD694", "#FFF8E8"],
+    "mood": "Cheerful, buttery, and picnic-blanket sweet."
   },
   {
-    "collection": "Woodland Collection",
-    "name": "Acorn & Moss",
-    "colors": ["#6B4F2A", "#9B6F3D", "#7A9B55", "#C7D59F", "#F1E6C8"],
-    "mood": "Earthy, friendly, and quietly curious."
+    "collection": "Rainy Day",
+    "name": "April Showers",
+    "colors": ["#8ECae6", "#BDE0FE", "#CDEAC0", "#F1F8E9", "#7A9E9F"],
+    "mood": "Soft rain, new leaves, and clean puddle sparkle."
   },
   {
-    "collection": "Woodland Collection",
-    "name": "Mushroom Hollow",
-    "colors": ["#B85C5C", "#F2B6A0", "#8E6C88", "#D9D0B4", "#FFF4D8"],
-    "mood": "Cozy, odd, and fairy-tale wooded."
+    "collection": "Rainy Day",
+    "name": "Puddle Jump",
+    "colors": ["#4EA8DE", "#80CED7", "#D9F0FF", "#F7D794", "#7FB069"],
+    "mood": "Splashy, bright, and made for tiny rain boots."
   },
   {
-    "collection": "Woodland Collection",
-    "name": "Forest Tea Party",
-    "colors": ["#315C4B", "#6FA386", "#D7B56D", "#E8DCC2", "#B76E79"],
-    "mood": "Polite, mossy, and quietly fancy."
-  },
-  {
-    "collection": "Sky Collection",
-    "name": "Cloud Parade",
-    "colors": ["#BDE0FE", "#D7F3FF", "#FFFFFF", "#C8D7E8", "#FFD6E8"],
-    "mood": "Airy, dreamy, and light as paper."
-  },
-  {
-    "collection": "Sky Collection",
+    "collection": "Rainy Day",
     "name": "Rainbow Daydream",
     "colors": ["#FFADAD", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#A0C4FF"],
     "mood": "Imaginative, bright, and wonderfully silly."
   },
   {
-    "collection": "Sky Collection",
-    "name": "Sunset Picnic",
-    "colors": ["#FF8C61", "#FFB067", "#FFD166", "#A8DADC", "#725AC1"],
-    "mood": "Warm, relaxed, and golden-hour whimsical."
+    "collection": "Sunshine",
+    "name": "Sunbeam Garden",
+    "colors": ["#FFD166", "#FFE8A3", "#F4A261", "#8AC926", "#FFF7D6"],
+    "mood": "Warm, leafy, and glowing with afternoon sun."
   },
   {
-    "collection": "Seasonal Collection",
-    "name": "Autumn Orchard",
-    "colors": ["#B85C38", "#D99058", "#F2C879", "#7D9D5C", "#5C4033"],
-    "mood": "Crunchy-leaf warm with a harvest glow."
+    "collection": "Sunshine",
+    "name": "Honeybee Hollow",
+    "colors": ["#F9C74F", "#F6E27F", "#3A5A40", "#90BE6D", "#FFF8E1"],
+    "mood": "Golden, buzzy, and tucked into a blooming garden."
   },
   {
-    "collection": "Seasonal Collection",
-    "name": "Winter Cocoa",
-    "colors": ["#5B4636", "#A77C5B", "#D8C3A5", "#F4EDE4", "#8CBFD1"],
-    "mood": "Snuggly, calm, and cocoa-sweet."
+    "collection": "Sunshine",
+    "name": "Strawberry Patch",
+    "colors": ["#E63946", "#FF8FA3", "#FFD6DC", "#6FBF73", "#FFF1C1"],
+    "mood": "Juicy, cheerful, and berry-bright."
   },
   {
-    "collection": "Candy Collection",
-    "name": "Lemon Lollipop",
-    "colors": ["#FFF06A", "#FFD23F", "#FF9F1C", "#FDFCDC", "#9EE493"],
-    "mood": "Zesty, bright, and full of happy fizz."
+    "collection": "Woodland Garden",
+    "name": "Mushroom Hollow",
+    "colors": ["#B85C5C", "#F2B6A0", "#8E6C88", "#D9D0B4", "#FFF4D8"],
+    "mood": "Cozy, odd, and fairy-tale wooded."
   },
   {
-    "collection": "Candy Collection",
-    "name": "Peppermint Parade",
-    "colors": ["#E63946", "#FFCAD4", "#FFFFFF", "#B8F2E6", "#457B9D"],
-    "mood": "Crisp, cheerful, and candy-striped."
+    "collection": "Woodland Garden",
+    "name": "Ladybug Lane",
+    "colors": ["#D62828", "#F77F00", "#FEE8A6", "#4F772D", "#FFFDF2"],
+    "mood": "Tiny, spotted, and garden-path playful."
   },
   {
-    "collection": "Candy Collection",
-    "name": "Grape Soda",
-    "colors": ["#4B1D95", "#7B2CBF", "#C77DFF", "#E0AAFF", "#BDE0FE"],
-    "mood": "Bubbly, bold, and a little theatrical."
-  },
-  {
-    "collection": "Garden Collection",
-    "name": "Peach Greenhouse",
-    "colors": ["#FFB4A2", "#FFCDB2", "#B7E4C7", "#74C69D", "#FFF8E8"],
-    "mood": "Soft, leafy, and sun-warmed."
-  },
-  {
-    "collection": "Garden Collection",
-    "name": "Lavender Sprout",
-    "colors": ["#B8A1E3", "#D8C7FF", "#A7DCA5", "#F7E8A4", "#FFFDF2"],
-    "mood": "Gentle, curious, and freshly planted."
-  },
-  {
-    "collection": "Woodland Collection",
-    "name": "Pinecone Path",
-    "colors": ["#3A5A40", "#588157", "#A3B18A", "#DAD7CD", "#7F5539"],
-    "mood": "Woodsy, quiet, and ramble-ready."
-  },
-  {
-    "collection": "Woodland Collection",
-    "name": "Fern & Foxglove",
-    "colors": ["#2D6A4F", "#52B788", "#B7E4C7", "#E5989B", "#FFCDB2"],
-    "mood": "Secret-garden bright with woodland charm."
-  },
-  {
-    "collection": "Sky Collection",
-    "name": "Moonbeam Marshmallow",
-    "colors": ["#EEF4FF", "#D6E4FF", "#A9BCE8", "#F6E6FF", "#FFF7D6"],
-    "mood": "Sleepy, soft, and moonlit."
-  },
-  {
-    "collection": "Sky Collection",
-    "name": "Kite Festival",
-    "colors": ["#EF476F", "#FFD166", "#06D6A0", "#118AB2", "#F8FFE5"],
-    "mood": "Windy, festive, and full of motion."
-  },
-  {
-    "collection": "Seasonal Collection",
-    "name": "Pumpkin Moon",
-    "colors": ["#D95D39", "#F4A261", "#F6D365", "#264653", "#FFF3D6"],
-    "mood": "Glowy, autumnal, and a tiny bit mysterious."
-  },
-  {
-    "collection": "Seasonal Collection",
-    "name": "Snowdrop Tea",
-    "colors": ["#F8FBFF", "#DDEAF6", "#BFD7EA", "#CDEAC0", "#F7D9C4"],
-    "mood": "Quiet, delicate, and teacup-warm."
+    "collection": "Woodland Garden",
+    "name": "Garden Gate",
+    "colors": ["#6A994E", "#A7C957", "#DDA15E", "#BC6C25", "#F2E8CF"],
+    "mood": "Leafy, rustic, and ready for a curious bird."
   }
 ]
