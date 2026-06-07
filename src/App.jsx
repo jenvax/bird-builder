@@ -91,7 +91,7 @@ function energyProfile(energy) {
       crest: ["Floppy Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
       tail: ["Cloud Tail", "Petal Tail"],
       legLength: ["Tiny", "Short"],
-      quirk: ["None", "Tiny Scarf"]
+      quirk: ["Leaf Cape", "Petal Collar", "Flower Crown", "None"]
     },
     Shy: {
       pose: ["Pigeon-Toed Stand", "One Foot Up", "Tucked and Cozy"],
@@ -100,7 +100,7 @@ function energyProfile(energy) {
       crest: ["Pebble Tuft Crest", "Floppy Ribbon Crest", "Single Feather Crest"],
       tail: ["Petal Tail", "Cloud Tail"],
       legLength: ["Tiny", "Short"],
-      quirk: ["None", "Tiny Scarf", "Round Glasses"]
+      quirk: ["Flower Crown", "Daisy Necklace", "Round Glasses", "None"]
     },
     Bossy: {
       pose: ["Proud Chest Puff", "Splayed Stance", "Mid-Step"],
@@ -109,7 +109,7 @@ function energyProfile(energy) {
       crest: ["Fan Crest", "Scallop Crest", "Wild Sunburst Crest"],
       tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
       legLength: ["Tall", "Very Tall"],
-      quirk: ["Explorer Hat", "Bow Tie", "Round Glasses"]
+      quirk: ["Tiny Gold Crown", "Tiny Bell", "Round Glasses"]
     },
     Zippy: {
       pose: ["Tiny Hop", "Wing Flap", "Mid-Step", "Leaning Forward"],
@@ -118,7 +118,7 @@ function energyProfile(energy) {
       crest: ["Wild Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
       tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
       legLength: ["Tall", "Very Tall"],
-      quirk: ["None", "Explorer Hat", "Heart Sunglasses"]
+      quirk: ["Rain Boots", "Tiny Backpack", "Butterfly Bow Tie", "Sunflower Pin", "None"]
     },
     Nervous: {
       pose: ["Frozen Mid-Flinch", "Pigeon-Toed Stand", "One Foot Up"],
@@ -127,7 +127,7 @@ function energyProfile(energy) {
       crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Cloud Tail"],
       legLength: ["Tiny", "Short"],
-      quirk: ["None", "Round Glasses", "Tiny Scarf"]
+      quirk: ["Tiny Umbrella", "Round Glasses", "Petal Collar", "None"]
     },
     Confused: {
       pose: ["Looking Over Shoulder", "One Foot Up", "Splayed Stance"],
@@ -136,7 +136,7 @@ function energyProfile(energy) {
       crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Cloud Tail"],
       legLength: ["Short", "Medium"],
-      quirk: ["None", "Round Glasses", "Explorer Hat"]
+      quirk: ["Oversized Glasses", "Magnifying Glass", "Tiny Backpack", "None"]
     },
     Startled: {
       pose: ["Frozen Mid-Flinch", "Tiny Hop", "Splayed Stance"],
@@ -145,7 +145,7 @@ function energyProfile(energy) {
       crest: ["Wild Sunburst Crest", "Triple Tuft Crest"],
       tail: ["Flared Fan Tail", "Fan Tail", "Ribbon Tail"],
       legLength: ["Medium", "Tall"],
-      quirk: ["None", "Explorer Hat", "Tiny Scarf"]
+      quirk: ["Rain Hat", "Tiny Umbrella", "Round Glasses", "None"]
     },
     Proud: {
       pose: ["Proud Chest Puff", "Perched", "Splayed Stance"],
@@ -154,7 +154,7 @@ function energyProfile(energy) {
       crest: ["Fan Crest", "Scallop Crest", "Wild Sunburst Crest"],
       tail: ["Fan Tail", "Flared Fan Tail", "Petal Tail"],
       legLength: ["Tall", "Very Tall"],
-      quirk: ["Bow Tie", "Flower Crown", "Heart Sunglasses"]
+      quirk: ["Tiny Gold Crown", "Twig Crown", "Sun Hat", "Flower Crown"]
     },
     Grumpy: {
       pose: ["Splayed Stance", "Slouched", "Perched"],
@@ -163,7 +163,7 @@ function energyProfile(energy) {
       crest: ["Triple Tuft Crest", "Wild Sunburst Crest", "Scallop Crest"],
       tail: ["Fan Tail", "Curly Tail"],
       legLength: ["Short", "Medium", "Tall"],
-      quirk: ["None", "Tiny Scarf", "Round Glasses"]
+      quirk: ["Rain Hat", "Rain Boots", "Round Glasses", "None"]
     },
     Daydreaming: {
       pose: ["Tucked and Cozy", "Belly Sit", "Leaning Forward"],
@@ -172,7 +172,7 @@ function energyProfile(energy) {
       crest: ["Floppy Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Cloud Tail", "Petal Tail"],
       legLength: ["Tiny", "Short", "Medium"],
-      quirk: ["None", "Flower Crown", "Tiny Scarf"]
+      quirk: ["Flower Crown", "Leaf Crown", "Daisy Necklace", "Ribbon Bow", "Leaf Cape"]
     },
     Mischievous: {
       pose: ["Tiptoe Sneak", "Looking Over Shoulder", "Mid-Step"],
@@ -181,7 +181,7 @@ function energyProfile(energy) {
       crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Ribbon Tail"],
       legLength: ["Short", "Medium", "Tall"],
-      quirk: ["Little Cape", "Heart Sunglasses", "Bow Tie"]
+      quirk: ["Oversized Glasses", "Butterfly Bow Tie", "Ladybug Button", "Tiny Bell"]
     },
     Curious: {
       pose: ["Leaning Forward", "One Foot Up", "Mid-Step"],
@@ -190,7 +190,7 @@ function energyProfile(energy) {
       crest: ["Single Feather Crest", "Triple Tuft Crest", "Fan Crest"],
       tail: ["Petal Tail", "Fan Tail", "Cloud Tail"],
       legLength: ["Medium", "Tall"],
-      quirk: ["None", "Explorer Hat", "Round Glasses"]
+      quirk: ["Explorer Hat", "Magnifying Glass", "Bug Jar", "Tiny Binoculars", "Tiny Backpack"]
     }
   };
 
@@ -284,7 +284,7 @@ function birdName(bird) {
 
 function quirkPhrase(quirk) {
   const value = lower(quirk);
-  return /(glasses|sunglasses|boots)$/.test(value) ? value : `${articleFor(quirk)} ${value}`;
+  return /(glasses|boots|binoculars)$/.test(value) ? value : `${articleFor(quirk)} ${value}`;
 }
 
 function wingPhrase(wingStyle) {
