@@ -1,0 +1,121 @@
+[
+  {
+    "sceneName": "Nest",
+    "sceneText": "Tucked into a nest",
+    "compatibleCharacterStates": ["Sleepy", "Daydreaming", "Shy"],
+    "compatiblePoses": ["Tucked and Cozy", "Belly Sit", "One Foot Up"],
+    "weight": 5
+  },
+  {
+    "sceneName": "Fence Post",
+    "sceneText": "Perched on a fence post",
+    "compatibleCharacterStates": ["Proud", "Curious", "Bossy", "Grumpy"],
+    "compatiblePoses": ["Proud Chest Puff", "Perched", "Splayed Stance"],
+    "weight": 4
+  },
+  {
+    "sceneName": "Garden Wall",
+    "sceneText": "Perched on a garden wall",
+    "compatibleCharacterStates": ["Curious", "Proud", "Bossy"],
+    "compatiblePoses": ["Leaning Forward", "One Foot Up", "Perched"],
+    "weight": 4
+  },
+  {
+    "sceneName": "Tall Grass",
+    "sceneText": "Hidden in tall grass",
+    "compatibleCharacterStates": ["Shy", "Curious", "Nervous"],
+    "compatiblePoses": ["Leaning Forward", "Tucked and Cozy", "Pigeon-Toed Stand"],
+    "weight": 4
+  },
+  {
+    "sceneName": "Mushroom",
+    "sceneText": "Resting on a mushroom",
+    "compatibleCharacterStates": ["Daydreaming", "Sleepy", "Shy"],
+    "compatiblePoses": ["Tucked and Cozy", "Belly Sit", "Slouched"],
+    "weight": 4
+  },
+  {
+    "sceneName": "Tree Stump",
+    "sceneText": "Standing on a tree stump",
+    "compatibleCharacterStates": ["Proud", "Curious", "Bossy"],
+    "compatiblePoses": ["Proud Chest Puff", "Perched", "Splayed Stance"],
+    "weight": 4
+  },
+  {
+    "sceneName": "Footprint",
+    "sceneText": "Standing beside a mysterious footprint",
+    "compatibleCharacterStates": ["Confused", "Curious", "Nervous"],
+    "compatiblePoses": ["One Foot Up", "Leaning Forward", "Looking Over Shoulder"],
+    "weight": 5
+  },
+  {
+    "sceneName": "Snail Trail",
+    "sceneText": "Watching a snail cross the ground",
+    "compatibleCharacterStates": ["Curious", "Daydreaming", "Sleepy"],
+    "compatiblePoses": ["Leaning Forward", "One Foot Up", "Belly Sit"],
+    "weight": 4
+  },
+  {
+    "sceneName": "Flower Pot",
+    "sceneText": "Nestled in a flower pot",
+    "compatibleCharacterStates": ["Sleepy", "Daydreaming", "Shy", "Mischievous"],
+    "compatiblePoses": ["Tucked and Cozy", "Belly Sit", "Tiptoe Sneak"],
+    "weight": 3
+  },
+  {
+    "sceneName": "Watering Can",
+    "sceneText": "Balancing on a watering can",
+    "compatibleCharacterStates": ["Mischievous", "Zippy", "Curious"],
+    "compatiblePoses": ["Tiptoe Sneak", "Tiny Hop", "Wing Flap", "Mid-Step"],
+    "weight": 5
+  },
+  {
+    "sceneName": "Pumpkin",
+    "sceneText": "Hiding behind a pumpkin",
+    "compatibleCharacterStates": ["Mischievous", "Shy", "Nervous"],
+    "compatiblePoses": ["Tiptoe Sneak", "Looking Over Shoulder", "Tucked and Cozy"],
+    "weight": 3
+  },
+  {
+    "sceneName": "Stack of Books",
+    "sceneText": "Balancing on a stack of books",
+    "compatibleCharacterStates": ["Mischievous", "Confused", "Bossy"],
+    "compatiblePoses": ["Tiptoe Sneak", "One Foot Up", "Proud Chest Puff"],
+    "weight": 3
+  },
+  {
+    "sceneName": "Branch",
+    "sceneText": "Perched on a quiet branch",
+    "compatibleCharacterStates": ["Daydreaming", "Sleepy", "Curious"],
+    "compatiblePoses": ["Perched", "Tucked and Cozy", "Leaning Forward"],
+    "weight": 3
+  },
+  {
+    "sceneName": "Rock",
+    "sceneText": "Standing on a small rock",
+    "compatibleCharacterStates": ["Curious", "Grumpy", "Confused"],
+    "compatiblePoses": ["One Foot Up", "Splayed Stance", "Perched"],
+    "weight": 3
+  },
+  {
+    "sceneName": "Teacup",
+    "sceneText": "Curled inside a teacup",
+    "compatibleCharacterStates": ["Sleepy", "Daydreaming", "Shy"],
+    "compatiblePoses": ["Tucked and Cozy", "Belly Sit", "Slouched"],
+    "weight": 3
+  },
+  {
+    "sceneName": "Lily Pad",
+    "sceneText": "Balancing on a lily pad",
+    "compatibleCharacterStates": ["Zippy", "Curious", "Confused"],
+    "compatiblePoses": ["Tiny Hop", "One Foot Up", "Frozen Mid-Flinch"],
+    "weight": 2
+  },
+  {
+    "sceneName": "Log",
+    "sceneText": "Standing on a mossy log",
+    "compatibleCharacterStates": ["Curious", "Grumpy", "Proud"],
+    "compatiblePoses": ["Perched", "Leaning Forward", "Splayed Stance"],
+    "weight": 2
+  }
+]

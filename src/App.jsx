@@ -13,6 +13,7 @@ import palettes from "./data/palettes.json";
 import quirks from "./data/quirks.json";
 import storyCues from "./data/storyCues.json";
 import attitudes from "./data/attitudes.json";
+import sceneCards from "./data/sceneCards.json";
 
 const tables = {
   birdEnergy,
@@ -28,7 +29,8 @@ const tables = {
   palettes,
   quirks,
   storyCues,
-  attitudes
+  attitudes,
+  sceneCards
 };
 
 function randomItem(items) {
@@ -216,17 +218,51 @@ function randomExpressionForEnergy(energy, currentExpression = "") {
   return randomItem(choices.length > 0 ? choices : candidates.length > 0 ? candidates : tables.expressions);
 }
 
+function weightedScenePick(scenes) {
+  const totalWeight = scenes.reduce((sum, scene) => sum + (scene.weight || 1), 0);
+  let ticket = Math.random() * totalWeight;
+
+  for (const scene of scenes) {
+    ticket -= scene.weight || 1;
+    if (ticket <= 0) {
+      return scene;
+    }
+  }
+
+  return scenes.at(-1);
+}
+
+function sceneMatchesEnergy(scene, energy) {
+  return scene.compatibleCharacterStates.includes(energy);
+}
+
+function sceneMatchesPose(scene, pose) {
+  return scene.compatiblePoses.includes(pose);
+}
+
+function randomSceneForMoment(energy, pose, currentSceneName = "") {
+  const withoutCurrent = tables.sceneCards.filter((scene) => scene.sceneName !== currentSceneName);
+  const candidates = withoutCurrent.length > 0 ? withoutCurrent : tables.sceneCards;
+  const exact = candidates.filter((scene) => sceneMatchesEnergy(scene, energy) && sceneMatchesPose(scene, pose));
+  const energyOnly = candidates.filter((scene) => sceneMatchesEnergy(scene, energy));
+  const poseOnly = candidates.filter((scene) => sceneMatchesPose(scene, pose));
+
+  return weightedScenePick(exact.length > 0 ? exact : energyOnly.length > 0 ? energyOnly : poseOnly.length > 0 ? poseOnly : candidates);
+}
+
 function makeBird() {
   const energy = randomItem(tables.birdEnergy);
   const profile = energyProfile(energy);
   const storyCue = randomStoryCue(energy);
+  const pose = weightedPick(tables.poses, profile.pose);
 
   return {
     birdEnergy: energy,
     attitude: randomAttitude(energy),
     expression: randomExpressionForEnergy(energy),
-    pose: weightedPick(tables.poses, profile.pose),
+    pose,
     storyCue: storyCue.text,
+    scene: randomSceneForMoment(energy, pose),
     bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
     wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
     crest: weightedPick(tables.crests, profile.crest),
@@ -263,8 +299,31 @@ function tailPhrase(tail) {
   return hasValue(tail) ? `a ${lower(tail)}` : "no tail";
 }
 
+function lowerFirst(value) {
+  return value.charAt(0).toLowerCase() + value.slice(1);
+}
+
 function storySentence(bird) {
-  return bird.storyCue || `It is ${bird.attitude}.`;
+  const cue = bird.storyCue || `It is ${bird.attitude}.`;
+  const sceneText = lower(bird.scene.sceneText);
+
+  if (cue.startsWith("It is ")) {
+    return `It is ${sceneText}, ${cue.slice(6)}`;
+  }
+
+  if (cue.startsWith("It looks ")) {
+    return `It is ${sceneText}, ${lowerFirst(cue)}`;
+  }
+
+  if (cue.startsWith("It just ") || cue.startsWith("It has ")) {
+    return `It is ${sceneText} after ${lowerFirst(cue)}`;
+  }
+
+  if (cue.startsWith("It does ")) {
+    return `It is ${sceneText} and ${cue.slice(3)}`;
+  }
+
+  return `It is ${sceneText}. ${cue}`;
 }
 
 function birdPrompt(bird) {
@@ -305,6 +364,10 @@ function personalityDetails(bird) {
 
 function storyDetails(bird) {
   return [["Story Cue", bird.storyCue, "", "storyCue"]];
+}
+
+function sceneDetails(bird) {
+  return [["Scene", bird.scene.sceneText, "", "scene"]];
 }
 
 function featureDetails(bird) {
@@ -408,7 +471,7 @@ function CharacterSnapshot({ bird }) {
         </div>
         <div>
           <dt>Story</dt>
-          <dd>{bird.storyCue}</dd>
+          <dd>{storySentence(bird)}</dd>
         </div>
       </dl>
     </section>
@@ -496,13 +559,15 @@ export default function App() {
         const nextEnergy = randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy);
         const profile = energyProfile(nextEnergy);
         const cue = randomStoryCue(nextEnergy);
+        const pose = weightedPick(tables.poses, profile.pose);
         return {
           ...currentBird,
           birdEnergy: nextEnergy,
           attitude: randomAttitude(nextEnergy),
           expression: randomExpressionForEnergy(nextEnergy, currentBird.expression),
-          pose: weightedPick(tables.poses, profile.pose),
+          pose,
           storyCue: cue.text,
+          scene: randomSceneForMoment(nextEnergy, pose, currentBird.scene.sceneName),
           bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
           wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
           crest: weightedPick(tables.crests, profile.crest),
@@ -528,6 +593,28 @@ export default function App() {
       return;
     }
 
+    if (field === "pose") {
+      setBird((currentBird) => {
+        const nextPose = randomDifferentItem(tables.poses, currentBird.pose);
+        return {
+          ...currentBird,
+          pose: nextPose,
+          scene: randomSceneForMoment(currentBird.birdEnergy, nextPose, currentBird.scene.sceneName)
+        };
+      });
+      setCopyStatus("");
+      return;
+    }
+
+    if (field === "scene") {
+      setBird((currentBird) => ({
+        ...currentBird,
+        scene: randomSceneForMoment(currentBird.birdEnergy, currentBird.pose, currentBird.scene.sceneName)
+      }));
+      setCopyStatus("");
+      return;
+    }
+
     if (field === "expression") {
       setBird((currentBird) => ({
         ...currentBird,
@@ -538,7 +625,6 @@ export default function App() {
     }
 
     const fieldTables = {
-      pose: tables.poses,
       bodyShape: tables.bodyShapes,
       wingStyle: tables.wingStyles,
       crest: tables.crests,
@@ -616,6 +702,7 @@ export default function App() {
         <div className="detail-grid">
           <DetailCard title="Personality" rows={personalityDetails(bird)} onShuffle={shuffleField} />
           <DetailCard title="Story" rows={storyDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Scene" rows={sceneDetails(bird)} onShuffle={shuffleField} />
           <DetailCard title="Bird Features" rows={featureDetails(bird)} onShuffle={shuffleField} />
           <DetailCard title="Styling" rows={stylingDetails(bird)} onShuffle={shuffleField} />
         </div>
