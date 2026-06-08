@@ -11,6 +11,7 @@ import legLengths from "./data/legLengths.json";
 import simpleFeet from "./data/simpleFeet.json";
 import palettes from "./data/palettes.json";
 import quirks from "./data/quirks.json";
+import treasures from "./data/treasures.json";
 import storyCues from "./data/storyCues.json";
 import attitudes from "./data/attitudes.json";
 import sceneCards from "./data/sceneCards.json";
@@ -28,10 +29,23 @@ const tables = {
   feet: simpleFeet,
   palettes,
   quirks,
+  treasures,
   storyCues,
   attitudes,
   sceneCards
 };
+
+const priorityTreasures = [
+  "Chair Stuffing",
+  "Lost Button",
+  "Strip of Ribbon",
+  "Perfect Pebble",
+  "Shiny Bottle Cap",
+  "Dandelion Puff",
+  "Curly Leaf",
+  "Colorful Feather",
+  "Giant Acorn"
+];
 
 function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -88,37 +102,41 @@ function energyProfile(energy) {
       pose: ["Belly Sit", "Slouched", "Tucked and Cozy"],
       bodyShape: ["Fluffy", "Marshmallow", "Blob"],
       wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
-      crest: ["Floppy Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
-      tail: ["Cloud Tail", "Petal Tail"],
+      crest: ["Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
+      tail: ["Cloud Tail", "Leaf Tail"],
       legLength: ["Tiny", "Short"],
-      quirk: ["Leaf Cape", "Petal Collar", "Flower Crown", "None"]
+      quirk: ["Leaf Cape", "Petal Collar", "Flower Crown", "None"],
+      treasure: ["Chair Stuffing", "Dryer Lint Puff", "Soft Feather", "Dandelion Puff"]
     },
     Shy: {
       pose: ["Pigeon-Toed Stand", "One Foot Up", "Tucked and Cozy"],
       bodyShape: ["Bean", "Marshmallow", "Gumdrop", "Blob"],
       wingStyle: ["Cloud Wings", "Leaf Wings", "Tiny Wings"],
-      crest: ["Pebble Tuft Crest", "Floppy Ribbon Crest", "Single Feather Crest"],
-      tail: ["Petal Tail", "Cloud Tail"],
+      crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
+      tail: ["Leaf Tail", "Cloud Tail"],
       legLength: ["Tiny", "Short"],
-      quirk: ["Flower Crown", "Daisy Necklace", "Round Glasses", "None"]
+      quirk: ["Flower Crown", "Daisy Necklace", "Round Glasses", "None"],
+      treasure: ["Soft Feather", "Chair Stuffing", "Fabric Scrap", "Curly Leaf"]
     },
     Bossy: {
       pose: ["Proud Chest Puff", "Splayed Stance", "Mid-Step"],
       bodyShape: ["Round", "Pear", "Tall Skinny"],
       wingStyle: ["Feather Wings", "Scallop Wings"],
-      crest: ["Fan Crest", "Scallop Crest", "Wild Sunburst Crest"],
-      tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
+      crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
+      tail: ["Fan Tail", "Ribbon Tail"],
       legLength: ["Tall", "Very Tall"],
-      quirk: ["Tiny Gold Crown", "Tiny Bell", "Round Glasses"]
+      quirk: ["Tiny Gold Crown", "Tiny Bell", "Round Glasses"],
+      treasure: ["Metal Washer", "Shiny Bottle Cap", "Lost Button", "Perfect Pebble"]
     },
     Zippy: {
       pose: ["Tiny Hop", "Wing Flap", "Mid-Step", "Leaning Forward"],
       bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
       wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
-      crest: ["Wild Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
-      tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
+      crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
+      tail: ["Fan Tail", "Ribbon Tail"],
       legLength: ["Tall", "Very Tall"],
-      quirk: ["Rain Boots", "Tiny Backpack", "Butterfly Bow Tie", "Sunflower Pin", "None"]
+      quirk: ["Rain Boots", "Tiny Backpack", "Butterfly Bow Tie", "Sunflower Pin", "None"],
+      treasure: ["Soda Tab", "Maple Seed", "Gum Wrapper", "Shiny Bottle Cap"]
     },
     Nervous: {
       pose: ["Frozen Mid-Flinch", "Pigeon-Toed Stand", "One Foot Up"],
@@ -127,7 +145,8 @@ function energyProfile(energy) {
       crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Cloud Tail"],
       legLength: ["Tiny", "Short"],
-      quirk: ["Tiny Umbrella", "Round Glasses", "Petal Collar", "None"]
+      quirk: ["Tiny Umbrella", "Round Glasses", "Petal Collar", "None"],
+      treasure: ["Chair Stuffing", "Lost Button", "Soft Feather", "Fabric Scrap"]
     },
     Confused: {
       pose: ["Looking Over Shoulder", "One Foot Up", "Splayed Stance"],
@@ -136,43 +155,48 @@ function energyProfile(energy) {
       crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Cloud Tail"],
       legLength: ["Short", "Medium"],
-      quirk: ["Oversized Glasses", "Magnifying Glass", "Tiny Backpack", "None"]
+      quirk: ["Oversized Glasses", "Magnifying Glass", "Tiny Backpack", "None"],
+      treasure: ["Metal Washer", "Pinecone Scale", "Smooth Shell", "Interesting Twig"]
     },
     Startled: {
       pose: ["Frozen Mid-Flinch", "Tiny Hop", "Splayed Stance"],
       bodyShape: ["Bean", "Tall Skinny", "Gumdrop"],
       wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
-      crest: ["Wild Sunburst Crest", "Triple Tuft Crest"],
-      tail: ["Flared Fan Tail", "Fan Tail", "Ribbon Tail"],
+      crest: ["Sunburst Crest", "Triple Tuft Crest"],
+      tail: ["Fan Tail", "Ribbon Tail"],
       legLength: ["Medium", "Tall"],
-      quirk: ["Rain Hat", "Tiny Umbrella", "Round Glasses", "None"]
+      quirk: ["Rain Hat", "Tiny Umbrella", "Round Glasses", "None"],
+      treasure: ["Dandelion Puff", "Soda Tab", "Lost Button", "Maple Seed"]
     },
     Proud: {
       pose: ["Proud Chest Puff", "Perched", "Splayed Stance"],
       bodyShape: ["Pear", "Round", "Tall Skinny"],
       wingStyle: ["Scallop Wings", "Feather Wings"],
-      crest: ["Fan Crest", "Scallop Crest", "Wild Sunburst Crest"],
-      tail: ["Fan Tail", "Flared Fan Tail", "Petal Tail"],
+      crest: ["Sunburst Crest", "Triple Tuft Crest", "Flower Crown"],
+      tail: ["Fan Tail", "Leaf Tail"],
       legLength: ["Tall", "Very Tall"],
-      quirk: ["Tiny Gold Crown", "Twig Crown", "Sun Hat", "Flower Crown"]
+      quirk: ["Tiny Gold Crown", "Twig Crown", "Sun Hat", "Flower Crown"],
+      treasure: ["Perfect Pebble", "Shiny Bottle Cap", "Lost Button", "Colorful Feather", "Giant Acorn"]
     },
     Grumpy: {
       pose: ["Splayed Stance", "Slouched", "Perched"],
       bodyShape: ["Bean", "Blob", "Pear"],
       wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
-      crest: ["Triple Tuft Crest", "Wild Sunburst Crest", "Scallop Crest"],
+      crest: ["Triple Tuft Crest", "Sunburst Crest", "Pebble Tuft Crest"],
       tail: ["Fan Tail", "Curly Tail"],
       legLength: ["Short", "Medium", "Tall"],
-      quirk: ["Rain Hat", "Rain Boots", "Round Glasses", "None"]
+      quirk: ["Rain Hat", "Rain Boots", "Round Glasses", "None"],
+      treasure: ["Perfect Pebble", "Metal Washer", "Lost Button", "Pinecone Scale"]
     },
     Daydreaming: {
       pose: ["Tucked and Cozy", "Belly Sit", "Leaning Forward"],
       bodyShape: ["Fluffy", "Marshmallow", "Blob"],
       wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
-      crest: ["Floppy Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
-      tail: ["Cloud Tail", "Petal Tail"],
+      crest: ["Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+      tail: ["Cloud Tail", "Leaf Tail"],
       legLength: ["Tiny", "Short", "Medium"],
-      quirk: ["Flower Crown", "Leaf Crown", "Daisy Necklace", "Ribbon Bow", "Leaf Cape"]
+      quirk: ["Flower Crown", "Leaf Crown", "Daisy Necklace", "Ribbon Bow", "Leaf Cape"],
+      treasure: ["Dandelion Puff", "Fallen Flower Petal", "Milkweed Fluff", "Colorful Feather"]
     },
     Mischievous: {
       pose: ["Tiptoe Sneak", "Looking Over Shoulder", "Mid-Step"],
@@ -181,16 +205,18 @@ function energyProfile(energy) {
       crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
       tail: ["Curly Tail", "Ribbon Tail"],
       legLength: ["Short", "Medium", "Tall"],
-      quirk: ["Oversized Glasses", "Butterfly Bow Tie", "Ladybug Button", "Tiny Bell"]
+      quirk: ["Oversized Glasses", "Butterfly Bow Tie", "Ladybug Button", "Tiny Bell"],
+      treasure: ["Lost Button", "Strip of Ribbon", "Gum Wrapper", "Soda Tab", "Shiny Bottle Cap"]
     },
     Curious: {
       pose: ["Leaning Forward", "One Foot Up", "Mid-Step"],
       bodyShape: ["Bean", "Round", "Gumdrop"],
       wingStyle: ["Leaf Wings", "Feather Wings", "Tiny Wings"],
-      crest: ["Single Feather Crest", "Triple Tuft Crest", "Fan Crest"],
-      tail: ["Petal Tail", "Fan Tail", "Cloud Tail"],
+      crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
+      tail: ["Leaf Tail", "Fan Tail", "Cloud Tail"],
       legLength: ["Medium", "Tall"],
-      quirk: ["Explorer Hat", "Magnifying Glass", "Bug Jar", "Tiny Binoculars", "Tiny Backpack"]
+      quirk: ["Explorer Hat", "Magnifying Glass", "Bug Jar", "Tiny Binoculars", "Tiny Backpack"],
+      treasure: ["Curly Leaf", "Dandelion Puff", "Seed Pod", "Interesting Twig", "Maple Seed"]
     }
   };
 
@@ -207,6 +233,79 @@ function randomStoryCue(energy) {
 
 function weightedPick(items, names, chance = 0.78) {
   return names && Math.random() < chance ? randomNamedItem(items, names) : randomItem(items);
+}
+
+function randomTreasureForEnergy(energy, currentTreasure = "") {
+  const profile = energyProfile(energy);
+
+  if (Math.random() < 0.6) {
+    return "None";
+  }
+
+  const weightedNames = profile.treasure || priorityTreasures;
+  const candidates = Math.random() < 0.85 ? weightedNames : priorityTreasures;
+  const matches = candidates.filter((treasure) => treasure !== currentTreasure && tables.treasures.includes(treasure));
+
+  return randomItem(matches.length > 0 ? matches : tables.treasures.filter((treasure) => treasure !== "None"));
+}
+
+function randomDifferentTreasureForEnergy(energy, currentTreasure) {
+  for (let index = 0; index < 8; index += 1) {
+    const treasure = randomTreasureForEnergy(energy, currentTreasure);
+    if (treasure !== currentTreasure) {
+      return treasure;
+    }
+  }
+
+  return currentTreasure === "None" ? randomNamedItem(tables.treasures, priorityTreasures) : "None";
+}
+
+function treasurePhrase(treasure) {
+  const value = lower(treasure);
+  return /(stuffing|lint|fluff)$/.test(value) ? value : `${articleFor(treasure)} ${value}`;
+}
+
+function randomTreasureStory(energy, treasure) {
+  if (!hasValue(treasure)) {
+    return "";
+  }
+
+  const phrase = treasurePhrase(treasure);
+  const options = {
+    Proud: [
+      `It is proudly displaying ${phrase} it discovered this morning.`,
+      `It is showing off ${phrase} like it belongs in a museum.`,
+      `It is presenting ${phrase} as if it were priceless.`
+    ],
+    Curious: [
+      `It is carefully investigating ${phrase} it has never seen before.`,
+      `It is trying to understand why ${phrase} seems so important.`,
+      `It has stopped everything to inspect ${phrase}.`
+    ],
+    Mischievous: [
+      `It looks suspiciously pleased about ${phrase} beside it.`,
+      `It may have borrowed ${phrase} without permission.`,
+      `It is pretending ${phrase} was already there.`
+    ],
+    Shy: [
+      `It is quietly hiding ${phrase} behind its back.`,
+      `It hopes nobody notices its treasured ${lower(treasure)} collection.`,
+      `It is guarding ${phrase} very politely.`
+    ],
+    Daydreaming: [
+      `It is gazing at ${phrase} like it might contain a tiny daydream.`,
+      `It is imagining an entire story about ${phrase}.`,
+      `It is holding ${phrase} as if it floated in from a dream.`
+    ]
+  };
+
+  const fallback = [
+    `It has discovered ${phrase} and seems to have very strong feelings about it.`,
+    `It is treating ${phrase} like the most important object in the garden.`,
+    `It has chosen ${phrase} as its favorite backyard discovery.`
+  ];
+
+  return randomItem(options[energy] || fallback);
 }
 
 function randomExpressionForEnergy(energy, currentExpression = "") {
@@ -255,6 +354,7 @@ function makeBird() {
   const profile = energyProfile(energy);
   const storyCue = randomStoryCue(energy);
   const pose = weightedPick(tables.poses, profile.pose);
+  const treasure = randomTreasureForEnergy(energy);
 
   return {
     birdEnergy: energy,
@@ -263,6 +363,8 @@ function makeBird() {
     pose,
     storyCue: storyCue.text,
     scene: randomSceneForMoment(energy, pose),
+    treasure,
+    treasureStory: randomTreasureStory(energy, treasure),
     bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
     wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
     crest: weightedPick(tables.crests, profile.crest),
@@ -337,6 +439,10 @@ function birdPrompt(bird) {
     paragraphs.push(`Add ${quirkPhrase(bird.quirk)}.`);
   }
 
+  if (hasValue(bird.treasure)) {
+    paragraphs.push(bird.treasureStory);
+  }
+
   paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
   return paragraphs;
 }
@@ -349,9 +455,10 @@ function recipeChips(bird) {
     itemName(bird.bodyShape),
     itemName(bird.crest),
     itemName(bird.tail),
+    bird.treasure,
     bird.quirk,
     bird.colorPalette.name
-  ];
+  ].filter(hasValue);
 }
 
 function personalityDetails(bird) {
@@ -363,7 +470,16 @@ function personalityDetails(bird) {
 }
 
 function storyDetails(bird) {
-  return [["Story Cue", bird.storyCue, "", "storyCue"]];
+  const rows = [
+    ["Story Cue", bird.storyCue, "", "storyCue"],
+    ["Treasure", bird.treasure, "", "treasure"]
+  ];
+
+  if (hasValue(bird.treasure)) {
+    rows.push(["Treasure Moment", bird.treasureStory, "", ""]);
+  }
+
+  return rows;
 }
 
 function sceneDetails(bird) {
@@ -471,7 +587,10 @@ function CharacterSnapshot({ bird }) {
         </div>
         <div>
           <dt>Story</dt>
-          <dd>{storySentence(bird)}</dd>
+          <dd>
+            {storySentence(bird)}
+            {hasValue(bird.treasure) ? ` ${bird.treasureStory}` : ""}
+          </dd>
         </div>
       </dl>
     </section>
@@ -560,6 +679,7 @@ export default function App() {
         const profile = energyProfile(nextEnergy);
         const cue = randomStoryCue(nextEnergy);
         const pose = weightedPick(tables.poses, profile.pose);
+        const treasure = randomTreasureForEnergy(nextEnergy, currentBird.treasure);
         return {
           ...currentBird,
           birdEnergy: nextEnergy,
@@ -568,6 +688,8 @@ export default function App() {
           pose,
           storyCue: cue.text,
           scene: randomSceneForMoment(nextEnergy, pose, currentBird.scene.sceneName),
+          treasure,
+          treasureStory: randomTreasureStory(nextEnergy, treasure),
           bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
           wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
           crest: weightedPick(tables.crests, profile.crest),
@@ -615,6 +737,19 @@ export default function App() {
       return;
     }
 
+    if (field === "treasure") {
+      setBird((currentBird) => {
+        const treasure = randomDifferentTreasureForEnergy(currentBird.birdEnergy, currentBird.treasure);
+        return {
+          ...currentBird,
+          treasure,
+          treasureStory: randomTreasureStory(currentBird.birdEnergy, treasure)
+        };
+      });
+      setCopyStatus("");
+      return;
+    }
+
     if (field === "expression") {
       setBird((currentBird) => ({
         ...currentBird,
@@ -632,6 +767,7 @@ export default function App() {
       legLength: tables.legLengths,
       feet: tables.feet,
       quirk: tables.quirks,
+      treasure: tables.treasures,
       colorPalette: tables.palettes
     };
 

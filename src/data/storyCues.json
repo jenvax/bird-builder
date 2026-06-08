@@ -6,7 +6,7 @@
   ],
   "Shy": [
     { "text": "It is pretending not to notice anyone while peeking at a snail from a distance.", "critter": "Tiny Snail" },
-    { "text": "It is hiding slightly behind its scarf and hoping nobody asks it to sing." },
+    { "text": "It is hiding slightly behind a leaf and hoping nobody asks it to sing." },
     { "text": "It is peeking around a mushroom at a beetle passing by.", "critter": "Friendly Beetle" }
   ],
   "Startled": [
@@ -15,7 +15,7 @@
     { "text": "It nearly tripped over a tiny pebble and is trying to look dignified." }
   ],
   "Proud": [
-    { "text": "It is showing a shiny treasure to a mouse as if unveiling a masterpiece.", "critter": "Acorn Mouse" },
+    { "text": "It is showing a perfect pebble to a mouse as if unveiling a masterpiece.", "critter": "Acorn Mouse" },
     { "text": "It is posing like it just won a tiny parade and expects applause." },
     { "text": "It is standing very tall while a frog admires its excellent posture.", "critter": "Pocket Frog" }
   ],

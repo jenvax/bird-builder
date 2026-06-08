@@ -1,10 +1,7 @@
 [
-  { "name": "None" },
   { "name": "Fan Tail", "image": "/assets/bird-parts/tails/fan-crest.png" },
-  { "name": "Flared Fan Tail", "image": "/assets/bird-parts/tails/fan-crest.png" },
+  { "name": "Ribbon Tail" },
   { "name": "Curly Tail", "image": "/assets/bird-parts/tails/curly-q.png" },
-  { "name": "Petal Tail" },
   { "name": "Cloud Tail", "image": "/assets/bird-parts/tails/cloud.png" },
-  { "name": "Leaf Tail", "image": "/assets/bird-parts/tails/leaf.png" },
-  { "name": "Ribbon Tail" }
+  { "name": "Leaf Tail", "image": "/assets/bird-parts/tails/leaf.png" }
 ]
