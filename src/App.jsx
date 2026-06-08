@@ -47,6 +47,84 @@ const priorityTreasures = [
   "Giant Acorn"
 ];
 
+const poseDescriptions = {
+  "Frozen Mid-Flinch": [
+    "frozen in a startled flinch",
+    "stopped mid-flinch with its whole body tense",
+    "caught in a tiny moment of alarm"
+  ],
+  "One Foot Up": [
+    "balancing on one foot",
+    "hesitating with one foot raised",
+    "holding one foot up like it just noticed something"
+  ],
+  "Tiny Hop": [
+    "frozen mid-hop",
+    "bouncing with excitement",
+    "springing lightly off the ground"
+  ],
+  "Splayed Stance": [
+    "standing with its feet planted wide",
+    "bracing itself with a stubborn little stance",
+    "standing wide like it refuses to move"
+  ],
+  "Pigeon-Toed Stand": [
+    "standing with its toes turned inward",
+    "standing shyly with its feet tucked toward each other",
+    "looking bashful with pigeon-toed feet"
+  ],
+  "Proud Chest Puff": [
+    "puffing out its chest proudly",
+    "standing tall like it expects applause",
+    "posing with its chest pushed forward"
+  ],
+  "Leaning Forward": [
+    "leaning in for a closer look",
+    "craning forward curiously",
+    "tilting toward the interesting thing"
+  ],
+  "Tiptoe Sneak": [
+    "sneaking quietly",
+    "tiptoeing forward",
+    "creeping along like it is up to something"
+  ],
+  Perched: [
+    "perched neatly",
+    "settled on its little perch",
+    "balanced calmly in place"
+  ],
+  "Belly Sit": [
+    "sitting on its tummy",
+    "resting squarely on its belly",
+    "plopped down with its belly on the ground"
+  ],
+  Slouched: [
+    "slumping sleepily",
+    "drooping like it has had a long day",
+    "sagging into a soft little slouch"
+  ],
+  "Looking Over Shoulder": [
+    "looking back over its shoulder",
+    "glancing behind itself suspiciously",
+    "twisting around to see what is happening"
+  ],
+  "Mid-Step": [
+    "paused in the middle of a step",
+    "caught mid-stride",
+    "taking one careful little step"
+  ],
+  "Wing Flap": [
+    "flapping its wings in a burst of energy",
+    "fluttering like it cannot stand still",
+    "waving its wings with dramatic urgency"
+  ],
+  "Tucked and Cozy": [
+    "tucked into a cozy little shape",
+    "nestled down comfortably",
+    "curled into a soft resting pose"
+  ]
+};
+
 function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
@@ -231,6 +309,12 @@ function randomStoryCue(energy) {
   return randomItem(tables.storyCues[energy] || tables.storyCues.Curious);
 }
 
+function randomPoseDescription(pose, currentDescription = "") {
+  const descriptions = poseDescriptions[pose] || [lower(pose)];
+  const choices = descriptions.filter((description) => description !== currentDescription);
+  return randomItem(choices.length > 0 ? choices : descriptions);
+}
+
 function weightedPick(items, names, chance = 0.78) {
   return names && Math.random() < chance ? randomNamedItem(items, names) : randomItem(items);
 }
@@ -361,6 +445,7 @@ function makeBird() {
     attitude: randomAttitude(energy),
     expression: randomExpressionForEnergy(energy),
     pose,
+    poseDescription: randomPoseDescription(pose),
     storyCue: storyCue.text,
     scene: randomSceneForMoment(energy, pose),
     treasure,
@@ -430,7 +515,7 @@ function storySentence(bird) {
 
 function birdPrompt(bird) {
   const paragraphs = [
-    `Draw a ${lower(bird.birdEnergy)} bird that looks like it is ${lower(bird.pose)}. ${storySentence(bird)}`,
+    `Draw a ${lower(bird.birdEnergy)} bird that looks like it is ${bird.poseDescription}. ${storySentence(bird)}`,
     `It has a ${lower(bird.bodyShape)} shaped body, ${wingPhrase(bird.wingStyle)}, ${crestPhrase(bird.crest)}, ${tailPhrase(bird.tail)}, and ${lower(bird.legLength)} legs.`,
     `Give it a ${lower(bird.expression)} expression and ${lower(bird.feet)}.`
   ];
@@ -451,7 +536,7 @@ function recipeChips(bird) {
   return [
     bird.birdEnergy,
     bird.expression,
-    bird.pose,
+    bird.poseDescription,
     itemName(bird.bodyShape),
     itemName(bird.crest),
     itemName(bird.tail),
@@ -465,7 +550,7 @@ function personalityDetails(bird) {
   return [
     ["Bird Energy", bird.birdEnergy, "", "birdEnergy"],
     ["Expression", bird.expression, "", "expression"],
-    ["Pose", bird.pose, "", "pose"]
+    ["Pose", bird.poseDescription, "", "pose"]
   ];
 }
 
@@ -578,7 +663,7 @@ function CharacterSnapshot({ bird }) {
       </div>
       <div className="snapshot-main">
         <p className="snapshot-energy">{bird.birdEnergy} Bird</p>
-        <p className="snapshot-pose">{bird.pose}</p>
+        <p className="snapshot-pose">{bird.poseDescription}</p>
       </div>
       <dl className="snapshot-details">
         <div>
@@ -686,6 +771,7 @@ export default function App() {
           attitude: randomAttitude(nextEnergy),
           expression: randomExpressionForEnergy(nextEnergy, currentBird.expression),
           pose,
+          poseDescription: randomPoseDescription(pose, currentBird.poseDescription),
           storyCue: cue.text,
           scene: randomSceneForMoment(nextEnergy, pose, currentBird.scene.sceneName),
           treasure,
@@ -721,6 +807,7 @@ export default function App() {
         return {
           ...currentBird,
           pose: nextPose,
+          poseDescription: randomPoseDescription(nextPose, currentBird.poseDescription),
           scene: randomSceneForMoment(currentBird.birdEnergy, nextPose, currentBird.scene.sceneName)
         };
       });
