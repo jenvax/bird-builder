@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import birdEnergy from "./data/birdEnergy.json";
 import simpleBodyShapes from "./data/simpleBodyShapes.json";
 import expressions from "./data/expressions.json";
-import expressionPools from "./data/expressionPools.json";
 import poses from "./data/poses.json";
 import wingStyles from "./data/wingStyles.json";
 import simpleCrests from "./data/simpleCrests.json";
@@ -22,7 +21,6 @@ const tables = {
   birdEnergy,
   bodyShapes: simpleBodyShapes,
   expressions,
-  expressionPools,
   poses,
   wingStyles,
   crests: simpleCrests,
@@ -50,6 +48,9 @@ const priorityTreasures = [
   "Colorful Feather",
   "Giant Acorn"
 ];
+
+const finalEmotionValues = new Set(birdEnergy);
+const finalPoseValues = new Set(poses);
 
 const poseDescriptions = {
   Neutral: ["standing normally"],
@@ -194,6 +195,14 @@ function articleFor(value) {
   return /^[aeiou]/i.test(itemName(value)) ? "an" : "a";
 }
 
+function validateEmotion(emotion) {
+  return finalEmotionValues.has(emotion) ? emotion : "Curious";
+}
+
+function validatePose(pose) {
+  return finalPoseValues.has(pose) ? pose : "Neutral";
+}
+
 const emotionProfiles = {
   Joyful: { archetype: "Zippy", expression: "Joyful", pose: "Hopping", story: "It is hopping like the garden just told it wonderful news." },
   Cheerful: { archetype: "Curious", expression: "Cheerful", pose: "Walking", story: "Walking along as if every flower is a friendly neighbor." },
@@ -329,7 +338,13 @@ const archetypeProfiles = {
 };
 
 function emotionProfile(emotion) {
-  return emotionProfiles[emotion] || emotionProfiles.Curious;
+  const safeEmotion = validateEmotion(emotion);
+  return emotionProfiles[safeEmotion] || emotionProfiles.Curious;
+}
+
+function recommendedPoseForEmotion(emotion) {
+  const mappedPose = emotionProfile(emotion).pose;
+  return validatePose(mappedPose);
 }
 
 function energyProfile(energy) {
@@ -479,11 +494,11 @@ function randomSceneForMoment(energy, pose, currentSceneName = "") {
 }
 
 function makeBird() {
-  const energy = randomItem(tables.birdEnergy);
+  const energy = validateEmotion(randomItem(tables.birdEnergy));
   const profile = energyProfile(energy);
   const emotion = emotionProfile(energy);
   const storyCue = randomStoryCue(energy);
-  const pose = emotion.pose;
+  const pose = recommendedPoseForEmotion(energy);
   const treasure = randomTreasureForEnergy(energy);
 
   return {
@@ -595,7 +610,7 @@ function emotionDetails(bird) {
     ["Emotion", bird.birdEnergy, "", "birdEnergy"],
     ["Recommended Expression", bird.expression, "", ""],
     ["Recommended Pose", bird.pose, "", ""],
-    ["Reference Sheet Note", "Use the reference sheets for inspiration. You can follow these suggestions or choose any expression and pose you like.", "", ""]
+    ["Reference Sheet Note", "Use the reference sheets for inspiration. You can follow the suggested pose or choose any pose you like.", "", ""]
   ];
 }
 
@@ -630,7 +645,7 @@ function accessoryDetails(bird) {
 function storyDetails(bird) {
   const rows = [
     ["Story Idea", storySentence(bird), "", "storyCue"],
-    ["Optional Pose Inspiration", bird.pose, "", "pose"],
+    ["Optional Pose Inspiration", bird.pose, "", ""],
     ["Treasure", bird.treasure, "", "treasure"]
   ];
 
@@ -719,11 +734,11 @@ export default function App() {
   function shuffleField(field) {
     if (field === "birdEnergy") {
       setBird((currentBird) => {
-        const nextEnergy = randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy);
+        const nextEnergy = validateEmotion(randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy));
         const profile = energyProfile(nextEnergy);
         const emotion = emotionProfile(nextEnergy);
         const cue = randomStoryCue(nextEnergy);
-        const pose = emotion.pose;
+        const pose = recommendedPoseForEmotion(nextEnergy);
         const treasure = randomTreasureForEnergy(nextEnergy, currentBird.treasure);
         return {
           ...currentBird,
