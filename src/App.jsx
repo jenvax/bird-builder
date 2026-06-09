@@ -61,19 +61,13 @@ const poseDescriptions = {
   Daydreaming: ["gazing off into the distance"],
   Walking: ["walking along"],
   Hopping: ["hopping with bright energy"],
-  "Taking Off": ["pushing off as if about to fly"],
-  Flying: ["flying through the air"],
-  Landing: ["landing softly"],
-  Flamingo: ["balancing on one foot"],
   "Relaxed Stand": ["standing in a relaxed pose"],
   "Tucked In": ["tucked into a cozy little shape"],
   Startled: ["frozen in a startled flinch"],
   Scared: ["trying to be brave while looking nervous"],
   Excited: ["bouncing with excitement"],
-  Determined: ["standing like it has made up its mind"],
   Suspicious: ["glancing sideways suspiciously"],
   Frustrated: ["standing with very big feelings"],
-  Overwhelmed: ["looking like everything is a little too much"],
   "Frozen Mid-Flinch": [
     "frozen in a startled flinch",
     "stopped mid-flinch with its whole body tense",
@@ -210,32 +204,26 @@ const emotionProfiles = {
   Intrigued: { archetype: "Curious", expression: "Intrigued", pose: "Curious", story: "Leaning toward a tiny mystery in the grass." },
   Focused: { archetype: "Curious", expression: "Focused", pose: "One Foot Up", story: "Studying one small detail with complete seriousness." },
   Thoughtful: { archetype: "Daydreaming", expression: "Thoughtful", pose: "Daydreaming", story: "Pausing as if it just remembered a very poetic leaf." },
-  Wonderstruck: { archetype: "Daydreaming", expression: "Wonderstruck", pose: "Landing", story: "Landing softly after seeing something surprisingly beautiful." },
   Mischievous: { archetype: "Mischievous", expression: "Mischievous", pose: "Suspicious", story: "Looking much too pleased about a tiny secret." },
   Playful: { archetype: "Zippy", expression: "Playful", pose: "Hopping", story: "Hopping around like the whole garden is a game." },
   Cheeky: { archetype: "Mischievous", expression: "Cheeky", pose: "Suspicious", story: "Pretending it did not cause the tiny mess nearby." },
   Guilty: { archetype: "Shy", expression: "Guilty", pose: "Shy", story: "Trying to look innocent beside something it definitely moved." },
-  "Trying Not To Laugh": { archetype: "Mischievous", expression: "Trying Not To Laugh", pose: "Shy", story: "Trying very hard not to laugh at its own tiny joke." },
   Surprised: { archetype: "Startled", expression: "Surprised", pose: "Startled", story: "Freezing because something small happened very suddenly." },
   Startled: { archetype: "Startled", expression: "Startled", pose: "Startled", story: "Frozen in place after hearing a rustle in the flowers." },
-  Shocked: { archetype: "Startled", expression: "Shocked", pose: "Overwhelmed", story: "Overwhelmed by a garden discovery that feels enormous." },
+  Shocked: { archetype: "Startled", expression: "Shocked", pose: "Scared", story: "Shocked by a garden discovery that feels enormous." },
   Disbelieving: { archetype: "Confused", expression: "Disbelieving", pose: "Confused", story: "Staring at the wrong thing and refusing to understand it." },
-  Awestruck: { archetype: "Daydreaming", expression: "Awestruck", pose: "Landing", story: "Landing carefully as if it has just seen a miracle in the weeds." },
   Anxious: { archetype: "Nervous", expression: "Anxious", pose: "Scared", story: "Trying to decide whether a tiny sound is friendly or alarming." },
   Worried: { archetype: "Nervous", expression: "Worried", pose: "One Foot Up", story: "Holding one foot up while considering a very small problem." },
   Uneasy: { archetype: "Shy", expression: "Uneasy", pose: "Shy", story: "Keeping close to the leaves just in case." },
-  Overwhelmed: { archetype: "Nervous", expression: "Overwhelmed", pose: "Overwhelmed", story: "Looking like the garden has become a little too much." },
   Scared: { archetype: "Nervous", expression: "Scared", pose: "Scared", story: "Trying to be brave near something harmless but surprising." },
   Sad: { archetype: "Shy", expression: "Sad", pose: "Tucked In", story: "Sitting quietly with a very small disappointed feeling." },
   Disappointed: { archetype: "Shy", expression: "Disappointed", pose: "Shy", story: "Looking at the ground like the worm parade was canceled." },
   Lonely: { archetype: "Shy", expression: "Lonely", pose: "Tucked In", story: "Waiting quietly for someone kind to notice." },
-  Hurt: { archetype: "Shy", expression: "Hurt", pose: "Tucked In", story: "Tucked in small, hoping the moment passes." },
   Hopeful: { archetype: "Curious", expression: "Hopeful", pose: "Curious", story: "Looking toward something new with a tiny bit of courage." },
   Irritated: { archetype: "Grumpy", expression: "Irritated", pose: "Grumpy", story: "Not approving of a flower that is being much too cheerful." },
   Annoyed: { archetype: "Grumpy", expression: "Annoyed", pose: "Grumpy", story: "Silently judging a beetle for walking in the wrong direction." },
   Frustrated: { archetype: "Grumpy", expression: "Frustrated", pose: "Frustrated", story: "Trying to solve a tiny problem with very big feelings." },
-  Angry: { archetype: "Grumpy", expression: "Angry", pose: "Frustrated", story: "Standing firmly as if the garden owes it an explanation." },
-  Fuming: { archetype: "Grumpy", expression: "Fuming", pose: "Frustrated", story: "Fuming quietly beside something that did not go its way." }
+  Angry: { archetype: "Grumpy", expression: "Angry", pose: "Frustrated", story: "Standing firmly as if the garden owes it an explanation." }
 };
 
 const archetypeProfiles = {
@@ -605,10 +593,9 @@ function recipeChips(bird) {
 function emotionDetails(bird) {
   return [
     ["Emotion", bird.birdEnergy, "", "birdEnergy"],
-    ["Recommended Expression", bird.expression, "", "expression"],
-    ["Expression Note", "Use the reference sheet for inspiration. Feel free to choose any expression you like.", "", ""],
-    ["Recommended Pose", bird.pose, "", "pose"],
-    ["Pose Note", "Use the reference sheet for inspiration. Feel free to choose any pose you like.", "", ""]
+    ["Recommended Expression", bird.expression, "", ""],
+    ["Recommended Pose", bird.pose, "", ""],
+    ["Reference Sheet Note", "Use the reference sheets for inspiration. You can follow these suggestions or choose any expression and pose you like.", "", ""]
   ];
 }
 
