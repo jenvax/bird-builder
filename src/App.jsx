@@ -612,7 +612,7 @@ function legsDetails(bird) {
   return [
     ["Leg Length", bird.legLength, "", "legLength"],
     ["Feet", itemName(bird.feet), itemImage(bird.feet), "feet"],
-    ["Optional", "Use the pose idea below, or draw the bird standing normally.", "", ""]
+    ["Optional", "Use the recommended pose or draw the bird standing normally.", "", ""]
   ];
 }
 
