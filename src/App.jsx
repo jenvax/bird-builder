@@ -52,6 +52,28 @@ const priorityTreasures = [
 ];
 
 const poseDescriptions = {
+  Neutral: ["standing normally"],
+  Curious: ["leaning in for a closer look"],
+  Proud: ["standing tall like it expects applause"],
+  Grumpy: ["standing firmly with a stubborn little stance"],
+  Shy: ["standing shyly with its feet tucked toward each other"],
+  Confused: ["tilting as if it is trying to understand"],
+  Daydreaming: ["gazing off into the distance"],
+  Walking: ["walking along"],
+  Hopping: ["hopping with bright energy"],
+  "Taking Off": ["pushing off as if about to fly"],
+  Flying: ["flying through the air"],
+  Landing: ["landing softly"],
+  Flamingo: ["balancing on one foot"],
+  "Relaxed Stand": ["standing in a relaxed pose"],
+  "Tucked In": ["tucked into a cozy little shape"],
+  Startled: ["frozen in a startled flinch"],
+  Scared: ["trying to be brave while looking nervous"],
+  Excited: ["bouncing with excitement"],
+  Determined: ["standing like it has made up its mind"],
+  Suspicious: ["glancing sideways suspiciously"],
+  Frustrated: ["standing with very big feelings"],
+  Overwhelmed: ["looking like everything is a little too much"],
   "Frozen Mid-Flinch": [
     "frozen in a startled flinch",
     "stopped mid-flinch with its whole body tense",
@@ -178,131 +200,152 @@ function articleFor(value) {
   return /^[aeiou]/i.test(itemName(value)) ? "an" : "a";
 }
 
-function energyProfile(energy) {
-  const profiles = {
-    Sleepy: {
-      pose: ["Belly Sit", "Slouched", "Tucked and Cozy"],
-      bodyShape: ["Fluffy", "Marshmallow", "Blob"],
-      wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
-      crest: ["Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
-      tail: ["Cloud Tail", "Leaf Tail"],
-      legLength: ["Tiny", "Short"],
-      quirk: ["Leaf Cape", "Petal Collar", "Flower Crown", "None"],
-      treasure: ["Chair Stuffing", "Dryer Lint Puff", "Soft Feather", "Dandelion Puff"]
-    },
-    Shy: {
-      pose: ["Pigeon-Toed Stand", "One Foot Up", "Tucked and Cozy"],
-      bodyShape: ["Bean", "Marshmallow", "Gumdrop", "Blob"],
-      wingStyle: ["Cloud Wings", "Leaf Wings", "Tiny Wings"],
-      crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
-      tail: ["Leaf Tail", "Cloud Tail"],
-      legLength: ["Tiny", "Short"],
-      quirk: ["Flower Crown", "Daisy Necklace", "Round Glasses", "None"],
-      treasure: ["Soft Feather", "Chair Stuffing", "Fabric Scrap", "Curly Leaf"]
-    },
-    Bossy: {
-      pose: ["Proud Chest Puff", "Splayed Stance", "Mid-Step"],
-      bodyShape: ["Round", "Pear", "Tall Skinny"],
-      wingStyle: ["Feather Wings", "Scallop Wings"],
-      crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
-      tail: ["Fan Tail", "Ribbon Tail"],
-      legLength: ["Tall", "Very Tall"],
-      quirk: ["Tiny Gold Crown", "Tiny Bell", "Round Glasses"],
-      treasure: ["Metal Washer", "Shiny Bottle Cap", "Lost Button", "Perfect Pebble"]
-    },
-    Zippy: {
-      pose: ["Tiny Hop", "Wing Flap", "Mid-Step", "Leaning Forward"],
-      bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
-      wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
-      crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
-      tail: ["Fan Tail", "Ribbon Tail"],
-      legLength: ["Tall", "Very Tall"],
-      quirk: ["Rain Boots", "Tiny Backpack", "Butterfly Bow Tie", "Sunflower Pin", "None"],
-      treasure: ["Soda Tab", "Maple Seed", "Gum Wrapper", "Shiny Bottle Cap"]
-    },
-    Nervous: {
-      pose: ["Frozen Mid-Flinch", "Pigeon-Toed Stand", "One Foot Up"],
-      bodyShape: ["Bean", "Blob", "Marshmallow"],
-      wingStyle: ["Leaf Wings", "Tiny Wings", "Feather Wings"],
-      crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
-      tail: ["Curly Tail", "Cloud Tail"],
-      legLength: ["Tiny", "Short"],
-      quirk: ["Tiny Umbrella", "Round Glasses", "Petal Collar", "None"],
-      treasure: ["Chair Stuffing", "Lost Button", "Soft Feather", "Fabric Scrap"]
-    },
-    Confused: {
-      pose: ["Looking Over Shoulder", "One Foot Up", "Splayed Stance"],
-      bodyShape: ["Blob", "Bean", "Tall Skinny"],
-      wingStyle: ["Cloud Wings", "Tiny Wings", "Feather Wings"],
-      crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
-      tail: ["Curly Tail", "Cloud Tail"],
-      legLength: ["Short", "Medium"],
-      quirk: ["Oversized Glasses", "Magnifying Glass", "Tiny Backpack", "None"],
-      treasure: ["Metal Washer", "Pinecone Scale", "Smooth Shell", "Interesting Twig"]
-    },
-    Startled: {
-      pose: ["Frozen Mid-Flinch", "Tiny Hop", "Splayed Stance"],
-      bodyShape: ["Bean", "Tall Skinny", "Gumdrop"],
-      wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
-      crest: ["Sunburst Crest", "Triple Tuft Crest"],
-      tail: ["Fan Tail", "Ribbon Tail"],
-      legLength: ["Medium", "Tall"],
-      quirk: ["Rain Hat", "Tiny Umbrella", "Round Glasses", "None"],
-      treasure: ["Dandelion Puff", "Soda Tab", "Lost Button", "Maple Seed"]
-    },
-    Proud: {
-      pose: ["Proud Chest Puff", "Perched", "Splayed Stance"],
-      bodyShape: ["Pear", "Round", "Tall Skinny"],
-      wingStyle: ["Scallop Wings", "Feather Wings"],
-      crest: ["Sunburst Crest", "Triple Tuft Crest", "Flower Crown"],
-      tail: ["Fan Tail", "Leaf Tail"],
-      legLength: ["Tall", "Very Tall"],
-      quirk: ["Tiny Gold Crown", "Twig Crown", "Sun Hat", "Flower Crown"],
-      treasure: ["Perfect Pebble", "Shiny Bottle Cap", "Lost Button", "Colorful Feather", "Giant Acorn"]
-    },
-    Grumpy: {
-      pose: ["Splayed Stance", "Slouched", "Perched"],
-      bodyShape: ["Bean", "Blob", "Pear"],
-      wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
-      crest: ["Triple Tuft Crest", "Sunburst Crest", "Pebble Tuft Crest"],
-      tail: ["Fan Tail", "Curly Tail"],
-      legLength: ["Short", "Medium", "Tall"],
-      quirk: ["Rain Hat", "Rain Boots", "Round Glasses", "None"],
-      treasure: ["Perfect Pebble", "Metal Washer", "Lost Button", "Pinecone Scale"]
-    },
-    Daydreaming: {
-      pose: ["Tucked and Cozy", "Belly Sit", "Leaning Forward"],
-      bodyShape: ["Fluffy", "Marshmallow", "Blob"],
-      wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
-      crest: ["Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
-      tail: ["Cloud Tail", "Leaf Tail"],
-      legLength: ["Tiny", "Short", "Medium"],
-      quirk: ["Flower Crown", "Leaf Crown", "Daisy Necklace", "Ribbon Bow", "Leaf Cape"],
-      treasure: ["Dandelion Puff", "Fallen Flower Petal", "Milkweed Fluff", "Colorful Feather"]
-    },
-    Mischievous: {
-      pose: ["Tiptoe Sneak", "Looking Over Shoulder", "Mid-Step"],
-      bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
-      wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
-      crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
-      tail: ["Curly Tail", "Ribbon Tail"],
-      legLength: ["Short", "Medium", "Tall"],
-      quirk: ["Oversized Glasses", "Butterfly Bow Tie", "Ladybug Button", "Tiny Bell"],
-      treasure: ["Lost Button", "Strip of Ribbon", "Gum Wrapper", "Soda Tab", "Shiny Bottle Cap"]
-    },
-    Curious: {
-      pose: ["Leaning Forward", "One Foot Up", "Mid-Step"],
-      bodyShape: ["Bean", "Round", "Gumdrop"],
-      wingStyle: ["Leaf Wings", "Feather Wings", "Tiny Wings"],
-      crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
-      tail: ["Leaf Tail", "Fan Tail", "Cloud Tail"],
-      legLength: ["Medium", "Tall"],
-      quirk: ["Explorer Hat", "Magnifying Glass", "Bug Jar", "Tiny Binoculars", "Tiny Backpack"],
-      treasure: ["Curly Leaf", "Dandelion Puff", "Seed Pod", "Interesting Twig", "Maple Seed"]
-    }
-  };
+const emotionProfiles = {
+  Joyful: { archetype: "Zippy", expression: "Joyful", pose: "Hopping", story: "It is hopping like the garden just told it wonderful news." },
+  Cheerful: { archetype: "Curious", expression: "Cheerful", pose: "Walking", story: "Walking along as if every flower is a friendly neighbor." },
+  Excited: { archetype: "Zippy", expression: "Excited", pose: "Tiny Hop", story: "Bouncing with excitement over something tiny and excellent." },
+  Proud: { archetype: "Proud", expression: "Proud", pose: "Proud", story: "Showing off like it has just done something very impressive." },
+  Content: { archetype: "Sleepy", expression: "Content", pose: "Relaxed Stand", story: "Resting happily in a quiet garden moment." },
+  Curious: { archetype: "Curious", expression: "Curious", pose: "Curious", story: "Watching a snail cross the ground like it is the most important parade." },
+  Intrigued: { archetype: "Curious", expression: "Intrigued", pose: "Curious", story: "Leaning toward a tiny mystery in the grass." },
+  Focused: { archetype: "Curious", expression: "Focused", pose: "One Foot Up", story: "Studying one small detail with complete seriousness." },
+  Thoughtful: { archetype: "Daydreaming", expression: "Thoughtful", pose: "Daydreaming", story: "Pausing as if it just remembered a very poetic leaf." },
+  Wonderstruck: { archetype: "Daydreaming", expression: "Wonderstruck", pose: "Landing", story: "Landing softly after seeing something surprisingly beautiful." },
+  Mischievous: { archetype: "Mischievous", expression: "Mischievous", pose: "Suspicious", story: "Looking much too pleased about a tiny secret." },
+  Playful: { archetype: "Zippy", expression: "Playful", pose: "Hopping", story: "Hopping around like the whole garden is a game." },
+  Cheeky: { archetype: "Mischievous", expression: "Cheeky", pose: "Suspicious", story: "Pretending it did not cause the tiny mess nearby." },
+  Guilty: { archetype: "Shy", expression: "Guilty", pose: "Shy", story: "Trying to look innocent beside something it definitely moved." },
+  "Trying Not To Laugh": { archetype: "Mischievous", expression: "Trying Not To Laugh", pose: "Shy", story: "Trying very hard not to laugh at its own tiny joke." },
+  Surprised: { archetype: "Startled", expression: "Surprised", pose: "Startled", story: "Freezing because something small happened very suddenly." },
+  Startled: { archetype: "Startled", expression: "Startled", pose: "Startled", story: "Frozen in place after hearing a rustle in the flowers." },
+  Shocked: { archetype: "Startled", expression: "Shocked", pose: "Overwhelmed", story: "Overwhelmed by a garden discovery that feels enormous." },
+  Disbelieving: { archetype: "Confused", expression: "Disbelieving", pose: "Confused", story: "Staring at the wrong thing and refusing to understand it." },
+  Awestruck: { archetype: "Daydreaming", expression: "Awestruck", pose: "Landing", story: "Landing carefully as if it has just seen a miracle in the weeds." },
+  Anxious: { archetype: "Nervous", expression: "Anxious", pose: "Scared", story: "Trying to decide whether a tiny sound is friendly or alarming." },
+  Worried: { archetype: "Nervous", expression: "Worried", pose: "One Foot Up", story: "Holding one foot up while considering a very small problem." },
+  Uneasy: { archetype: "Shy", expression: "Uneasy", pose: "Shy", story: "Keeping close to the leaves just in case." },
+  Overwhelmed: { archetype: "Nervous", expression: "Overwhelmed", pose: "Overwhelmed", story: "Looking like the garden has become a little too much." },
+  Scared: { archetype: "Nervous", expression: "Scared", pose: "Scared", story: "Trying to be brave near something harmless but surprising." },
+  Sad: { archetype: "Shy", expression: "Sad", pose: "Tucked In", story: "Sitting quietly with a very small disappointed feeling." },
+  Disappointed: { archetype: "Shy", expression: "Disappointed", pose: "Shy", story: "Looking at the ground like the worm parade was canceled." },
+  Lonely: { archetype: "Shy", expression: "Lonely", pose: "Tucked In", story: "Waiting quietly for someone kind to notice." },
+  Hurt: { archetype: "Shy", expression: "Hurt", pose: "Tucked In", story: "Tucked in small, hoping the moment passes." },
+  Hopeful: { archetype: "Curious", expression: "Hopeful", pose: "Curious", story: "Looking toward something new with a tiny bit of courage." },
+  Irritated: { archetype: "Grumpy", expression: "Irritated", pose: "Grumpy", story: "Not approving of a flower that is being much too cheerful." },
+  Annoyed: { archetype: "Grumpy", expression: "Annoyed", pose: "Grumpy", story: "Silently judging a beetle for walking in the wrong direction." },
+  Frustrated: { archetype: "Grumpy", expression: "Frustrated", pose: "Frustrated", story: "Trying to solve a tiny problem with very big feelings." },
+  Angry: { archetype: "Grumpy", expression: "Angry", pose: "Frustrated", story: "Standing firmly as if the garden owes it an explanation." },
+  Fuming: { archetype: "Grumpy", expression: "Fuming", pose: "Frustrated", story: "Fuming quietly beside something that did not go its way." }
+};
 
-  return profiles[energy] || profiles.Curious;
+const archetypeProfiles = {
+  Sleepy: {
+    bodyShape: ["Fluffy", "Marshmallow", "Blob"],
+    wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
+    crest: ["Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
+    tail: ["Cloud Tail", "Leaf Tail"],
+    legLength: ["Short", "Medium"],
+    quirk: ["Leaf Cape", "Flower Crown", "None"],
+    treasure: ["Chair Stuffing", "Dandelion Puff", "Colorful Feather"]
+  },
+  Shy: {
+    bodyShape: ["Bean", "Marshmallow", "Gumdrop", "Blob"],
+    wingStyle: ["Cloud Wings", "Leaf Wings"],
+    crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
+    tail: ["Leaf Tail", "Cloud Tail"],
+    legLength: ["Short", "Medium"],
+    quirk: ["Flower Crown", "Daisy Necklace", "Round Glasses", "None"],
+    treasure: ["Chair Stuffing", "Strip of Ribbon", "Colorful Feather", "Curly Leaf"]
+  },
+  Proud: {
+    bodyShape: ["Pear", "Round", "Tall Skinny"],
+    wingStyle: ["Scallop Wings", "Feather Wings"],
+    crest: ["Sunburst Crest", "Triple Tuft Crest", "Flower Crown"],
+    tail: ["Fan Tail", "Leaf Tail"],
+    legLength: ["Medium", "Tall"],
+    quirk: ["Tiny Gold Crown", "Twig Crown", "Sun Hat", "Flower Crown"],
+    treasure: ["Perfect Pebble", "Shiny Bottle Cap", "Lost Button", "Colorful Feather", "Giant Acorn"]
+  },
+  Zippy: {
+    bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
+    wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
+    crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
+    tail: ["Fan Tail", "Ribbon Tail"],
+    legLength: ["Medium", "Tall"],
+    quirk: ["Rain Boots", "Tiny Backpack", "Butterfly Bow Tie", "None"],
+    treasure: ["Shiny Bottle Cap", "Dandelion Puff", "Curly Leaf"]
+  },
+  Nervous: {
+    bodyShape: ["Bean", "Blob", "Marshmallow"],
+    wingStyle: ["Leaf Wings", "Tiny Wings", "Feather Wings"],
+    crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+    tail: ["Curly Tail", "Cloud Tail"],
+    legLength: ["Short", "Medium"],
+    quirk: ["Tiny Umbrella", "Round Glasses", "None"],
+    treasure: ["Chair Stuffing", "Lost Button", "Colorful Feather"]
+  },
+  Confused: {
+    bodyShape: ["Blob", "Bean", "Tall Skinny"],
+    wingStyle: ["Cloud Wings", "Tiny Wings", "Feather Wings"],
+    crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
+    tail: ["Curly Tail", "Cloud Tail"],
+    legLength: ["Short", "Medium"],
+    quirk: ["Magnifying Glass", "Tiny Backpack", "None"],
+    treasure: ["Interesting Twig", "Seed Pod", "Curly Leaf"]
+  },
+  Startled: {
+    bodyShape: ["Bean", "Tall Skinny", "Gumdrop"],
+    wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
+    crest: ["Sunburst Crest", "Triple Tuft Crest"],
+    tail: ["Fan Tail", "Ribbon Tail"],
+    legLength: ["Medium", "Tall"],
+    quirk: ["Tiny Umbrella", "Round Glasses", "None"],
+    treasure: ["Dandelion Puff", "Lost Button", "Seed Pod"]
+  },
+  Grumpy: {
+    bodyShape: ["Bean", "Blob", "Pear"],
+    wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
+    crest: ["Triple Tuft Crest", "Sunburst Crest", "Pebble Tuft Crest"],
+    tail: ["Fan Tail", "Curly Tail"],
+    legLength: ["Short", "Medium", "Tall"],
+    quirk: ["Rain Boots", "Round Glasses", "None"],
+    treasure: ["Perfect Pebble", "Lost Button", "Interesting Twig"]
+  },
+  Daydreaming: {
+    bodyShape: ["Fluffy", "Marshmallow", "Blob"],
+    wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
+    crest: ["Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+    tail: ["Cloud Tail", "Leaf Tail"],
+    legLength: ["Short", "Medium"],
+    quirk: ["Flower Crown", "Leaf Crown", "Daisy Necklace", "Ribbon Bow", "Leaf Cape"],
+    treasure: ["Dandelion Puff", "Flower Petal", "Milkweed Fluff", "Colorful Feather"]
+  },
+  Mischievous: {
+    bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
+    wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
+    crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+    tail: ["Curly Tail", "Ribbon Tail"],
+    legLength: ["Short", "Medium", "Tall"],
+    quirk: ["Butterfly Bow Tie", "Ladybug Button", "Tiny Bell", "None"],
+    treasure: ["Lost Button", "Strip of Ribbon", "Shiny Bottle Cap"]
+  },
+  Curious: {
+    bodyShape: ["Bean", "Round", "Gumdrop"],
+    wingStyle: ["Leaf Wings", "Feather Wings", "Tiny Wings"],
+    crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
+    tail: ["Leaf Tail", "Fan Tail", "Cloud Tail"],
+    legLength: ["Medium", "Tall"],
+    quirk: ["Explorer Hat", "Magnifying Glass", "Bug Jar", "Tiny Binoculars", "Tiny Backpack"],
+    treasure: ["Curly Leaf", "Dandelion Puff", "Seed Pod", "Interesting Twig"]
+  }
+};
+
+function emotionProfile(emotion) {
+  return emotionProfiles[emotion] || emotionProfiles.Curious;
+}
+
+function energyProfile(energy) {
+  return archetypeProfiles[emotionProfile(energy).archetype] || archetypeProfiles.Curious;
 }
 
 function randomAttitude(energy) {
@@ -310,7 +353,16 @@ function randomAttitude(energy) {
 }
 
 function randomStoryCue(energy) {
-  return randomItem(tables.storyCues[energy] || tables.storyCues.Curious);
+  const baseStory = emotionProfile(energy).story;
+  const storyOptions = [
+    baseStory,
+    "Watching a snail cross the ground like it is the most important parade.",
+    "Trying to understand a mysterious footprint.",
+    "Listening to the wind like it is music.",
+    "Carrying a piece of chair stuffing nearly as large as itself."
+  ];
+
+  return { text: randomItem(storyOptions) };
 }
 
 function randomPoseDescription(pose, currentDescription = "") {
@@ -393,16 +445,17 @@ function randomTreasureStory(energy, treasure) {
     `It has chosen ${phrase} as its favorite backyard discovery.`
   ];
 
-  return randomItem(options[energy] || fallback);
+  return randomItem(options[emotionProfile(energy).archetype] || options[energy] || fallback);
 }
 
 function randomExpressionForEnergy(energy, currentExpression = "") {
-  const pool = tables.expressionPools[energy] || {};
-  const primary = pool.primary || [];
-  const secondary = pool.secondary || tables.expressions;
-  const candidates = Math.random() < 0.8 ? primary : secondary;
-  const choices = candidates.filter((expression) => expression !== currentExpression);
-  return randomItem(choices.length > 0 ? choices : candidates.length > 0 ? candidates : tables.expressions);
+  const recommended = emotionProfile(energy).expression;
+
+  if (recommended !== currentExpression && Math.random() < 0.85) {
+    return recommended;
+  }
+
+  return randomDifferentItem(tables.expressions, currentExpression);
 }
 
 function weightedScenePick(scenes) {
@@ -440,14 +493,15 @@ function randomSceneForMoment(energy, pose, currentSceneName = "") {
 function makeBird() {
   const energy = randomItem(tables.birdEnergy);
   const profile = energyProfile(energy);
+  const emotion = emotionProfile(energy);
   const storyCue = randomStoryCue(energy);
-  const pose = weightedPick(tables.poses, profile.pose);
+  const pose = emotion.pose;
   const treasure = randomTreasureForEnergy(energy);
 
   return {
     birdEnergy: energy,
     attitude: randomAttitude(energy),
-    expression: randomExpressionForEnergy(energy),
+    expression: emotion.expression,
     pose,
     poseDescription: randomPoseDescription(pose),
     storyCue: storyCue.text,
@@ -506,26 +560,7 @@ function lowerFirst(value) {
 }
 
 function storySentence(bird) {
-  const cue = bird.storyCue || `It is ${bird.attitude}.`;
-  const sceneText = lower(bird.scene.sceneText);
-
-  if (cue.startsWith("It is ")) {
-    return `It is ${sceneText}, ${cue.slice(6)}`;
-  }
-
-  if (cue.startsWith("It looks ")) {
-    return `It is ${sceneText}, ${lowerFirst(cue)}`;
-  }
-
-  if (cue.startsWith("It just ") || cue.startsWith("It has ")) {
-    return `It is ${sceneText} after ${lowerFirst(cue)}`;
-  }
-
-  if (cue.startsWith("It does ")) {
-    return `It is ${sceneText} and ${cue.slice(3)}`;
-  }
-
-  return `It is ${sceneText}. ${cue}`;
+  return bird.storyCue || emotionProfile(bird.birdEnergy).story;
 }
 
 function birdPrompt(bird) {
@@ -544,7 +579,7 @@ function birdPrompt(bird) {
 
   paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
 
-  paragraphs.push(`Optional story idea: ${storySentence(bird)} Optional pose inspiration: ${bird.poseDescription}.`);
+  paragraphs.push(`Optional story idea: ${storySentence(bird)} Optional pose inspiration: ${bird.pose}.`);
 
   if (hasValue(bird.treasure)) {
     paragraphs.push(bird.treasureStory);
@@ -556,7 +591,6 @@ function birdPrompt(bird) {
 function recipeChips(bird) {
   return [
     bird.birdEnergy,
-    bird.expression,
     itemName(bird.bodyShape),
     itemName(bird.wingStyle),
     itemName(bird.crest),
@@ -566,6 +600,16 @@ function recipeChips(bird) {
     bird.quirk,
     bird.colorPalette.name
   ].filter(hasValue);
+}
+
+function emotionDetails(bird) {
+  return [
+    ["Emotion", bird.birdEnergy, "", "birdEnergy"],
+    ["Recommended Expression", bird.expression, "", "expression"],
+    ["Expression Note", "Use the reference sheet for inspiration. Feel free to choose any expression you like.", "", ""],
+    ["Recommended Pose", bird.pose, "", "pose"],
+    ["Pose Note", "Use the reference sheet for inspiration. Feel free to choose any pose you like.", "", ""]
+  ];
 }
 
 function sketchDetails(bird) {
@@ -585,10 +629,6 @@ function legsDetails(bird) {
   ];
 }
 
-function faceDetails(bird) {
-  return [["Expression", bird.expression, "", "expression"]];
-}
-
 function patternDetails(bird) {
   return [
     ["Pattern", bird.pattern, "", "pattern"],
@@ -603,7 +643,7 @@ function accessoryDetails(bird) {
 function storyDetails(bird) {
   const rows = [
     ["Story Idea", storySentence(bird), "", "storyCue"],
-    ["Optional Pose Inspiration", bird.poseDescription, "", "pose"],
+    ["Optional Pose Inspiration", bird.pose, "", "pose"],
     ["Treasure", bird.treasure, "", "treasure"]
   ];
 
@@ -612,99 +652,6 @@ function storyDetails(bird) {
   }
 
   return rows;
-}
-
-function expressionImage(expression) {
-  const value = lower(expression);
-
-  if (/(gasp|wide|spark|surprised|scream|question)/.test(value)) {
-    return "/assets/bird-parts/eyes/round.png";
-  }
-
-  if (/(squint|blink|glare|unimpressed|dozy|sleepy|heavy)/.test(value)) {
-    return "/assets/bird-parts/eyes/tall.png";
-  }
-
-  if (/(side|peek|looking away|worried|unsure|nervous|tilted)/.test(value)) {
-    return "/assets/bird-parts/eyes/oval.png";
-  }
-
-  if (/(smile|grin|smirk|pleased|proud|royal|delighted|guilty)/.test(value)) {
-    return "/assets/bird-parts/eyes/gumdrop.png";
-  }
-
-  return "/assets/bird-parts/eyes/simple.png";
-}
-
-function SketchLayer({ src, className }) {
-  if (!src) {
-    return null;
-  }
-
-  return (
-    <img
-      className={`sketch-layer ${className}`}
-      src={src}
-      alt=""
-      onError={(event) => {
-        event.currentTarget.hidden = true;
-      }}
-    />
-  );
-}
-
-function SketchPreview({ bird }) {
-  const stageClasses = [
-    "sketch-stage",
-    "simple-bird",
-    `energy-${slug(bird.birdEnergy)}`,
-    `expression-${slug(bird.expression)}`,
-    `pose-${slug(bird.pose)}`
-  ].join(" ");
-
-  return (
-    <section className="sketch-preview-card" aria-labelledby="sketch-preview-heading">
-      <div className="section-heading">
-        <h2 id="sketch-preview-heading">Character Construction Preview</h2>
-        <p>A simple character pose guide, not final art.</p>
-      </div>
-      <div className={stageClasses}>
-        <SketchLayer src={itemImage(bird.bodyShape)} className="sketch-body" />
-        <SketchLayer src={itemImage(bird.crest)} className="sketch-crest" />
-        <SketchLayer src={itemImage(bird.tail)} className="sketch-tail" />
-        <SketchLayer src={itemImage(bird.wingStyle)} className="sketch-wing" />
-        <SketchLayer src={expressionImage(bird.expression)} className="sketch-eyes" />
-        <SketchLayer src={itemImage(bird.feet)} className="sketch-feet" />
-      </div>
-    </section>
-  );
-}
-
-function CharacterSnapshot({ bird }) {
-  return (
-    <section className="snapshot-card" aria-labelledby="snapshot-heading">
-      <div className="section-heading">
-        <h2 id="snapshot-heading">Character Snapshot</h2>
-      </div>
-      <div className="snapshot-main">
-        <p className="snapshot-energy">{bird.birdEnergy} Bird</p>
-        <p className="snapshot-pose">{bird.poseDescription}</p>
-      </div>
-      <dl className="snapshot-details">
-        <div>
-          <dt>Expression</dt>
-          <dd>{bird.expression}</dd>
-        </div>
-        <div>
-          <dt>Story</dt>
-          <dd>
-            {storySentence(bird)}
-            {hasValue(bird.treasure) ? ` ${bird.treasureStory}` : ""}
-          </dd>
-        </div>
-      </dl>
-    </section>
-  );
 }
 
 function PaletteSwatches({ colors }) {
@@ -758,7 +705,7 @@ function ColorPaletteCard({ palette, onShuffle }) {
   return (
     <section className="palette-card" aria-labelledby="color-palette-heading">
       <div className="section-heading">
-        <h2 id="color-palette-heading"><span>Step 3 - Add Color</span></h2>
+        <h2 id="color-palette-heading"><span>Add Color</span></h2>
         <p>{palette.mood}</p>
       </div>
       <div className="palette-heading-row">
@@ -787,14 +734,15 @@ export default function App() {
       setBird((currentBird) => {
         const nextEnergy = randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy);
         const profile = energyProfile(nextEnergy);
+        const emotion = emotionProfile(nextEnergy);
         const cue = randomStoryCue(nextEnergy);
-        const pose = weightedPick(tables.poses, profile.pose);
+        const pose = emotion.pose;
         const treasure = randomTreasureForEnergy(nextEnergy, currentBird.treasure);
         return {
           ...currentBird,
           birdEnergy: nextEnergy,
           attitude: randomAttitude(nextEnergy),
-          expression: randomExpressionForEnergy(nextEnergy, currentBird.expression),
+          expression: emotion.expression,
           pose,
           poseDescription: randomPoseDescription(pose, currentBird.poseDescription),
           storyCue: cue.text,
@@ -814,14 +762,10 @@ export default function App() {
     }
 
     if (field === "storyCue") {
-      setBird((currentBird) => {
-        const cues = tables.storyCues[currentBird.birdEnergy] || tables.storyCues.Curious;
-        const choices = cues.filter((cue) => cue.text !== currentBird.storyCue);
-        return {
-          ...currentBird,
-          storyCue: randomItem(choices.length > 0 ? choices : cues).text
-        };
-      });
+      setBird((currentBird) => ({
+        ...currentBird,
+        storyCue: randomStoryCue(currentBird.birdEnergy).text
+      }));
       setCopyStatus("");
       return;
     }
@@ -944,13 +888,13 @@ export default function App() {
         </div>
 
         <div className="detail-grid">
-          <DetailCard title="Step 1 - Sketch the Bird" rows={sketchDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Step 2 - Add Legs & Feet" rows={legsDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Emotion" rows={emotionDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Sketch the Bird" rows={sketchDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Add Legs & Feet" rows={legsDetails(bird)} onShuffle={shuffleField} />
           <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
-          <DetailCard title="Step 4 - Draw the Face" rows={faceDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Step 5 - Add Pattern" rows={patternDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Step 6 - Optional Accessory" rows={accessoryDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Step 7 - Story Idea" rows={storyDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Add Pattern" rows={patternDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Optional Accessory" rows={accessoryDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Story Idea" rows={storyDetails(bird)} onShuffle={shuffleField} />
         </div>
 
       </section>

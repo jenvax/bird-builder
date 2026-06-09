@@ -1,8 +1,7 @@
 [
-  { "name": "Tiny Round Feet", "image": "/assets/bird-parts/feet/tiny-round-feet.png" },
-  { "name": "Oval Feet", "image": "/assets/bird-parts/feet/oval-feet.png" },
-  { "name": "Boot Feet", "image": "/assets/bird-parts/feet/boot-feet.png" },
-  { "name": "Paddle Feet", "image": "/assets/bird-parts/feet/paddle-feet.png" },
+  { "name": "Oval", "image": "/assets/bird-parts/feet/oval-feet.png" },
+  { "name": "Round", "image": "/assets/bird-parts/feet/tiny-round-feet.png" },
+  { "name": "Paddle", "image": "/assets/bird-parts/feet/paddle-feet.png" },
   { "name": "Bird Toes" },
-  { "name": "Sneakers" }
+  { "name": "Boots", "image": "/assets/bird-parts/feet/boot-feet.png" }
 ]
