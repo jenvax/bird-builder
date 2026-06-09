@@ -3,5 +3,6 @@
   { "name": "Oval Feet", "image": "/assets/bird-parts/feet/oval-feet.png" },
   { "name": "Boot Feet", "image": "/assets/bird-parts/feet/boot-feet.png" },
   { "name": "Paddle Feet", "image": "/assets/bird-parts/feet/paddle-feet.png" },
-  { "name": "Bird Toes" }
+  { "name": "Bird Toes" },
+  { "name": "Sneakers" }
 ]

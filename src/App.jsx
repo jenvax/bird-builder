@@ -12,6 +12,8 @@ import simpleFeet from "./data/simpleFeet.json";
 import palettes from "./data/palettes.json";
 import quirks from "./data/quirks.json";
 import treasures from "./data/treasures.json";
+import patterns from "./data/patterns.json";
+import patternPlacement from "./data/patternPlacement.json";
 import storyCues from "./data/storyCues.json";
 import attitudes from "./data/attitudes.json";
 import sceneCards from "./data/sceneCards.json";
@@ -30,6 +32,8 @@ const tables = {
   palettes,
   quirks,
   treasures,
+  patterns,
+  patternPlacement,
   storyCues,
   attitudes,
   sceneCards
@@ -456,6 +460,8 @@ function makeBird() {
     tail: weightedPick(tables.tails, profile.tail),
     legLength: weightedPick(tables.legLengths, profile.legLength),
     feet: randomItem(tables.feet),
+    pattern: randomItem(tables.patterns),
+    patternPlacement: randomItem(tables.patternPlacement),
     quirk: weightedPick(tables.quirks, profile.quirk, 0.65),
     colorPalette: randomItem(tables.palettes)
   };
@@ -484,6 +490,15 @@ function crestPhrase(crest) {
 
 function tailPhrase(tail) {
   return hasValue(tail) ? `a ${lower(tail)}` : "no tail";
+}
+
+function patternPhrase(bird) {
+  if (!hasValue(bird.pattern)) {
+    return "";
+  }
+
+  const location = lower(bird.patternPlacement);
+  return location === "all over" ? `Add ${lower(bird.pattern)} all over.` : `Add ${lower(bird.pattern)} on the ${location}.`;
 }
 
 function lowerFirst(value) {
@@ -515,20 +530,26 @@ function storySentence(bird) {
 
 function birdPrompt(bird) {
   const paragraphs = [
-    `Draw a ${lower(bird.birdEnergy)} bird that looks like it is ${bird.poseDescription}. ${storySentence(bird)}`,
-    `It has a ${lower(bird.bodyShape)} shaped body, ${wingPhrase(bird.wingStyle)}, ${crestPhrase(bird.crest)}, ${tailPhrase(bird.tail)}, and ${lower(bird.legLength)} legs.`,
-    `Give it a ${lower(bird.expression)} expression and ${lower(bird.feet)}.`
+    `Draw a ${lower(bird.birdEnergy)} bird with a ${lower(bird.bodyShape)} shaped body, ${wingPhrase(bird.wingStyle)}, ${crestPhrase(bird.crest)}, and ${tailPhrase(bird.tail)}.`,
+    `Add ${lower(bird.legLength)} legs with ${lower(bird.feet)}. Give it a ${lower(bird.expression)} expression.`
   ];
+
+  if (hasValue(bird.pattern)) {
+    paragraphs.push(patternPhrase(bird));
+  }
 
   if (hasValue(bird.quirk)) {
     paragraphs.push(`Add ${quirkPhrase(bird.quirk)}.`);
   }
 
+  paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
+
+  paragraphs.push(`Optional story idea: ${storySentence(bird)} Optional pose inspiration: ${bird.poseDescription}.`);
+
   if (hasValue(bird.treasure)) {
     paragraphs.push(bird.treasureStory);
   }
 
-  paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
   return paragraphs;
 }
 
@@ -536,27 +557,53 @@ function recipeChips(bird) {
   return [
     bird.birdEnergy,
     bird.expression,
-    bird.poseDescription,
     itemName(bird.bodyShape),
+    itemName(bird.wingStyle),
     itemName(bird.crest),
     itemName(bird.tail),
+    bird.pattern,
     bird.treasure,
     bird.quirk,
     bird.colorPalette.name
   ].filter(hasValue);
 }
 
-function personalityDetails(bird) {
+function sketchDetails(bird) {
   return [
-    ["Bird Energy", bird.birdEnergy, "", "birdEnergy"],
-    ["Expression", bird.expression, "", "expression"],
-    ["Pose", bird.poseDescription, "", "pose"]
+    ["Body Shape", itemName(bird.bodyShape), itemImage(bird.bodyShape), "bodyShape"],
+    ["Wings", itemName(bird.wingStyle), itemImage(bird.wingStyle), "wingStyle"],
+    ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
+    ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"]
   ];
+}
+
+function legsDetails(bird) {
+  return [
+    ["Leg Length", bird.legLength, "", "legLength"],
+    ["Feet", itemName(bird.feet), itemImage(bird.feet), "feet"],
+    ["Optional", "Use the pose idea below, or draw the bird standing normally.", "", ""]
+  ];
+}
+
+function faceDetails(bird) {
+  return [["Expression", bird.expression, "", "expression"]];
+}
+
+function patternDetails(bird) {
+  return [
+    ["Pattern", bird.pattern, "", "pattern"],
+    ["Location", hasValue(bird.pattern) ? bird.patternPlacement : "Optional", "", "patternPlacement"]
+  ];
+}
+
+function accessoryDetails(bird) {
+  return [["Accessory", bird.quirk, "", "quirk"]];
 }
 
 function storyDetails(bird) {
   const rows = [
-    ["Story Cue", bird.storyCue, "", "storyCue"],
+    ["Story Idea", storySentence(bird), "", "storyCue"],
+    ["Optional Pose Inspiration", bird.poseDescription, "", "pose"],
     ["Treasure", bird.treasure, "", "treasure"]
   ];
 
@@ -565,28 +612,6 @@ function storyDetails(bird) {
   }
 
   return rows;
-}
-
-function sceneDetails(bird) {
-  return [["Scene", bird.scene.sceneText, "", "scene"]];
-}
-
-function featureDetails(bird) {
-  return [
-    ["Body Shape", itemName(bird.bodyShape), itemImage(bird.bodyShape), "bodyShape"],
-    ["Wing Style", itemName(bird.wingStyle), itemImage(bird.wingStyle), "wingStyle"],
-    ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
-    ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"],
-    ["Leg Length", bird.legLength, "", "legLength"],
-    ["Feet", itemName(bird.feet), itemImage(bird.feet), "feet"]
-  ];
-}
-
-function stylingDetails(bird) {
-  return [
-    ["Quirk", bird.quirk, "", "quirk"],
-    ["Palette", bird.colorPalette.name, "", "colorPalette"]
-  ];
 }
 
 function expressionImage(expression) {
@@ -733,11 +758,11 @@ function ColorPaletteCard({ palette, onShuffle }) {
   return (
     <section className="palette-card" aria-labelledby="color-palette-heading">
       <div className="section-heading">
-        <h2 id="color-palette-heading">Color Palette</h2>
+        <h2 id="color-palette-heading"><span>Step 3 - Add Color</span></h2>
         <p>{palette.mood}</p>
       </div>
       <div className="palette-heading-row">
-        <h3>{palette.name}</h3>
+        <h3>Palette: {palette.name}</h3>
         <button type="button" className="shuffle-button" onClick={() => onShuffle("colorPalette")}>
           Shuffle
         </button>
@@ -853,6 +878,8 @@ export default function App() {
       tail: tables.tails,
       legLength: tables.legLengths,
       feet: tables.feet,
+      pattern: tables.patterns,
+      patternPlacement: tables.patternPlacement,
       quirk: tables.quirks,
       treasure: tables.treasures,
       colorPalette: tables.palettes
@@ -900,34 +927,30 @@ export default function App() {
           ))}
         </div>
 
-        <div className="feature-grid">
-          <CharacterSnapshot bird={bird} />
-
-          <div className="prompt-column">
-            <section className="prompt-card" aria-labelledby="prompt-heading">
-              <h2 id="prompt-heading">Draw This Bird</h2>
-              <div className="prompt-text">
-                {prompt.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-            </section>
-
-            <div className="copy-action">
-              <button type="button" className="secondary" onClick={copyPrompt}>Copy Prompt</button>
-              <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
+        <div className="prompt-column">
+          <section className="prompt-card" aria-labelledby="prompt-heading">
+            <h2 id="prompt-heading">Draw This Bird</h2>
+            <div className="prompt-text">
+              {prompt.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
+          </section>
+
+          <div className="copy-action">
+            <button type="button" className="secondary" onClick={copyPrompt}>Copy Prompt</button>
+            <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
           </div>
         </div>
 
-        <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
-
         <div className="detail-grid">
-          <DetailCard title="Personality" rows={personalityDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Story" rows={storyDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Scene" rows={sceneDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Bird Features" rows={featureDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Styling" rows={stylingDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Step 1 - Sketch the Bird" rows={sketchDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Step 2 - Add Legs & Feet" rows={legsDetails(bird)} onShuffle={shuffleField} />
+          <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
+          <DetailCard title="Step 4 - Draw the Face" rows={faceDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Step 5 - Add Pattern" rows={patternDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Step 6 - Optional Accessory" rows={accessoryDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Step 7 - Story Idea" rows={storyDetails(bird)} onShuffle={shuffleField} />
         </div>
 
       </section>
