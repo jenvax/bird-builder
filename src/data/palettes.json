@@ -76,5 +76,41 @@
     "name": "Garden Gate",
     "colors": ["#6A994E", "#A7C957", "#DDA15E", "#BC6C25", "#F2E8CF"],
     "mood": "Leafy, rustic, and ready for a curious bird."
+  },
+  {
+    "collection": "Silly Bird Palettes",
+    "name": "Feather Explosion",
+    "colors": ["#FF2E63", "#08D9D6", "#F9ED69", "#7C3AED", "#FFFFFF"],
+    "mood": "Bright, loud, and made for a bird with big feelings."
+  },
+  {
+    "collection": "Silly Bird Palettes",
+    "name": "Tropical Chaos",
+    "colors": ["#00B050", "#FF6B00", "#00A8FF", "#FF2DAA", "#FFE600"],
+    "mood": "Juicy, chaotic, and full of jungle-party energy."
+  },
+  {
+    "collection": "Silly Bird Palettes",
+    "name": "Parrot Party",
+    "colors": ["#00C853", "#2962FF", "#FF1744", "#FFD600", "#FF9100"],
+    "mood": "Bold, punchy, and ready to squawk."
+  },
+  {
+    "collection": "Silly Bird Palettes",
+    "name": "Circus Bird",
+    "colors": ["#E60012", "#0057B8", "#FFD500", "#FFFFFF", "#111111"],
+    "mood": "High contrast, theatrical, and delightfully ridiculous."
+  },
+  {
+    "collection": "Silly Bird Palettes",
+    "name": "Firecracker",
+    "colors": ["#FF1E1E", "#FF8C00", "#FFE600", "#6A00FF", "#00E5FF"],
+    "mood": "Explosive, zippy, and impossible to ignore."
+  },
+  {
+    "collection": "Silly Bird Palettes",
+    "name": "Crayon Box",
+    "colors": ["#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93"],
+    "mood": "Primary-bright, playful, and freshly scribbled."
   }
 ]

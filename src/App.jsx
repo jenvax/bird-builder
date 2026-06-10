@@ -51,6 +51,20 @@ const priorityTreasures = [
 
 const finalEmotionValues = new Set(birdEnergy);
 const finalPoseValues = new Set(poses);
+const boldPaletteEmotions = new Set([
+  "Joyful",
+  "Excited",
+  "Mischievous",
+  "Playful",
+  "Cheeky",
+  "Surprised",
+  "Startled",
+  "Shocked",
+  "Irritated",
+  "Annoyed",
+  "Frustrated",
+  "Angry"
+]);
 
 const poseDescriptions = {
   Neutral: ["standing normally"],
@@ -237,7 +251,7 @@ const emotionProfiles = {
 
 const archetypeProfiles = {
   Sleepy: {
-    bodyShape: ["Fluffy", "Marshmallow", "Blob"],
+    bodyShape: ["Fluffy", "Marshmallow", "Round", "Blob"],
     wingStyle: ["Cloud Wings", "Fluffy Wings", "Leaf Wings"],
     crest: ["Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
     tail: ["Cloud Tail", "Leaf Tail"],
@@ -246,7 +260,7 @@ const archetypeProfiles = {
     treasure: ["Chair Stuffing", "Dandelion Puff", "Colorful Feather"]
   },
   Shy: {
-    bodyShape: ["Bean", "Marshmallow", "Gumdrop", "Blob"],
+    bodyShape: ["Bean", "Marshmallow", "Round", "Gumdrop", "Blob"],
     wingStyle: ["Cloud Wings", "Leaf Wings"],
     crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
     tail: ["Leaf Tail", "Cloud Tail"],
@@ -257,8 +271,8 @@ const archetypeProfiles = {
   Proud: {
     bodyShape: ["Pear", "Round", "Tall Skinny"],
     wingStyle: ["Scallop Wings", "Feather Wings"],
-    crest: ["Sunburst Crest", "Triple Tuft Crest", "Flower Crown"],
-    tail: ["Fan Tail", "Leaf Tail"],
+    crest: ["Fan Crest", "Triple Tuft Crest", "Sunburst Crest"],
+    tail: ["Fan Tail", "Flared Fan Tail"],
     legLength: ["Medium", "Tall"],
     quirk: ["Tiny Gold Crown", "Twig Crown", "Sun Hat", "Flower Crown"],
     treasure: ["Perfect Pebble", "Shiny Bottle Cap", "Lost Button", "Colorful Feather", "Giant Acorn"]
@@ -266,8 +280,8 @@ const archetypeProfiles = {
   Zippy: {
     bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
     wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
-    crest: ["Sunburst Crest", "Triple Tuft Crest", "Single Feather Crest"],
-    tail: ["Fan Tail", "Ribbon Tail"],
+    crest: ["Sunburst Crest", "Wild Tuft Crest", "Triple Tuft Crest"],
+    tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
     legLength: ["Medium", "Tall"],
     quirk: ["Rain Boots", "Tiny Backpack", "Butterfly Bow Tie", "None"],
     treasure: ["Shiny Bottle Cap", "Dandelion Puff", "Curly Leaf"]
@@ -275,7 +289,7 @@ const archetypeProfiles = {
   Nervous: {
     bodyShape: ["Bean", "Blob", "Marshmallow"],
     wingStyle: ["Leaf Wings", "Tiny Wings", "Feather Wings"],
-    crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+    crest: ["Wild Tuft Crest", "Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
     tail: ["Curly Tail", "Cloud Tail"],
     legLength: ["Short", "Medium"],
     quirk: ["Tiny Umbrella", "Round Glasses", "None"],
@@ -284,7 +298,7 @@ const archetypeProfiles = {
   Confused: {
     bodyShape: ["Blob", "Bean", "Tall Skinny"],
     wingStyle: ["Cloud Wings", "Tiny Wings", "Feather Wings"],
-    crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
+    crest: ["Single Feather Crest", "Crooked Tuft Crest", "Pebble Tuft Crest"],
     tail: ["Curly Tail", "Cloud Tail"],
     legLength: ["Short", "Medium"],
     quirk: ["Magnifying Glass", "Tiny Backpack", "None"],
@@ -293,8 +307,8 @@ const archetypeProfiles = {
   Startled: {
     bodyShape: ["Bean", "Tall Skinny", "Gumdrop"],
     wingStyle: ["Feather Wings", "Tiny Wings", "Scallop Wings"],
-    crest: ["Sunburst Crest", "Triple Tuft Crest"],
-    tail: ["Fan Tail", "Ribbon Tail"],
+    crest: ["Sunburst Crest", "Wild Tuft Crest", "Triple Tuft Crest"],
+    tail: ["Fan Tail", "Flared Fan Tail"],
     legLength: ["Medium", "Tall"],
     quirk: ["Tiny Umbrella", "Round Glasses", "None"],
     treasure: ["Dandelion Puff", "Lost Button", "Seed Pod"]
@@ -302,7 +316,7 @@ const archetypeProfiles = {
   Grumpy: {
     bodyShape: ["Bean", "Blob", "Pear"],
     wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
-    crest: ["Triple Tuft Crest", "Sunburst Crest", "Pebble Tuft Crest"],
+    crest: ["Crooked Tuft Crest", "Triple Tuft Crest", "Sunburst Crest", "Pebble Tuft Crest"],
     tail: ["Fan Tail", "Curly Tail"],
     legLength: ["Short", "Medium", "Tall"],
     quirk: ["Rain Boots", "Round Glasses", "None"],
@@ -320,7 +334,7 @@ const archetypeProfiles = {
   Mischievous: {
     bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
     wingStyle: ["Feather Wings", "Scallop Wings", "Tiny Wings"],
-    crest: ["Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
+    crest: ["Crooked Tuft Crest", "Triple Tuft Crest", "Single Feather Crest"],
     tail: ["Curly Tail", "Ribbon Tail"],
     legLength: ["Short", "Medium", "Tall"],
     quirk: ["Butterfly Bow Tie", "Ladybug Button", "Tiny Bell", "None"],
@@ -329,7 +343,7 @@ const archetypeProfiles = {
   Curious: {
     bodyShape: ["Bean", "Round", "Gumdrop"],
     wingStyle: ["Leaf Wings", "Feather Wings", "Tiny Wings"],
-    crest: ["Single Feather Crest", "Triple Tuft Crest", "Pebble Tuft Crest"],
+    crest: ["Single Feather Crest", "Pebble Tuft Crest"],
     tail: ["Leaf Tail", "Fan Tail", "Cloud Tail"],
     legLength: ["Medium", "Tall"],
     quirk: ["Explorer Hat", "Magnifying Glass", "Bug Jar", "Tiny Binoculars", "Tiny Backpack"],
@@ -376,6 +390,16 @@ function randomPoseDescription(pose, currentDescription = "") {
 
 function weightedPick(items, names, chance = 0.78) {
   return names && Math.random() < chance ? randomNamedItem(items, names) : randomItem(items);
+}
+
+function randomPaletteForEmotion(emotion, currentPaletteName = "") {
+  const wantsBold = boldPaletteEmotions.has(validateEmotion(emotion));
+  const preferred = tables.palettes.filter((palette) =>
+    wantsBold ? palette.collection === "Silly Bird Palettes" : palette.collection !== "Silly Bird Palettes"
+  );
+  const fallback = preferred.length > 0 ? preferred : tables.palettes;
+  const candidates = fallback.filter((palette) => palette.name !== currentPaletteName);
+  return randomItem(candidates.length > 0 ? candidates : fallback);
 }
 
 function randomTreasureForEnergy(energy, currentTreasure = "") {
@@ -520,7 +544,7 @@ function makeBird() {
     pattern: randomItem(tables.patterns),
     patternPlacement: randomItem(tables.patternPlacement),
     quirk: weightedPick(tables.quirks, profile.quirk, 0.65),
-    colorPalette: randomItem(tables.palettes)
+    colorPalette: randomPaletteForEmotion(energy)
   };
 }
 
@@ -549,6 +573,11 @@ function tailPhrase(tail) {
   return hasValue(tail) ? `a ${lower(tail)}` : "no tail";
 }
 
+function feetPhrase(feet) {
+  const value = lower(feet);
+  return /(feet|toes|boots)$/.test(value) ? value : `${value} feet`;
+}
+
 function patternPhrase(bird) {
   if (!hasValue(bird.pattern)) {
     return "";
@@ -568,8 +597,8 @@ function storySentence(bird) {
 
 function birdPrompt(bird) {
   const paragraphs = [
-    `Draw a ${lower(bird.birdEnergy)} bird with a ${lower(bird.bodyShape)} shaped body, ${wingPhrase(bird.wingStyle)}, ${crestPhrase(bird.crest)}, and ${tailPhrase(bird.tail)}.`,
-    `Add ${lower(bird.legLength)} legs with ${lower(bird.feet)}. Give it a ${lower(bird.expression)} expression.`
+    `Draw a ${lower(bird.birdEnergy)} bird whose whole body clearly shows that feeling. Give it a ${lower(bird.bodyShape)} shaped body, ${wingPhrase(bird.wingStyle)}, ${crestPhrase(bird.crest)}, and ${tailPhrase(bird.tail)}.`,
+    `Add ${lower(bird.legLength)} legs with ${feetPhrase(bird.feet)}. Give it a ${lower(bird.expression)} expression.`
   ];
 
   if (hasValue(bird.pattern)) {
@@ -610,7 +639,7 @@ function emotionDetails(bird) {
     ["Emotion", bird.birdEnergy, "", "birdEnergy"],
     ["Recommended Expression", bird.expression, "", ""],
     ["Recommended Pose", bird.pose, "", ""],
-    ["Reference Sheet Note", "Use the reference sheets for inspiration. You can follow the suggested pose or choose any pose you like.", "", ""]
+    ["Reference Sheet Note", "Use these as inspiration. Feel free to choose any expression or pose from the reference sheets.", "", ""]
   ];
 }
 
@@ -756,7 +785,8 @@ export default function App() {
           crest: weightedPick(tables.crests, profile.crest),
           tail: weightedPick(tables.tails, profile.tail),
           legLength: weightedPick(tables.legLengths, profile.legLength),
-          quirk: weightedPick(tables.quirks, profile.quirk, 0.65)
+          quirk: weightedPick(tables.quirks, profile.quirk, 0.65),
+          colorPalette: randomPaletteForEmotion(nextEnergy, currentBird.colorPalette.name)
         };
       });
       setCopyStatus("");
@@ -817,6 +847,15 @@ export default function App() {
       return;
     }
 
+    if (field === "colorPalette") {
+      setBird((currentBird) => ({
+        ...currentBird,
+        colorPalette: randomPaletteForEmotion(currentBird.birdEnergy, currentBird.colorPalette.name)
+      }));
+      setCopyStatus("");
+      return;
+    }
+
     const fieldTables = {
       bodyShape: tables.bodyShapes,
       wingStyle: tables.wingStyles,
@@ -827,8 +866,7 @@ export default function App() {
       pattern: tables.patterns,
       patternPlacement: tables.patternPlacement,
       quirk: tables.quirks,
-      treasure: tables.treasures,
-      colorPalette: tables.palettes
+      treasure: tables.treasures
     };
 
     const items = fieldTables[field];

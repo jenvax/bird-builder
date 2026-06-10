@@ -1,6 +1,9 @@
 [
+  { "name": "Fan Crest", "image": "/assets/bird-parts/crests/fan-crest.png" },
   { "name": "Single Feather Crest", "image": "/assets/bird-parts/crests/single-feather.png" },
   { "name": "Triple Tuft Crest", "image": "/assets/bird-parts/crests/triple-tuft.png" },
+  { "name": "Wild Tuft Crest" },
+  { "name": "Crooked Tuft Crest" },
   { "name": "Pebble Tuft Crest" },
   { "name": "Ribbon Crest" },
   { "name": "Sunburst Crest", "image": "/assets/bird-parts/crests/sunburst.png" },

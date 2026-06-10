@@ -1,5 +1,6 @@
 [
   { "name": "Fan Tail", "image": "/assets/bird-parts/tails/fan-crest.png" },
+  { "name": "Flared Fan Tail", "image": "/assets/bird-parts/tails/fan-crest.png" },
   { "name": "Ribbon Tail" },
   { "name": "Curly Tail", "image": "/assets/bird-parts/tails/curly-q.png" },
   { "name": "Cloud Tail", "image": "/assets/bird-parts/tails/cloud.png" },
