@@ -679,59 +679,44 @@ function recipeChips(bird) {
   return [
     bird.birdEnergy,
     itemName(bird.bodyShape),
-    itemName(bird.wingStyle),
-    itemName(bird.crest),
-    itemName(bird.tail),
-    bird.pattern,
-    bird.treasure,
-    bird.quirk,
     bird.colorPalette.name
   ].filter(hasValue);
 }
 
-function emotionDetails(bird) {
-  return [
-    ["Emotion", bird.birdEnergy, "", "birdEnergy"],
-    ["Recommended Expression", bird.expression, "", ""],
-    ["Recommended Pose", bird.pose, "", ""],
-    ["Reference Sheet Note", "Use these as inspiration. Feel free to choose any expression or pose from the reference sheets.", "", ""]
-  ];
+function CardField({ label, value, image, primary = false }) {
+  return (
+    <div className={primary ? "card-field card-field-primary" : "card-field"}>
+      <dt>{label}</dt>
+      <dd>
+        {image && (
+          <img
+            className="detail-thumb"
+            src={image}
+            alt=""
+            onError={(event) => {
+              event.currentTarget.hidden = true;
+            }}
+          />
+        )}
+        <span>{value}</span>
+      </dd>
+    </div>
+  );
 }
 
-function sketchDetails(bird) {
-  return [
-    ["Body Shape", itemName(bird.bodyShape), itemImage(bird.bodyShape), "bodyShape"],
-    ["Wings", itemName(bird.wingStyle), itemImage(bird.wingStyle), "wingStyle"],
-    ["Crest", itemName(bird.crest), itemImage(bird.crest), "crest"],
-    ["Tail", itemName(bird.tail), itemImage(bird.tail), "tail"]
-  ];
-}
-
-function legsDetails(bird) {
-  return [
-    ["Leg Length", bird.legLength, "", "legLength"],
-    ["Feet / Footwear", itemName(bird.feet), itemImage(bird.feet), "feet"],
-    ["Optional", "Use the recommended pose or draw the bird standing normally.", "", ""]
-  ];
-}
-
-function patternDetails(bird) {
-  return [
-    ["Pattern", bird.pattern, "", "pattern"],
-    ["Location", hasValue(bird.pattern) ? bird.patternPlacement : "Optional", "", "patternPlacement"]
-  ];
-}
-
-function accessoryDetails(bird) {
-  return [["Accessory", bird.quirk, "", "quirk"]];
-}
-
-function storyDetails(bird) {
-  return [["Story Idea", storyIdea(bird), "", "storyCue"]];
-}
-
-function tryThisDetails(bird) {
-  return [["Try This", bird.tryThis, "", ""]];
+function ShuffleCard({ title, answer, onShuffle, children, className = "" }) {
+  return (
+    <section className={`shuffle-card ${className}`} aria-labelledby={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
+      <div className="shuffle-card-header">
+        <h2 id={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>{title}</h2>
+        <button type="button" className="shuffle-button" onClick={onShuffle}>
+          Shuffle
+        </button>
+      </div>
+      <dl className="shuffle-card-content">{children}</dl>
+      {answer && <p className="card-answer">{answer}</p>}
+    </section>
+  );
 }
 
 function PaletteSwatches({ colors }) {
@@ -744,68 +729,74 @@ function PaletteSwatches({ colors }) {
   );
 }
 
-function DetailCard({ title, rows, onShuffle }) {
-  return (
-    <section className="detail-card" aria-labelledby={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
-      <h2 id={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
-        <span>{title}</span>
-      </h2>
-      <dl>
-        {rows.map(([label, value, image, field]) => (
-          <div className="detail-row" key={label}>
-            <dt>{label}</dt>
-            <dd>
-              <span className="detail-value">
-                {image && (
-                  <img
-                    className="detail-thumb"
-                    src={image}
-                    alt=""
-                    onError={(event) => {
-                      event.currentTarget.hidden = true;
-                    }}
-                  />
-                )}
-                <span>{value}</span>
-              </span>
-              {field && (
-                <button type="button" className="shuffle-button" onClick={() => onShuffle(field)}>
-                  Shuffle
-                </button>
-              )}
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-  );
-}
-
 function ColorPaletteCard({ palette, onShuffle }) {
   return (
-    <section className="palette-card" aria-labelledby="color-palette-heading">
-      <div className="section-heading">
-        <h2 id="color-palette-heading"><span>Add Color</span></h2>
-        <p>{palette.mood}</p>
-      </div>
-      <div className="palette-heading-row">
-        <h3>Palette: {palette.name}</h3>
-        <button type="button" className="shuffle-button" onClick={() => onShuffle("colorPalette")}>
-          Shuffle
-        </button>
-      </div>
+    <ShuffleCard title="Color Card" answer="What colors should I use?" onShuffle={() => onShuffle("colorCard")} className="color-card">
+      <CardField label="Palette" value={palette.name} primary />
       <PaletteSwatches colors={palette.colors} />
-    </section>
+      <p className="card-note">{palette.mood}</p>
+    </ShuffleCard>
   );
 }
 
 export default function App() {
   const [bird, setBird] = useState(() => makeBird());
   const [copyStatus, setCopyStatus] = useState("");
+  const [showSummary, setShowSummary] = useState(false);
   const prompt = useMemo(() => birdPrompt(bird), [bird]);
 
   function generateBird() {
     setBird(makeBird());
+    setCopyStatus("");
+    setShowSummary(false);
+  }
+
+  function shuffleBirdCard() {
+    setBird((currentBird) => {
+      const profile = energyProfile(currentBird.birdEnergy);
+      return {
+        ...currentBird,
+        bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
+        wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
+        crest: weightedPick(tables.crests, profile.crest),
+        tail: weightedPick(tables.tails, profile.tail)
+      };
+    });
+    setCopyStatus("");
+  }
+
+  function shuffleExpressionPoseCard() {
+    shuffleField("birdEnergy");
+  }
+
+  function shuffleLegsFeetCard() {
+    setBird((currentBird) => ({
+      ...currentBird,
+      legLength: randomDifferentItem(tables.legLengths, currentBird.legLength),
+      feet: randomDifferentItem(tables.feet, currentBird.feet)
+    }));
+    setCopyStatus("");
+  }
+
+  function shuffleWildCard() {
+    setBird((currentBird) => ({
+      ...currentBird,
+      tryThis: randomDifferentItem(tryThisPrompts, currentBird.tryThis)
+    }));
+    setCopyStatus("");
+  }
+
+  function shuffleStoryCard() {
+    setBird((currentBird) => {
+      const treasure = randomDifferentTreasureForEnergy(currentBird.birdEnergy, currentBird.treasure);
+      return {
+        ...currentBird,
+        storyCue: randomStoryCue(currentBird.birdEnergy).text,
+        setting: randomSettingForPose(currentBird.pose, currentBird.setting),
+        treasure,
+        treasureStory: randomTreasureStory(currentBird.birdEnergy, treasure)
+      };
+    });
     setCopyStatus("");
   }
 
@@ -971,31 +962,64 @@ export default function App() {
           ))}
         </div>
 
-        <div className="prompt-column">
-          <section className="prompt-card" aria-labelledby="prompt-heading">
-            <h2 id="prompt-heading">Draw This Bird</h2>
-            <div className="prompt-text">
-              {prompt.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-          </section>
+        <div className="card-grid">
+          <ShuffleCard title="Bird Card" answer="What am I drawing?" onShuffle={shuffleBirdCard}>
+            <CardField label="Body" value={itemName(bird.bodyShape)} image={itemImage(bird.bodyShape)} primary />
+            <CardField label="Wings" value={itemName(bird.wingStyle)} image={itemImage(bird.wingStyle)} />
+            <CardField label="Crest" value={itemName(bird.crest)} image={itemImage(bird.crest)} />
+            <CardField label="Tail" value={itemName(bird.tail)} image={itemImage(bird.tail)} />
+          </ShuffleCard>
 
-          <div className="copy-action">
-            <button type="button" className="secondary" onClick={copyPrompt}>Copy Prompt</button>
-            <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
-          </div>
+          <ShuffleCard title="Expression & Pose" answer="How does the bird feel?" onShuffle={shuffleExpressionPoseCard}>
+            <CardField label="Emotion" value={bird.birdEnergy} primary />
+            <CardField label="Expression" value={bird.expression} />
+            <CardField label="Pose" value={bird.pose} />
+            <p className="card-note">Use the reference sheets for inspiration. These are suggestions, not rules.</p>
+          </ShuffleCard>
+
+          <ShuffleCard title="Legs & Feet" answer="How does the bird stand?" onShuffle={shuffleLegsFeetCard}>
+            <CardField label="Legs" value={bird.legLength} primary />
+            <CardField label="Feet" value={itemName(bird.feet)} image={itemImage(bird.feet)} />
+          </ShuffleCard>
+
+          <ShuffleCard title="Wild Card" answer="How can I make it funnier?" onShuffle={shuffleWildCard}>
+            <CardField label="Try This" value={bird.tryThis} primary />
+          </ShuffleCard>
+
+          <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
+
+          <ShuffleCard title="Accessory Card" answer="What extra personality does it have?" onShuffle={() => shuffleField("quirk")}>
+            <CardField label="Accessory" value={hasValue(bird.quirk) ? bird.quirk : "No accessory this time."} primary />
+          </ShuffleCard>
+
+          <ShuffleCard title="Story Card" answer="What is happening?" onShuffle={shuffleStoryCard}>
+            <CardField label="Story" value={storyIdea(bird)} primary />
+            <CardField label="Setting" value={hasValue(bird.setting) ? bird.setting : "No setting this time."} />
+            <CardField label="Treasure" value={hasValue(bird.treasure) ? bird.treasure : "No treasure this time."} />
+          </ShuffleCard>
         </div>
 
-        <div className="detail-grid">
-          <DetailCard title="Emotion" rows={emotionDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Sketch the Bird" rows={sketchDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Add Legs & Feet" rows={legsDetails(bird)} onShuffle={shuffleField} />
-          <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
-          {hasValue(bird.pattern) && <DetailCard title="Add Pattern" rows={patternDetails(bird)} onShuffle={shuffleField} />}
-          {hasValue(bird.quirk) && <DetailCard title="Optional Accessory" rows={accessoryDetails(bird)} onShuffle={shuffleField} />}
-          <DetailCard title="Story Idea" rows={storyDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Try This" rows={tryThisDetails(bird)} onShuffle={shuffleField} />
+        <div className="summary-actions">
+          <button type="button" className="secondary" onClick={() => setShowSummary((value) => !value)}>
+            {showSummary ? "Hide Written Summary" : "Generate Written Summary"}
+          </button>
+          {showSummary && (
+            <div className="prompt-column">
+              <section className="prompt-card" aria-labelledby="prompt-heading">
+                <h2 id="prompt-heading">Written Summary</h2>
+                <div className="prompt-text">
+                  {prompt.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              </section>
+
+              <div className="copy-action">
+                <button type="button" className="secondary" onClick={copyPrompt}>Copy Summary</button>
+                <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
+              </div>
+            </div>
+          )}
         </div>
 
       </section>

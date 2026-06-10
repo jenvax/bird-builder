@@ -727,11 +727,93 @@ h4 {
   height: 16%;
 }
 
-.detail-grid {
+.card-grid {
   display: grid;
   grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.shuffle-card {
+  display: grid;
+  gap: 8px;
+  min-height: 180px;
+  margin-top: 0;
+  padding: 10px;
+  border: 2px solid #3b3352;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(255, 224, 138, 0.24), transparent 34%),
+    linear-gradient(rgba(47, 41, 66, 0.04) 1px, transparent 1px),
+    #fffefa;
+  background-size: auto, 100% 24px, auto;
+  box-shadow: 3px 3px 0 rgba(47, 41, 66, 0.1);
+}
+
+.shuffle-card:nth-child(3n + 2) {
+  background:
+    radial-gradient(circle at 100% 0, rgba(174, 232, 211, 0.28), transparent 34%),
+    linear-gradient(rgba(47, 41, 66, 0.04) 1px, transparent 1px),
+    #fffefa;
+  background-size: auto, 100% 24px, auto;
+}
+
+.shuffle-card:nth-child(3n) {
+  background:
+    radial-gradient(circle at 100% 0, rgba(255, 157, 181, 0.22), transparent 34%),
+    linear-gradient(rgba(47, 41, 66, 0.04) 1px, transparent 1px),
+    #fffefa;
+  background-size: auto, 100% 24px, auto;
+}
+
+.shuffle-card-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.shuffle-card-header h2 {
+  margin: 0;
+  color: #241b3a;
+  font-size: 0.98rem;
+}
+
+.shuffle-card-content {
+  display: grid;
   gap: 7px;
-  margin-top: 8px;
+  margin: 0;
+}
+
+.card-field {
+  display: grid;
+  gap: 2px;
+}
+
+.card-field dd {
+  justify-content: start;
+  font-size: 0.94rem;
+}
+
+.card-field-primary dd {
+  color: #241b3a;
+  font-size: 1.15rem;
+  font-weight: 950;
+}
+
+.card-answer,
+.card-note {
+  margin: 0;
+  color: #6a5d7b;
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.summary-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .detail-card dl {
@@ -812,12 +894,16 @@ dd {
     min-width: 220px;
   }
 
-  .detail-grid {
+  .card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 760px) {
+  .card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .feature-grid {
     grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
     align-items: stretch;
