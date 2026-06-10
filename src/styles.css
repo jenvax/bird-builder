@@ -252,6 +252,7 @@ h4 {
   margin: 0;
   font-size: clamp(0.86rem, 3.1vw, 0.94rem);
   line-height: 1.34;
+  white-space: pre-line;
 }
 
 .recipe-strip {

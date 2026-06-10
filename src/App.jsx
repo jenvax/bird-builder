@@ -100,6 +100,15 @@ const activeSettingDetails = [
   "A shiny bottle cap nearby"
 ];
 
+const tryThisPrompts = [
+  "Exaggerate the crest.",
+  "Make the eyes extra large.",
+  "Make the tail especially dramatic.",
+  "Make the bird extra fluffy.",
+  "Make the legs comically long.",
+  "Draw the tiniest beak possible."
+];
+
 const poseDescriptions = {
   Neutral: ["standing normally"],
   Curious: ["leaning in for a closer look"],
@@ -586,7 +595,8 @@ function makeBird() {
     pattern: randomItem(tables.patterns),
     patternPlacement: randomItem(tables.patternPlacement),
     quirk: weightedPick(tables.quirks, profile.quirk, 0.65),
-    colorPalette: randomPaletteForEmotion(energy)
+    colorPalette: randomPaletteForEmotion(energy),
+    tryThis: randomItem(tryThisPrompts)
   };
 }
 
@@ -596,11 +606,6 @@ function paletteWord(palette) {
 
 function birdName(bird) {
   return `${bird.birdEnergy} ${paletteWord(bird.colorPalette)} Bird`;
-}
-
-function quirkPhrase(quirk) {
-  const value = lower(quirk);
-  return /(glasses|boots|binoculars)$/.test(value) ? value : `${articleFor(quirk)} ${value}`;
 }
 
 function wingPhrase(wingStyle) {
@@ -619,58 +624,55 @@ function feetPhrase(feet) {
   return lower(feet);
 }
 
-function patternPhrase(bird) {
-  if (!hasValue(bird.pattern)) {
-    return "";
-  }
-
-  const location = lower(bird.patternPlacement);
-  return location === "all over" ? `Add ${lower(bird.pattern)} all over.` : `Add ${lower(bird.pattern)} on the ${location}.`;
-}
-
 function lowerFirst(value) {
   return value.charAt(0).toLowerCase() + value.slice(1);
+}
+
+function trimSentence(value) {
+  return value.replace(/[.!?]\s*$/, "");
 }
 
 function storySentence(bird) {
   return bird.storyCue || emotionProfile(bird.birdEnergy).story;
 }
 
-function settingSentence(setting) {
-  if (!hasValue(setting)) {
-    return "";
+function storyIdea(bird) {
+  if (hasValue(bird.treasure)) {
+    return bird.treasureStory;
   }
 
-  return `Optional setting: ${setting}.`;
+  if (hasValue(bird.setting)) {
+    return `${bird.setting}, ${lowerFirst(trimSentence(storySentence(bird)))}.`;
+  }
+
+  return storySentence(bird);
 }
 
 function birdPrompt(bird) {
-  const paragraphs = [
-    `Draw a ${lower(bird.birdEnergy)} bird whose whole body clearly shows that feeling. Give it a ${lower(bird.bodyShape)} shaped body, ${wingPhrase(bird.wingStyle)}, ${crestPhrase(bird.crest)}, and ${tailPhrase(bird.tail)}.`,
-    `Add ${lower(bird.legLength)} legs and ${feetPhrase(bird.feet)}. Give it a ${lower(bird.expression)} expression.`
+  const sections = [
+    `Draw a ${lower(bird.birdEnergy)} bird.`,
+    `Sketch the Bird\n- ${lower(bird.bodyShape)} shaped body\n- ${lower(bird.wingStyle)}\n- ${lower(bird.crest)}\n- ${lower(bird.tail)}`,
+    `Add Legs & Feet\n- ${lower(bird.legLength)} legs\n- ${feetPhrase(bird.feet)}`,
+    `Add Color\n- ${bird.colorPalette.name} palette`
   ];
 
   if (hasValue(bird.pattern)) {
-    paragraphs.push(patternPhrase(bird));
+    const location = lower(bird.patternPlacement);
+    const patternText = location === "all over" ? `${lower(bird.pattern)} all over` : `${lower(bird.pattern)} on the ${location}`;
+    sections.push(`Add Pattern\n- ${patternText}`);
   }
 
   if (hasValue(bird.quirk)) {
-    paragraphs.push(`Add ${quirkPhrase(bird.quirk)}.`);
+    sections.push(`Optional Accessory\n- ${lower(bird.quirk)}`);
   }
 
-  paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
+  sections.push(`Recommended Expression\n- ${bird.expression}`);
+  sections.push(`Recommended Pose\n- ${bird.pose}`);
+  sections.push("Use the reference sheets for inspiration. Feel free to choose any expression or pose you like.");
+  sections.push(`Optional Story Idea\n- ${storyIdea(bird)}`);
+  sections.push(`Try This\n- ${bird.tryThis}`);
 
-  paragraphs.push(`Optional story idea: ${storySentence(bird)} Optional pose inspiration: ${bird.pose}.`);
-
-  if (hasValue(bird.setting)) {
-    paragraphs.push(settingSentence(bird.setting));
-  }
-
-  if (hasValue(bird.treasure)) {
-    paragraphs.push(bird.treasureStory);
-  }
-
-  return paragraphs;
+  return sections;
 }
 
 function recipeChips(bird) {
@@ -725,18 +727,11 @@ function accessoryDetails(bird) {
 }
 
 function storyDetails(bird) {
-  const rows = [
-    ["Story Idea", storySentence(bird), "", "storyCue"],
-    ["Optional Pose Inspiration", bird.pose, "", ""],
-    ["Optional Setting", bird.setting, "", "setting"],
-    ["Treasure", bird.treasure, "", "treasure"]
-  ];
+  return [["Story Idea", storyIdea(bird), "", "storyCue"]];
+}
 
-  if (hasValue(bird.treasure)) {
-    rows.push(["Treasure Moment", bird.treasureStory, "", ""]);
-  }
-
-  return rows;
+function tryThisDetails(bird) {
+  return [["Try This", bird.tryThis, "", ""]];
 }
 
 function PaletteSwatches({ colors }) {
@@ -997,9 +992,10 @@ export default function App() {
           <DetailCard title="Sketch the Bird" rows={sketchDetails(bird)} onShuffle={shuffleField} />
           <DetailCard title="Add Legs & Feet" rows={legsDetails(bird)} onShuffle={shuffleField} />
           <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
-          <DetailCard title="Add Pattern" rows={patternDetails(bird)} onShuffle={shuffleField} />
-          <DetailCard title="Optional Accessory" rows={accessoryDetails(bird)} onShuffle={shuffleField} />
+          {hasValue(bird.pattern) && <DetailCard title="Add Pattern" rows={patternDetails(bird)} onShuffle={shuffleField} />}
+          {hasValue(bird.quirk) && <DetailCard title="Optional Accessory" rows={accessoryDetails(bird)} onShuffle={shuffleField} />}
           <DetailCard title="Story Idea" rows={storyDetails(bird)} onShuffle={shuffleField} />
+          <DetailCard title="Try This" rows={tryThisDetails(bird)} onShuffle={shuffleField} />
         </div>
 
       </section>
