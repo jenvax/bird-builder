@@ -66,6 +66,40 @@ const boldPaletteEmotions = new Set([
   "Angry"
 ]);
 
+const stationarySettingPoses = new Set([
+  "Neutral",
+  "Curious",
+  "Proud",
+  "Grumpy",
+  "Shy",
+  "Confused",
+  "Daydreaming",
+  "One Foot Up",
+  "Relaxed Stand",
+  "Tucked In",
+  "Suspicious"
+]);
+
+const stationarySettings = [
+  "Perched on a branch",
+  "Perched on a fence post",
+  "Standing on a mushroom",
+  "Standing on a garden stone",
+  "Standing on a tree stump",
+  "Standing on a flower pot",
+  "Tucked into a nest",
+  "Nestled among leaves",
+  "Sitting in tall grass"
+];
+
+const activeSettingDetails = [
+  "A snail nearby",
+  "A beetle on the path",
+  "A dandelion puff nearby",
+  "A mysterious footprint nearby",
+  "A shiny bottle cap nearby"
+];
+
 const poseDescriptions = {
   Neutral: ["standing normally"],
   Curious: ["leaning in for a closer look"],
@@ -283,7 +317,7 @@ const archetypeProfiles = {
     crest: ["Sunburst Crest", "Wild Tuft Crest", "Triple Tuft Crest"],
     tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
     legLength: ["Medium", "Tall"],
-    quirk: ["Rain Boots", "Tiny Backpack", "Butterfly Bow Tie", "None"],
+    quirk: ["Tiny Backpack", "Butterfly Bow Tie", "Tiny Umbrella", "None"],
     treasure: ["Shiny Bottle Cap", "Dandelion Puff", "Curly Leaf"]
   },
   Nervous: {
@@ -319,7 +353,7 @@ const archetypeProfiles = {
     crest: ["Crooked Tuft Crest", "Triple Tuft Crest", "Sunburst Crest", "Pebble Tuft Crest"],
     tail: ["Fan Tail", "Curly Tail"],
     legLength: ["Short", "Medium", "Tall"],
-    quirk: ["Rain Boots", "Round Glasses", "None"],
+    quirk: ["Round Glasses", "Tiny Umbrella", "None"],
     treasure: ["Perfect Pebble", "Lost Button", "Interesting Twig"]
   },
   Daydreaming: {
@@ -400,6 +434,13 @@ function randomPaletteForEmotion(emotion, currentPaletteName = "") {
   const fallback = preferred.length > 0 ? preferred : tables.palettes;
   const candidates = fallback.filter((palette) => palette.name !== currentPaletteName);
   return randomItem(candidates.length > 0 ? candidates : fallback);
+}
+
+function randomSettingForPose(pose, currentSetting = "") {
+  const allowsStationarySetting = stationarySettingPoses.has(validatePose(pose));
+  const options = ["None", ...(allowsStationarySetting ? stationarySettings : activeSettingDetails)];
+  const candidates = options.filter((setting) => setting !== currentSetting);
+  return randomItem(candidates.length > 0 ? candidates : options);
 }
 
 function randomTreasureForEnergy(energy, currentTreasure = "") {
@@ -533,6 +574,7 @@ function makeBird() {
     poseDescription: randomPoseDescription(pose),
     storyCue: storyCue.text,
     scene: randomSceneForMoment(energy, pose),
+    setting: randomSettingForPose(pose),
     treasure,
     treasureStory: randomTreasureStory(energy, treasure),
     bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
@@ -574,8 +616,7 @@ function tailPhrase(tail) {
 }
 
 function feetPhrase(feet) {
-  const value = lower(feet);
-  return /(feet|toes|boots)$/.test(value) ? value : `${value} feet`;
+  return lower(feet);
 }
 
 function patternPhrase(bird) {
@@ -595,10 +636,18 @@ function storySentence(bird) {
   return bird.storyCue || emotionProfile(bird.birdEnergy).story;
 }
 
+function settingSentence(setting) {
+  if (!hasValue(setting)) {
+    return "";
+  }
+
+  return `Optional setting: ${setting}.`;
+}
+
 function birdPrompt(bird) {
   const paragraphs = [
     `Draw a ${lower(bird.birdEnergy)} bird whose whole body clearly shows that feeling. Give it a ${lower(bird.bodyShape)} shaped body, ${wingPhrase(bird.wingStyle)}, ${crestPhrase(bird.crest)}, and ${tailPhrase(bird.tail)}.`,
-    `Add ${lower(bird.legLength)} legs with ${feetPhrase(bird.feet)}. Give it a ${lower(bird.expression)} expression.`
+    `Add ${lower(bird.legLength)} legs and ${feetPhrase(bird.feet)}. Give it a ${lower(bird.expression)} expression.`
   ];
 
   if (hasValue(bird.pattern)) {
@@ -612,6 +661,10 @@ function birdPrompt(bird) {
   paragraphs.push(`Use the ${bird.colorPalette.name} palette.`);
 
   paragraphs.push(`Optional story idea: ${storySentence(bird)} Optional pose inspiration: ${bird.pose}.`);
+
+  if (hasValue(bird.setting)) {
+    paragraphs.push(settingSentence(bird.setting));
+  }
 
   if (hasValue(bird.treasure)) {
     paragraphs.push(bird.treasureStory);
@@ -655,7 +708,7 @@ function sketchDetails(bird) {
 function legsDetails(bird) {
   return [
     ["Leg Length", bird.legLength, "", "legLength"],
-    ["Feet", itemName(bird.feet), itemImage(bird.feet), "feet"],
+    ["Feet / Footwear", itemName(bird.feet), itemImage(bird.feet), "feet"],
     ["Optional", "Use the recommended pose or draw the bird standing normally.", "", ""]
   ];
 }
@@ -675,6 +728,7 @@ function storyDetails(bird) {
   const rows = [
     ["Story Idea", storySentence(bird), "", "storyCue"],
     ["Optional Pose Inspiration", bird.pose, "", ""],
+    ["Optional Setting", bird.setting, "", "setting"],
     ["Treasure", bird.treasure, "", "treasure"]
   ];
 
@@ -778,6 +832,7 @@ export default function App() {
           poseDescription: randomPoseDescription(pose, currentBird.poseDescription),
           storyCue: cue.text,
           scene: randomSceneForMoment(nextEnergy, pose, currentBird.scene.sceneName),
+          setting: randomSettingForPose(pose, currentBird.setting),
           treasure,
           treasureStory: randomTreasureStory(nextEnergy, treasure),
           bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
@@ -809,7 +864,8 @@ export default function App() {
           ...currentBird,
           pose: nextPose,
           poseDescription: randomPoseDescription(nextPose, currentBird.poseDescription),
-          scene: randomSceneForMoment(currentBird.birdEnergy, nextPose, currentBird.scene.sceneName)
+          scene: randomSceneForMoment(currentBird.birdEnergy, nextPose, currentBird.scene.sceneName),
+          setting: randomSettingForPose(nextPose, currentBird.setting)
         };
       });
       setCopyStatus("");
@@ -820,6 +876,15 @@ export default function App() {
       setBird((currentBird) => ({
         ...currentBird,
         scene: randomSceneForMoment(currentBird.birdEnergy, currentBird.pose, currentBird.scene.sceneName)
+      }));
+      setCopyStatus("");
+      return;
+    }
+
+    if (field === "setting") {
+      setBird((currentBird) => ({
+        ...currentBird,
+        setting: randomSettingForPose(currentBird.pose, currentBird.setting)
       }));
       setCopyStatus("");
       return;

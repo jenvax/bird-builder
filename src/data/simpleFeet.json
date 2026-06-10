@@ -1,7 +1,11 @@
 [
-  { "name": "Oval", "image": "/assets/bird-parts/feet/oval-feet.png" },
-  { "name": "Round", "image": "/assets/bird-parts/feet/tiny-round-feet.png" },
-  { "name": "Paddle", "image": "/assets/bird-parts/feet/paddle-feet.png" },
-  { "name": "Bird Toes" },
-  { "name": "Boots", "image": "/assets/bird-parts/feet/boot-feet.png" }
+  { "name": "Bird Feet" },
+  { "name": "Paddle Feet", "image": "/assets/bird-parts/feet/paddle-feet.png" },
+  { "name": "Rain Boots", "image": "/assets/bird-parts/feet/boot-feet.png" },
+  { "name": "Tiny Boots", "image": "/assets/bird-parts/feet/boot-feet.png" },
+  { "name": "Sneakers" },
+  { "name": "High Tops" },
+  { "name": "Striped Socks" },
+  { "name": "Polka Dot Socks" },
+  { "name": "Mismatched Socks" }
 ]
