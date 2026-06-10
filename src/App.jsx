@@ -109,6 +109,107 @@ const tryThisPrompts = [
   "Draw the tiniest beak possible."
 ];
 
+const storyIdeaCards = [
+  {
+    text: "Sitting quietly and hoping someone notices.",
+    compatibleEmotion: ["Sad", "Lonely", "Disappointed"],
+    compatiblePose: ["Tucked In", "Shy", "Relaxed Stand"],
+    mood: "quiet",
+    energyLevel: "low"
+  },
+  {
+    text: "Tucked away among leaves with a small worried thought.",
+    compatibleEmotion: ["Sad", "Lonely", "Worried", "Uneasy", "Anxious"],
+    compatiblePose: ["Tucked In", "Shy", "Scared", "One Foot Up"],
+    mood: "tender",
+    energyLevel: "low"
+  },
+  {
+    text: "Trying to be brave near something harmless but surprising.",
+    compatibleEmotion: ["Anxious", "Worried", "Uneasy", "Scared", "Shocked"],
+    compatiblePose: ["Scared", "One Foot Up", "Shy", "Startled"],
+    mood: "nervous",
+    energyLevel: "medium"
+  },
+  {
+    text: "Watching a snail cross the ground like it is the most important parade.",
+    compatibleEmotion: ["Curious", "Intrigued", "Focused", "Hopeful"],
+    compatiblePose: ["Curious", "One Foot Up", "Walking"],
+    mood: "curious",
+    energyLevel: "medium"
+  },
+  {
+    text: "Trying to understand a mysterious footprint.",
+    compatibleEmotion: ["Curious", "Intrigued", "Focused", "Disbelieving"],
+    compatiblePose: ["Curious", "Confused", "One Foot Up"],
+    mood: "curious",
+    energyLevel: "medium"
+  },
+  {
+    text: "Listening to the wind like it is music.",
+    compatibleEmotion: ["Thoughtful", "Content", "Hopeful"],
+    compatiblePose: ["Daydreaming", "Relaxed Stand", "Curious"],
+    mood: "soft",
+    energyLevel: "low"
+  },
+  {
+    text: "Showing off a tiny treasure like it belongs in a museum.",
+    compatibleEmotion: ["Proud", "Cheerful", "Joyful"],
+    compatiblePose: ["Proud", "Neutral", "Walking"],
+    mood: "proud",
+    energyLevel: "medium"
+  },
+  {
+    text: "Presenting a giant acorn to a skeptical beetle.",
+    compatibleEmotion: ["Proud", "Cheerful", "Playful"],
+    compatiblePose: ["Proud", "Walking", "Hopping"],
+    mood: "playful",
+    energyLevel: "medium"
+  },
+  {
+    text: "Hiding a button and looking much too pleased about it.",
+    compatibleEmotion: ["Mischievous", "Cheeky", "Guilty"],
+    compatiblePose: ["Suspicious", "Shy"],
+    mood: "mischievous",
+    energyLevel: "medium"
+  },
+  {
+    text: "Sneaking off with a strip of ribbon.",
+    compatibleEmotion: ["Mischievous", "Cheeky", "Guilty", "Playful"],
+    compatiblePose: ["Suspicious", "Walking", "Shy"],
+    mood: "mischievous",
+    energyLevel: "medium"
+  },
+  {
+    text: "Hopping like the garden just told it wonderful news.",
+    compatibleEmotion: ["Joyful", "Excited", "Playful"],
+    compatiblePose: ["Hopping", "Tiny Hop", "Excited"],
+    mood: "joyful",
+    energyLevel: "high"
+  },
+  {
+    text: "Freezing because something tiny happened very suddenly.",
+    compatibleEmotion: ["Surprised", "Startled", "Shocked"],
+    compatiblePose: ["Startled", "Scared"],
+    mood: "startled",
+    energyLevel: "high"
+  },
+  {
+    text: "Silently judging a flower that is being much too cheerful.",
+    compatibleEmotion: ["Irritated", "Annoyed", "Frustrated", "Angry"],
+    compatiblePose: ["Grumpy", "Frustrated"],
+    mood: "grumpy",
+    energyLevel: "medium"
+  },
+  {
+    text: "Standing firmly as if the garden owes it an explanation.",
+    compatibleEmotion: ["Frustrated", "Angry", "Annoyed"],
+    compatiblePose: ["Frustrated", "Grumpy"],
+    mood: "frustrated",
+    energyLevel: "high"
+  }
+];
+
 const poseDescriptions = {
   Neutral: ["standing normally"],
   Curious: ["leaning in for a closer look"],
@@ -412,17 +513,18 @@ function randomAttitude(energy) {
   return randomItem(tables.attitudes[energy] || tables.attitudes.Curious);
 }
 
-function randomStoryCue(energy) {
-  const baseStory = emotionProfile(energy).story;
-  const storyOptions = [
-    baseStory,
-    "Watching a snail cross the ground like it is the most important parade.",
-    "Trying to understand a mysterious footprint.",
-    "Listening to the wind like it is music.",
-    "Carrying a piece of chair stuffing nearly as large as itself."
-  ];
+function randomStoryCue(energy, pose = "", currentStory = "") {
+  const safeEnergy = validateEmotion(energy);
+  const safePose = validatePose(pose);
+  const different = (story) => story.text !== currentStory;
+  const emotionMatches = storyIdeaCards.filter((story) => story.compatibleEmotion.includes(safeEnergy));
+  const exactMatches = emotionMatches.filter((story) => story.compatiblePose.includes(safePose));
+  const poseMatches = storyIdeaCards.filter((story) => story.compatiblePose.includes(safePose));
+  const candidates = [exactMatches, emotionMatches, poseMatches, storyIdeaCards]
+    .map((stories) => stories.filter(different))
+    .find((stories) => stories.length > 0);
 
-  return { text: randomItem(storyOptions) };
+  return { text: randomItem(candidates || storyIdeaCards).text };
 }
 
 function randomPoseDescription(pose, currentDescription = "") {
@@ -571,8 +673,8 @@ function makeBird() {
   const energy = validateEmotion(randomItem(tables.birdEnergy));
   const profile = energyProfile(energy);
   const emotion = emotionProfile(energy);
-  const storyCue = randomStoryCue(energy);
   const pose = recommendedPoseForEmotion(energy);
+  const storyCue = randomStoryCue(energy, pose);
   const treasure = randomTreasureForEnergy(energy);
 
   return {
@@ -624,27 +726,11 @@ function feetPhrase(feet) {
   return lower(feet);
 }
 
-function lowerFirst(value) {
-  return value.charAt(0).toLowerCase() + value.slice(1);
-}
-
-function trimSentence(value) {
-  return value.replace(/[.!?]\s*$/, "");
-}
-
 function storySentence(bird) {
   return bird.storyCue || emotionProfile(bird.birdEnergy).story;
 }
 
 function storyIdea(bird) {
-  if (hasValue(bird.treasure)) {
-    return bird.treasureStory;
-  }
-
-  if (hasValue(bird.setting)) {
-    return `${bird.setting}, ${lowerFirst(trimSentence(storySentence(bird)))}.`;
-  }
-
   return storySentence(bird);
 }
 
@@ -731,7 +817,7 @@ function PaletteSwatches({ colors }) {
 
 function ColorPaletteCard({ palette, onShuffle }) {
   return (
-    <ShuffleCard title="Color Card" answer="What colors should I use?" onShuffle={() => onShuffle("colorCard")} className="color-card">
+    <ShuffleCard title="Color Card" onShuffle={() => onShuffle("colorCard")} className="color-card">
       <CardField label="Palette" value={palette.name} primary />
       <PaletteSwatches colors={palette.colors} />
       <p className="card-note">{palette.mood}</p>
@@ -791,7 +877,7 @@ export default function App() {
       const treasure = randomDifferentTreasureForEnergy(currentBird.birdEnergy, currentBird.treasure);
       return {
         ...currentBird,
-        storyCue: randomStoryCue(currentBird.birdEnergy).text,
+        storyCue: randomStoryCue(currentBird.birdEnergy, currentBird.pose, currentBird.storyCue).text,
         setting: randomSettingForPose(currentBird.pose, currentBird.setting),
         treasure,
         treasureStory: randomTreasureStory(currentBird.birdEnergy, treasure)
@@ -806,8 +892,8 @@ export default function App() {
         const nextEnergy = validateEmotion(randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy));
         const profile = energyProfile(nextEnergy);
         const emotion = emotionProfile(nextEnergy);
-        const cue = randomStoryCue(nextEnergy);
         const pose = recommendedPoseForEmotion(nextEnergy);
+        const cue = randomStoryCue(nextEnergy, pose, currentBird.storyCue);
         const treasure = randomTreasureForEnergy(nextEnergy, currentBird.treasure);
         return {
           ...currentBird,
@@ -837,7 +923,7 @@ export default function App() {
     if (field === "storyCue") {
       setBird((currentBird) => ({
         ...currentBird,
-        storyCue: randomStoryCue(currentBird.birdEnergy).text
+        storyCue: randomStoryCue(currentBird.birdEnergy, currentBird.pose, currentBird.storyCue).text
       }));
       setCopyStatus("");
       return;
@@ -963,32 +1049,32 @@ export default function App() {
         </div>
 
         <div className="card-grid">
-          <ShuffleCard title="Bird Card" answer="What am I drawing?" onShuffle={shuffleBirdCard}>
+          <ShuffleCard title="Bird Card" onShuffle={shuffleBirdCard}>
             <CardField label="Body" value={itemName(bird.bodyShape)} image={itemImage(bird.bodyShape)} primary />
             <CardField label="Wings" value={itemName(bird.wingStyle)} image={itemImage(bird.wingStyle)} />
             <CardField label="Crest" value={itemName(bird.crest)} image={itemImage(bird.crest)} />
             <CardField label="Tail" value={itemName(bird.tail)} image={itemImage(bird.tail)} />
           </ShuffleCard>
 
-          <ShuffleCard title="Expression & Pose" answer="How does the bird feel?" onShuffle={shuffleExpressionPoseCard}>
-            <CardField label="Emotion" value={bird.birdEnergy} primary />
-            <CardField label="Expression" value={bird.expression} />
-            <CardField label="Pose" value={bird.pose} />
+          <ShuffleCard title="Expression & Pose" onShuffle={shuffleExpressionPoseCard}>
+            <CardField label="Bird Emotion" value={bird.birdEnergy} primary />
+            <CardField label="Recommended Expression" value={bird.expression} />
+            <CardField label="Recommended Pose" value={bird.pose} />
             <p className="card-note">Use the reference sheets for inspiration. These are suggestions, not rules.</p>
           </ShuffleCard>
 
-          <ShuffleCard title="Legs & Feet" answer="How does the bird stand?" onShuffle={shuffleLegsFeetCard}>
+          <ShuffleCard title="Legs & Feet" onShuffle={shuffleLegsFeetCard}>
             <CardField label="Legs" value={bird.legLength} primary />
             <CardField label="Feet" value={itemName(bird.feet)} image={itemImage(bird.feet)} />
           </ShuffleCard>
 
-          <ShuffleCard title="Wild Card" answer="How can I make it funnier?" onShuffle={shuffleWildCard}>
+          <ShuffleCard title="Wild Card" onShuffle={shuffleWildCard}>
             <CardField label="Try This" value={bird.tryThis} primary />
           </ShuffleCard>
 
           <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
 
-          <ShuffleCard title="Accessory Card" answer="What extra personality does it have?" onShuffle={() => shuffleField("quirk")}>
+          <ShuffleCard title="Accessory Card" onShuffle={() => shuffleField("quirk")}>
             <CardField label="Accessory" value={hasValue(bird.quirk) ? bird.quirk : "No accessory this time."} primary />
           </ShuffleCard>
 
