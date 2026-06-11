@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from "react";
 import birdEnergy from "./data/birdEnergy.json";
 import simpleBodyShapes from "./data/simpleBodyShapes.json";
-import expressions from "./data/expressions.json";
-import poses from "./data/poses.json";
+import actionPoses from "./data/actionPoses.json";
 import wingStyles from "./data/wingStyles.json";
 import simpleCrests from "./data/simpleCrests.json";
 import simpleTails from "./data/simpleTails.json";
@@ -10,18 +9,14 @@ import legLengths from "./data/legLengths.json";
 import simpleFeet from "./data/simpleFeet.json";
 import palettes from "./data/palettes.json";
 import quirks from "./data/quirks.json";
-import treasures from "./data/treasures.json";
 import patterns from "./data/patterns.json";
 import patternPlacement from "./data/patternPlacement.json";
-import storyCues from "./data/storyCues.json";
 import attitudes from "./data/attitudes.json";
-import sceneCards from "./data/sceneCards.json";
 
 const tables = {
   birdEnergy,
   bodyShapes: simpleBodyShapes,
-  expressions,
-  poses,
+  actionPoses,
   wingStyles,
   crests: simpleCrests,
   tails: simpleTails,
@@ -29,28 +24,13 @@ const tables = {
   feet: simpleFeet,
   palettes,
   quirks,
-  treasures,
   patterns,
   patternPlacement,
-  storyCues,
-  attitudes,
-  sceneCards
+  attitudes
 };
 
-const priorityTreasures = [
-  "Chair Stuffing",
-  "Lost Button",
-  "Strip of Ribbon",
-  "Perfect Pebble",
-  "Shiny Bottle Cap",
-  "Dandelion Puff",
-  "Curly Leaf",
-  "Colorful Feather",
-  "Giant Acorn"
-];
-
 const finalEmotionValues = new Set(birdEnergy);
-const finalPoseValues = new Set(poses);
+const finalActionPoseValues = new Set(actionPoses);
 const boldPaletteEmotions = new Set([
   "Joyful",
   "Excited",
@@ -66,243 +46,108 @@ const boldPaletteEmotions = new Set([
   "Angry"
 ]);
 
-const stationarySettingPoses = new Set([
-  "Neutral",
-  "Curious",
-  "Proud",
-  "Grumpy",
-  "Shy",
-  "Confused",
-  "Daydreaming",
-  "One Foot Up",
-  "Relaxed Stand",
-  "Tucked In",
-  "Suspicious"
-]);
-
-const stationarySettings = [
-  "Perched on a branch",
-  "Perched on a fence post",
-  "Standing on a mushroom",
-  "Standing on a garden stone",
-  "Standing on a tree stump",
-  "Standing on a flower pot",
-  "Tucked into a nest",
-  "Nestled among leaves",
-  "Sitting in tall grass"
-];
-
-const activeSettingDetails = [
-  "A snail nearby",
-  "A beetle on the path",
-  "A dandelion puff nearby",
-  "A mysterious footprint nearby",
-  "A shiny bottle cap nearby"
-];
-
-const tryThisPrompts = [
-  "Exaggerate the crest.",
-  "Make the eyes extra large.",
-  "Make the tail especially dramatic.",
-  "Make the bird extra fluffy.",
-  "Make the legs comically long.",
-  "Draw the tiniest beak possible."
-];
+const optionalActionPoseChoices = ["None", ...actionPoses];
 
 const storyIdeaCards = [
   {
     text: "Sitting quietly and hoping someone notices.",
     compatibleEmotion: ["Sad", "Lonely", "Disappointed"],
-    compatiblePose: ["Tucked In", "Shy", "Relaxed Stand"],
+    compatibleActionPose: ["Tucked In", "Nest Sit", "Relaxed Stand"],
     mood: "quiet",
     energyLevel: "low"
   },
   {
     text: "Tucked away among leaves with a small worried thought.",
     compatibleEmotion: ["Sad", "Lonely", "Worried", "Uneasy", "Anxious"],
-    compatiblePose: ["Tucked In", "Shy", "Scared", "One Foot Up"],
+    compatibleActionPose: ["Tucked In", "Nest Sit", "Belly Sit", "One Foot Up"],
     mood: "tender",
     energyLevel: "low"
   },
   {
     text: "Trying to be brave near something harmless but surprising.",
     compatibleEmotion: ["Anxious", "Worried", "Uneasy", "Scared", "Shocked"],
-    compatiblePose: ["Scared", "One Foot Up", "Shy", "Startled"],
+    compatibleActionPose: ["One Foot Up", "Peeking", "Looking Sideways"],
     mood: "nervous",
     energyLevel: "medium"
   },
   {
     text: "Watching a snail cross the ground like it is the most important parade.",
     compatibleEmotion: ["Curious", "Intrigued", "Focused", "Hopeful"],
-    compatiblePose: ["Curious", "One Foot Up", "Walking"],
+    compatibleActionPose: ["Peeking", "One Foot Up", "Walking", "Looking Down"],
     mood: "curious",
     energyLevel: "medium"
   },
   {
     text: "Trying to understand a mysterious footprint.",
     compatibleEmotion: ["Curious", "Intrigued", "Focused", "Disbelieving"],
-    compatiblePose: ["Curious", "Confused", "One Foot Up"],
+    compatibleActionPose: ["Looking Down", "One Foot Up", "Peeking"],
     mood: "curious",
     energyLevel: "medium"
   },
   {
     text: "Listening to the wind like it is music.",
     compatibleEmotion: ["Thoughtful", "Content", "Hopeful"],
-    compatiblePose: ["Daydreaming", "Relaxed Stand", "Curious"],
+    compatibleActionPose: ["Relaxed Stand", "Looking Up", "Standing"],
     mood: "soft",
     energyLevel: "low"
   },
   {
-    text: "Showing off a tiny treasure like it belongs in a museum.",
+    text: "Showing off a tiny backyard find like it belongs in a museum.",
     compatibleEmotion: ["Proud", "Cheerful", "Joyful"],
-    compatiblePose: ["Proud", "Neutral", "Walking"],
+    compatibleActionPose: ["Standing", "Walking", "Wings Spread"],
     mood: "proud",
     energyLevel: "medium"
   },
   {
     text: "Presenting a giant acorn to a skeptical beetle.",
     compatibleEmotion: ["Proud", "Cheerful", "Playful"],
-    compatiblePose: ["Proud", "Walking", "Hopping"],
+    compatibleActionPose: ["Standing", "Walking", "Wings Spread"],
     mood: "playful",
     energyLevel: "medium"
   },
   {
     text: "Hiding a button and looking much too pleased about it.",
     compatibleEmotion: ["Mischievous", "Cheeky", "Guilty"],
-    compatiblePose: ["Suspicious", "Shy"],
+    compatibleActionPose: ["Sneaking", "Peeking", "Looking Sideways"],
     mood: "mischievous",
     energyLevel: "medium"
   },
   {
     text: "Sneaking off with a strip of ribbon.",
     compatibleEmotion: ["Mischievous", "Cheeky", "Guilty", "Playful"],
-    compatiblePose: ["Suspicious", "Walking", "Shy"],
+    compatibleActionPose: ["Sneaking", "Walking", "Peeking"],
     mood: "mischievous",
     energyLevel: "medium"
   },
   {
     text: "Hopping like the garden just told it wonderful news.",
     compatibleEmotion: ["Joyful", "Excited", "Playful"],
-    compatiblePose: ["Hopping", "Tiny Hop", "Excited"],
+    compatibleActionPose: ["Hopping", "Tiny Hop", "Leaping"],
     mood: "joyful",
     energyLevel: "high"
   },
   {
     text: "Freezing because something tiny happened very suddenly.",
     compatibleEmotion: ["Surprised", "Startled", "Shocked"],
-    compatiblePose: ["Startled", "Scared"],
+    compatibleActionPose: ["Landing", "Leaping", "Wings Spread"],
     mood: "startled",
     energyLevel: "high"
   },
   {
     text: "Silently judging a flower that is being much too cheerful.",
     compatibleEmotion: ["Irritated", "Annoyed", "Frustrated", "Angry"],
-    compatiblePose: ["Grumpy", "Frustrated"],
+    compatibleActionPose: ["Standing", "Looking Sideways", "Over the Shoulder"],
     mood: "grumpy",
     energyLevel: "medium"
   },
   {
     text: "Standing firmly as if the garden owes it an explanation.",
     compatibleEmotion: ["Frustrated", "Angry", "Annoyed"],
-    compatiblePose: ["Frustrated", "Grumpy"],
+    compatibleActionPose: ["Standing", "Running", "Wings Spread"],
     mood: "frustrated",
     energyLevel: "high"
   }
 ];
-
-const poseDescriptions = {
-  Neutral: ["standing normally"],
-  Curious: ["leaning in for a closer look"],
-  Proud: ["standing tall like it expects applause"],
-  Grumpy: ["standing firmly with a stubborn little stance"],
-  Shy: ["standing shyly with its feet tucked toward each other"],
-  Confused: ["tilting as if it is trying to understand"],
-  Daydreaming: ["gazing off into the distance"],
-  Walking: ["walking along"],
-  Hopping: ["hopping with bright energy"],
-  "Relaxed Stand": ["standing in a relaxed pose"],
-  "Tucked In": ["tucked into a cozy little shape"],
-  Startled: ["frozen in a startled flinch"],
-  Scared: ["trying to be brave while looking nervous"],
-  Excited: ["bouncing with excitement"],
-  Suspicious: ["glancing sideways suspiciously"],
-  Frustrated: ["standing with very big feelings"],
-  "Frozen Mid-Flinch": [
-    "frozen in a startled flinch",
-    "stopped mid-flinch with its whole body tense",
-    "caught in a tiny moment of alarm"
-  ],
-  "One Foot Up": [
-    "balancing on one foot",
-    "hesitating with one foot raised",
-    "holding one foot up like it just noticed something"
-  ],
-  "Tiny Hop": [
-    "frozen mid-hop",
-    "bouncing with excitement",
-    "springing lightly off the ground"
-  ],
-  "Splayed Stance": [
-    "standing with its feet planted wide",
-    "bracing itself with a stubborn little stance",
-    "standing wide like it refuses to move"
-  ],
-  "Pigeon-Toed Stand": [
-    "standing with its toes turned inward",
-    "standing shyly with its feet tucked toward each other",
-    "looking bashful with pigeon-toed feet"
-  ],
-  "Proud Chest Puff": [
-    "puffing out its chest proudly",
-    "standing tall like it expects applause",
-    "posing with its chest pushed forward"
-  ],
-  "Leaning Forward": [
-    "leaning in for a closer look",
-    "craning forward curiously",
-    "tilting toward the interesting thing"
-  ],
-  "Tiptoe Sneak": [
-    "sneaking quietly",
-    "tiptoeing forward",
-    "creeping along like it is up to something"
-  ],
-  Perched: [
-    "perched neatly",
-    "settled on its little perch",
-    "balanced calmly in place"
-  ],
-  "Belly Sit": [
-    "sitting on its tummy",
-    "resting squarely on its belly",
-    "plopped down with its belly on the ground"
-  ],
-  Slouched: [
-    "slumping sleepily",
-    "drooping like it has had a long day",
-    "sagging into a soft little slouch"
-  ],
-  "Looking Over Shoulder": [
-    "looking back over its shoulder",
-    "glancing behind itself suspiciously",
-    "twisting around to see what is happening"
-  ],
-  "Mid-Step": [
-    "paused in the middle of a step",
-    "caught mid-stride",
-    "taking one careful little step"
-  ],
-  "Wing Flap": [
-    "flapping its wings in a burst of energy",
-    "fluttering like it cannot stand still",
-    "waving its wings with dramatic urgency"
-  ],
-  "Tucked and Cozy": [
-    "tucked into a cozy little shape",
-    "nestled down comfortably",
-    "curled into a soft resting pose"
-  ]
-};
 
 function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
@@ -349,48 +194,44 @@ function randomDifferentItem(items, currentItem) {
   return nextItem;
 }
 
-function articleFor(value) {
-  return /^[aeiou]/i.test(itemName(value)) ? "an" : "a";
-}
-
 function validateEmotion(emotion) {
   return finalEmotionValues.has(emotion) ? emotion : "Curious";
 }
 
-function validatePose(pose) {
-  return finalPoseValues.has(pose) ? pose : "Neutral";
+function validateActionPose(actionPose) {
+  return finalActionPoseValues.has(actionPose) ? actionPose : "Standing";
 }
 
 const emotionProfiles = {
-  Joyful: { archetype: "Zippy", expression: "Joyful", pose: "Hopping", story: "It is hopping like the garden just told it wonderful news." },
-  Cheerful: { archetype: "Curious", expression: "Cheerful", pose: "Walking", story: "Walking along as if every flower is a friendly neighbor." },
-  Excited: { archetype: "Zippy", expression: "Excited", pose: "Tiny Hop", story: "Bouncing with excitement over something tiny and excellent." },
-  Proud: { archetype: "Proud", expression: "Proud", pose: "Proud", story: "Showing off like it has just done something very impressive." },
-  Content: { archetype: "Sleepy", expression: "Content", pose: "Relaxed Stand", story: "Resting happily in a quiet garden moment." },
-  Curious: { archetype: "Curious", expression: "Curious", pose: "Curious", story: "Watching a snail cross the ground like it is the most important parade." },
-  Intrigued: { archetype: "Curious", expression: "Intrigued", pose: "Curious", story: "Leaning toward a tiny mystery in the grass." },
-  Focused: { archetype: "Curious", expression: "Focused", pose: "One Foot Up", story: "Studying one small detail with complete seriousness." },
-  Thoughtful: { archetype: "Daydreaming", expression: "Thoughtful", pose: "Daydreaming", story: "Pausing as if it just remembered a very poetic leaf." },
-  Mischievous: { archetype: "Mischievous", expression: "Mischievous", pose: "Suspicious", story: "Looking much too pleased about a tiny secret." },
-  Playful: { archetype: "Zippy", expression: "Playful", pose: "Hopping", story: "Hopping around like the whole garden is a game." },
-  Cheeky: { archetype: "Mischievous", expression: "Cheeky", pose: "Suspicious", story: "Pretending it did not cause the tiny mess nearby." },
-  Guilty: { archetype: "Shy", expression: "Guilty", pose: "Shy", story: "Trying to look innocent beside something it definitely moved." },
-  Surprised: { archetype: "Startled", expression: "Surprised", pose: "Startled", story: "Freezing because something small happened very suddenly." },
-  Startled: { archetype: "Startled", expression: "Startled", pose: "Startled", story: "Frozen in place after hearing a rustle in the flowers." },
-  Shocked: { archetype: "Startled", expression: "Shocked", pose: "Scared", story: "Shocked by a garden discovery that feels enormous." },
-  Disbelieving: { archetype: "Confused", expression: "Disbelieving", pose: "Confused", story: "Staring at the wrong thing and refusing to understand it." },
-  Anxious: { archetype: "Nervous", expression: "Anxious", pose: "Scared", story: "Trying to decide whether a tiny sound is friendly or alarming." },
-  Worried: { archetype: "Nervous", expression: "Worried", pose: "One Foot Up", story: "Holding one foot up while considering a very small problem." },
-  Uneasy: { archetype: "Shy", expression: "Uneasy", pose: "Shy", story: "Keeping close to the leaves just in case." },
-  Scared: { archetype: "Nervous", expression: "Scared", pose: "Scared", story: "Trying to be brave near something harmless but surprising." },
-  Sad: { archetype: "Shy", expression: "Sad", pose: "Tucked In", story: "Sitting quietly with a very small disappointed feeling." },
-  Disappointed: { archetype: "Shy", expression: "Disappointed", pose: "Shy", story: "Looking at the ground like the worm parade was canceled." },
-  Lonely: { archetype: "Shy", expression: "Lonely", pose: "Tucked In", story: "Waiting quietly for someone kind to notice." },
-  Hopeful: { archetype: "Curious", expression: "Hopeful", pose: "Curious", story: "Looking toward something new with a tiny bit of courage." },
-  Irritated: { archetype: "Grumpy", expression: "Irritated", pose: "Grumpy", story: "Not approving of a flower that is being much too cheerful." },
-  Annoyed: { archetype: "Grumpy", expression: "Annoyed", pose: "Grumpy", story: "Silently judging a beetle for walking in the wrong direction." },
-  Frustrated: { archetype: "Grumpy", expression: "Frustrated", pose: "Frustrated", story: "Trying to solve a tiny problem with very big feelings." },
-  Angry: { archetype: "Grumpy", expression: "Angry", pose: "Frustrated", story: "Standing firmly as if the garden owes it an explanation." }
+  Joyful: { archetype: "Zippy", story: "Hopping like the garden just told it wonderful news." },
+  Cheerful: { archetype: "Curious", story: "Walking along as if every flower is a friendly neighbor." },
+  Excited: { archetype: "Zippy", story: "Bouncing with excitement over something tiny and excellent." },
+  Proud: { archetype: "Proud", story: "Showing off like it has just done something very impressive." },
+  Content: { archetype: "Sleepy", story: "Resting happily in a quiet garden moment." },
+  Curious: { archetype: "Curious", story: "Watching a snail cross the ground like it is the most important parade." },
+  Intrigued: { archetype: "Curious", story: "Leaning toward a tiny mystery in the grass." },
+  Focused: { archetype: "Curious", story: "Studying one small detail with complete seriousness." },
+  Thoughtful: { archetype: "Daydreaming", story: "Pausing as if it just remembered a very poetic leaf." },
+  Mischievous: { archetype: "Mischievous", story: "Looking much too pleased about a tiny secret." },
+  Playful: { archetype: "Zippy", story: "Hopping around like the whole garden is a game." },
+  Cheeky: { archetype: "Mischievous", story: "Pretending it did not cause the tiny mess nearby." },
+  Guilty: { archetype: "Shy", story: "Trying to look innocent beside something it definitely moved." },
+  Surprised: { archetype: "Startled", story: "Freezing because something small happened very suddenly." },
+  Startled: { archetype: "Startled", story: "Frozen in place after hearing a rustle in the flowers." },
+  Shocked: { archetype: "Startled", story: "Shocked by a garden discovery that feels enormous." },
+  Disbelieving: { archetype: "Confused", story: "Staring at the wrong thing and refusing to understand it." },
+  Anxious: { archetype: "Nervous", story: "Trying to decide whether a tiny sound is friendly or alarming." },
+  Worried: { archetype: "Nervous", story: "Holding one foot up while considering a very small problem." },
+  Uneasy: { archetype: "Shy", story: "Keeping close to the leaves just in case." },
+  Scared: { archetype: "Nervous", story: "Trying to be brave near something harmless but surprising." },
+  Sad: { archetype: "Shy", story: "Sitting quietly with a very small disappointed feeling." },
+  Disappointed: { archetype: "Shy", story: "Looking at the ground like the worm parade was canceled." },
+  Lonely: { archetype: "Shy", story: "Waiting quietly for someone kind to notice." },
+  Hopeful: { archetype: "Curious", story: "Looking toward something new with a tiny bit of courage." },
+  Irritated: { archetype: "Grumpy", story: "Not approving of a flower that is being much too cheerful." },
+  Annoyed: { archetype: "Grumpy", story: "Silently judging a beetle for walking in the wrong direction." },
+  Frustrated: { archetype: "Grumpy", story: "Trying to solve a tiny problem with very big feelings." },
+  Angry: { archetype: "Grumpy", story: "Standing firmly as if the garden owes it an explanation." }
 };
 
 const archetypeProfiles = {
@@ -400,8 +241,7 @@ const archetypeProfiles = {
     crest: ["Ribbon Crest", "Pebble Tuft Crest", "Single Feather Crest"],
     tail: ["Cloud Tail", "Leaf Tail"],
     legLength: ["Short", "Medium"],
-    quirk: ["Leaf Cape", "Flower Crown", "None"],
-    treasure: ["Chair Stuffing", "Dandelion Puff", "Colorful Feather"]
+    quirk: ["Leaf Cape", "Flower Crown", "None"]
   },
   Shy: {
     bodyShape: ["Bean", "Marshmallow", "Round", "Gumdrop", "Blob"],
@@ -409,8 +249,7 @@ const archetypeProfiles = {
     crest: ["Pebble Tuft Crest", "Ribbon Crest", "Single Feather Crest"],
     tail: ["Leaf Tail", "Cloud Tail"],
     legLength: ["Short", "Medium"],
-    quirk: ["Flower Crown", "Daisy Necklace", "Round Glasses", "None"],
-    treasure: ["Chair Stuffing", "Strip of Ribbon", "Colorful Feather", "Curly Leaf"]
+    quirk: ["Flower Crown", "Daisy Necklace", "Round Glasses", "None"]
   },
   Proud: {
     bodyShape: ["Pear", "Round", "Tall Skinny"],
@@ -418,8 +257,7 @@ const archetypeProfiles = {
     crest: ["Fan Crest", "Triple Tuft Crest", "Sunburst Crest"],
     tail: ["Fan Tail", "Flared Fan Tail"],
     legLength: ["Medium", "Tall"],
-    quirk: ["Tiny Gold Crown", "Twig Crown", "Sun Hat", "Flower Crown"],
-    treasure: ["Perfect Pebble", "Shiny Bottle Cap", "Lost Button", "Colorful Feather", "Giant Acorn"]
+    quirk: ["Tiny Gold Crown", "Twig Crown", "Sun Hat", "Flower Crown"]
   },
   Zippy: {
     bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
@@ -427,8 +265,7 @@ const archetypeProfiles = {
     crest: ["Sunburst Crest", "Wild Tuft Crest", "Triple Tuft Crest"],
     tail: ["Fan Tail", "Flared Fan Tail", "Ribbon Tail"],
     legLength: ["Medium", "Tall"],
-    quirk: ["Tiny Backpack", "Butterfly Bow Tie", "Tiny Umbrella", "None"],
-    treasure: ["Shiny Bottle Cap", "Dandelion Puff", "Curly Leaf"]
+    quirk: ["Tiny Backpack", "Butterfly Bow Tie", "Tiny Umbrella", "None"]
   },
   Nervous: {
     bodyShape: ["Bean", "Blob", "Marshmallow"],
@@ -436,8 +273,7 @@ const archetypeProfiles = {
     crest: ["Wild Tuft Crest", "Triple Tuft Crest", "Single Feather Crest", "Pebble Tuft Crest"],
     tail: ["Curly Tail", "Cloud Tail"],
     legLength: ["Short", "Medium"],
-    quirk: ["Tiny Umbrella", "Round Glasses", "None"],
-    treasure: ["Chair Stuffing", "Lost Button", "Colorful Feather"]
+    quirk: ["Tiny Umbrella", "Round Glasses", "None"]
   },
   Confused: {
     bodyShape: ["Blob", "Bean", "Tall Skinny"],
@@ -445,8 +281,7 @@ const archetypeProfiles = {
     crest: ["Single Feather Crest", "Crooked Tuft Crest", "Pebble Tuft Crest"],
     tail: ["Curly Tail", "Cloud Tail"],
     legLength: ["Short", "Medium"],
-    quirk: ["Magnifying Glass", "Tiny Backpack", "None"],
-    treasure: ["Interesting Twig", "Seed Pod", "Curly Leaf"]
+    quirk: ["Magnifying Glass", "Tiny Backpack", "None"]
   },
   Startled: {
     bodyShape: ["Bean", "Tall Skinny", "Gumdrop"],
@@ -454,8 +289,7 @@ const archetypeProfiles = {
     crest: ["Sunburst Crest", "Wild Tuft Crest", "Triple Tuft Crest"],
     tail: ["Fan Tail", "Flared Fan Tail"],
     legLength: ["Medium", "Tall"],
-    quirk: ["Tiny Umbrella", "Round Glasses", "None"],
-    treasure: ["Dandelion Puff", "Lost Button", "Seed Pod"]
+    quirk: ["Tiny Umbrella", "Round Glasses", "None"]
   },
   Grumpy: {
     bodyShape: ["Bean", "Blob", "Pear"],
@@ -463,8 +297,7 @@ const archetypeProfiles = {
     crest: ["Crooked Tuft Crest", "Triple Tuft Crest", "Sunburst Crest", "Pebble Tuft Crest"],
     tail: ["Fan Tail", "Curly Tail"],
     legLength: ["Short", "Medium", "Tall"],
-    quirk: ["Round Glasses", "Tiny Umbrella", "None"],
-    treasure: ["Perfect Pebble", "Lost Button", "Interesting Twig"]
+    quirk: ["Round Glasses", "Tiny Umbrella", "None"]
   },
   Daydreaming: {
     bodyShape: ["Fluffy", "Marshmallow", "Blob"],
@@ -472,8 +305,7 @@ const archetypeProfiles = {
     crest: ["Ribbon Crest", "Single Feather Crest", "Pebble Tuft Crest"],
     tail: ["Cloud Tail", "Leaf Tail"],
     legLength: ["Short", "Medium"],
-    quirk: ["Flower Crown", "Leaf Crown", "Daisy Necklace", "Ribbon Bow", "Leaf Cape"],
-    treasure: ["Dandelion Puff", "Flower Petal", "Milkweed Fluff", "Colorful Feather"]
+    quirk: ["Flower Crown", "Leaf Crown", "Daisy Necklace", "Ribbon Bow", "Leaf Cape"]
   },
   Mischievous: {
     bodyShape: ["Bean", "Gumdrop", "Tall Skinny"],
@@ -481,8 +313,7 @@ const archetypeProfiles = {
     crest: ["Crooked Tuft Crest", "Triple Tuft Crest", "Single Feather Crest"],
     tail: ["Curly Tail", "Ribbon Tail"],
     legLength: ["Short", "Medium", "Tall"],
-    quirk: ["Butterfly Bow Tie", "Ladybug Button", "Tiny Bell", "None"],
-    treasure: ["Lost Button", "Strip of Ribbon", "Shiny Bottle Cap"]
+    quirk: ["Butterfly Bow Tie", "Ladybug Button", "Tiny Bell", "None"]
   },
   Curious: {
     bodyShape: ["Bean", "Round", "Gumdrop"],
@@ -490,19 +321,13 @@ const archetypeProfiles = {
     crest: ["Single Feather Crest", "Pebble Tuft Crest"],
     tail: ["Leaf Tail", "Fan Tail", "Cloud Tail"],
     legLength: ["Medium", "Tall"],
-    quirk: ["Explorer Hat", "Magnifying Glass", "Bug Jar", "Tiny Binoculars", "Tiny Backpack"],
-    treasure: ["Curly Leaf", "Dandelion Puff", "Seed Pod", "Interesting Twig"]
+    quirk: ["Explorer Hat", "Magnifying Glass", "Bug Jar", "Tiny Binoculars", "Tiny Backpack"]
   }
 };
 
 function emotionProfile(emotion) {
   const safeEmotion = validateEmotion(emotion);
   return emotionProfiles[safeEmotion] || emotionProfiles.Curious;
-}
-
-function recommendedPoseForEmotion(emotion) {
-  const mappedPose = emotionProfile(emotion).pose;
-  return validatePose(mappedPose);
 }
 
 function energyProfile(energy) {
@@ -513,24 +338,26 @@ function randomAttitude(energy) {
   return randomItem(tables.attitudes[energy] || tables.attitudes.Curious);
 }
 
-function randomStoryCue(energy, pose = "", currentStory = "") {
+function randomActionPose(currentActionPose = "") {
+  if (Math.random() < 0.28) {
+    return "None";
+  }
+
+  return randomDifferentItem(optionalActionPoseChoices, currentActionPose);
+}
+
+function randomStoryCue(energy, actionPose = "", currentStory = "") {
   const safeEnergy = validateEmotion(energy);
-  const safePose = validatePose(pose);
+  const safeActionPose = finalActionPoseValues.has(actionPose) ? actionPose : "";
   const different = (story) => story.text !== currentStory;
   const emotionMatches = storyIdeaCards.filter((story) => story.compatibleEmotion.includes(safeEnergy));
-  const exactMatches = emotionMatches.filter((story) => story.compatiblePose.includes(safePose));
-  const poseMatches = storyIdeaCards.filter((story) => story.compatiblePose.includes(safePose));
-  const candidates = [exactMatches, emotionMatches, poseMatches, storyIdeaCards]
+  const exactMatches = emotionMatches.filter((story) => story.compatibleActionPose.includes(safeActionPose));
+  const actionPoseMatches = storyIdeaCards.filter((story) => story.compatibleActionPose.includes(safeActionPose));
+  const candidates = [exactMatches, emotionMatches, actionPoseMatches, storyIdeaCards]
     .map((stories) => stories.filter(different))
     .find((stories) => stories.length > 0);
 
   return { text: randomItem(candidates || storyIdeaCards).text };
-}
-
-function randomPoseDescription(pose, currentDescription = "") {
-  const descriptions = poseDescriptions[pose] || [lower(pose)];
-  const choices = descriptions.filter((description) => description !== currentDescription);
-  return randomItem(choices.length > 0 ? choices : descriptions);
 }
 
 function weightedPick(items, names, chance = 0.78) {
@@ -547,147 +374,17 @@ function randomPaletteForEmotion(emotion, currentPaletteName = "") {
   return randomItem(candidates.length > 0 ? candidates : fallback);
 }
 
-function randomSettingForPose(pose, currentSetting = "") {
-  const allowsStationarySetting = stationarySettingPoses.has(validatePose(pose));
-  const options = ["None", ...(allowsStationarySetting ? stationarySettings : activeSettingDetails)];
-  const candidates = options.filter((setting) => setting !== currentSetting);
-  return randomItem(candidates.length > 0 ? candidates : options);
-}
-
-function randomTreasureForEnergy(energy, currentTreasure = "") {
-  const profile = energyProfile(energy);
-
-  if (Math.random() < 0.6) {
-    return "None";
-  }
-
-  const weightedNames = profile.treasure || priorityTreasures;
-  const candidates = Math.random() < 0.85 ? weightedNames : priorityTreasures;
-  const matches = candidates.filter((treasure) => treasure !== currentTreasure && tables.treasures.includes(treasure));
-
-  return randomItem(matches.length > 0 ? matches : tables.treasures.filter((treasure) => treasure !== "None"));
-}
-
-function randomDifferentTreasureForEnergy(energy, currentTreasure) {
-  for (let index = 0; index < 8; index += 1) {
-    const treasure = randomTreasureForEnergy(energy, currentTreasure);
-    if (treasure !== currentTreasure) {
-      return treasure;
-    }
-  }
-
-  return currentTreasure === "None" ? randomNamedItem(tables.treasures, priorityTreasures) : "None";
-}
-
-function treasurePhrase(treasure) {
-  const value = lower(treasure);
-  return /(stuffing|lint|fluff)$/.test(value) ? value : `${articleFor(treasure)} ${value}`;
-}
-
-function randomTreasureStory(energy, treasure) {
-  if (!hasValue(treasure)) {
-    return "";
-  }
-
-  const phrase = treasurePhrase(treasure);
-  const options = {
-    Proud: [
-      `It is proudly displaying ${phrase} it discovered this morning.`,
-      `It is showing off ${phrase} like it belongs in a museum.`,
-      `It is presenting ${phrase} as if it were priceless.`
-    ],
-    Curious: [
-      `It is carefully investigating ${phrase} it has never seen before.`,
-      `It is trying to understand why ${phrase} seems so important.`,
-      `It has stopped everything to inspect ${phrase}.`
-    ],
-    Mischievous: [
-      `It looks suspiciously pleased about ${phrase} beside it.`,
-      `It may have borrowed ${phrase} without permission.`,
-      `It is pretending ${phrase} was already there.`
-    ],
-    Shy: [
-      `It is quietly hiding ${phrase} behind its back.`,
-      `It hopes nobody notices its treasured ${lower(treasure)} collection.`,
-      `It is guarding ${phrase} very politely.`
-    ],
-    Daydreaming: [
-      `It is gazing at ${phrase} like it might contain a tiny daydream.`,
-      `It is imagining an entire story about ${phrase}.`,
-      `It is holding ${phrase} as if it floated in from a dream.`
-    ]
-  };
-
-  const fallback = [
-    `It has discovered ${phrase} and seems to have very strong feelings about it.`,
-    `It is treating ${phrase} like the most important object in the garden.`,
-    `It has chosen ${phrase} as its favorite backyard discovery.`
-  ];
-
-  return randomItem(options[emotionProfile(energy).archetype] || options[energy] || fallback);
-}
-
-function randomExpressionForEnergy(energy, currentExpression = "") {
-  const recommended = emotionProfile(energy).expression;
-
-  if (recommended !== currentExpression && Math.random() < 0.85) {
-    return recommended;
-  }
-
-  return randomDifferentItem(tables.expressions, currentExpression);
-}
-
-function weightedScenePick(scenes) {
-  const totalWeight = scenes.reduce((sum, scene) => sum + (scene.weight || 1), 0);
-  let ticket = Math.random() * totalWeight;
-
-  for (const scene of scenes) {
-    ticket -= scene.weight || 1;
-    if (ticket <= 0) {
-      return scene;
-    }
-  }
-
-  return scenes.at(-1);
-}
-
-function sceneMatchesEnergy(scene, energy) {
-  return scene.compatibleCharacterStates.includes(energy);
-}
-
-function sceneMatchesPose(scene, pose) {
-  return scene.compatiblePoses.includes(pose);
-}
-
-function randomSceneForMoment(energy, pose, currentSceneName = "") {
-  const withoutCurrent = tables.sceneCards.filter((scene) => scene.sceneName !== currentSceneName);
-  const candidates = withoutCurrent.length > 0 ? withoutCurrent : tables.sceneCards;
-  const exact = candidates.filter((scene) => sceneMatchesEnergy(scene, energy) && sceneMatchesPose(scene, pose));
-  const energyOnly = candidates.filter((scene) => sceneMatchesEnergy(scene, energy));
-  const poseOnly = candidates.filter((scene) => sceneMatchesPose(scene, pose));
-
-  return weightedScenePick(exact.length > 0 ? exact : energyOnly.length > 0 ? energyOnly : poseOnly.length > 0 ? poseOnly : candidates);
-}
-
 function makeBird() {
   const energy = validateEmotion(randomItem(tables.birdEnergy));
   const profile = energyProfile(energy);
-  const emotion = emotionProfile(energy);
-  const pose = recommendedPoseForEmotion(energy);
-  const storyCue = randomStoryCue(energy, pose);
-  const treasure = randomTreasureForEnergy(energy);
+  const actionPose = randomActionPose();
+  const storyCue = randomStoryCue(energy, actionPose);
 
   return {
     birdEnergy: energy,
     attitude: randomAttitude(energy),
-    expression: emotion.expression,
-    pose,
-    poseDescription: randomPoseDescription(pose),
+    actionPose,
     storyCue: storyCue.text,
-    scene: randomSceneForMoment(energy, pose),
-    setting: randomSettingForPose(pose),
-    treasure,
-    treasureStory: randomTreasureStory(energy, treasure),
     bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
     wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
     crest: weightedPick(tables.crests, profile.crest),
@@ -697,8 +394,7 @@ function makeBird() {
     pattern: randomItem(tables.patterns),
     patternPlacement: randomItem(tables.patternPlacement),
     quirk: weightedPick(tables.quirks, profile.quirk, 0.65),
-    colorPalette: randomPaletteForEmotion(energy),
-    tryThis: randomItem(tryThisPrompts)
+    colorPalette: randomPaletteForEmotion(energy)
   };
 }
 
@@ -708,18 +404,6 @@ function paletteWord(palette) {
 
 function birdName(bird) {
   return `${bird.birdEnergy} ${paletteWord(bird.colorPalette)} Bird`;
-}
-
-function wingPhrase(wingStyle) {
-  return hasValue(wingStyle) ? lower(wingStyle) : "no visible wings";
-}
-
-function crestPhrase(crest) {
-  return hasValue(crest) ? `a ${lower(crest)}` : "no crest";
-}
-
-function tailPhrase(tail) {
-  return hasValue(tail) ? `a ${lower(tail)}` : "no tail";
 }
 
 function feetPhrase(feet) {
@@ -735,28 +419,22 @@ function storyIdea(bird) {
 }
 
 function birdPrompt(bird) {
+  const patternText = hasValue(bird.pattern)
+    ? `${lower(bird.pattern)}${lower(bird.patternPlacement) === "all over" ? " all over" : ` on the ${lower(bird.patternPlacement)}`}`
+    : "no pattern";
+  const accessoryText = hasValue(bird.quirk) ? lower(bird.quirk) : "no accessory";
+  const actionPoseText = hasValue(bird.actionPose) ? bird.actionPose : "None";
+
   const sections = [
     `Draw a ${lower(bird.birdEnergy)} bird.`,
-    `Sketch the Bird\n- ${lower(bird.bodyShape)} shaped body\n- ${lower(bird.wingStyle)}\n- ${lower(bird.crest)}\n- ${lower(bird.tail)}`,
-    `Add Legs & Feet\n- ${lower(bird.legLength)} legs\n- ${feetPhrase(bird.feet)}`,
-    `Add Color\n- ${bird.colorPalette.name} palette`
+    `It has a ${lower(bird.bodyShape)} body, ${lower(bird.wingStyle)}, a ${lower(bird.crest)}, and a ${lower(bird.tail)}.`,
+    `Give it ${lower(bird.legLength)} legs and ${feetPhrase(bird.feet)}.`,
+    `Add ${patternText}.`,
+    `Add ${accessoryText}.`,
+    `Use the ${bird.colorPalette.name} palette.`,
+    `Optional action pose: ${actionPoseText}.`,
+    `Optional story idea: ${storyIdea(bird)}.`
   ];
-
-  if (hasValue(bird.pattern)) {
-    const location = lower(bird.patternPlacement);
-    const patternText = location === "all over" ? `${lower(bird.pattern)} all over` : `${lower(bird.pattern)} on the ${location}`;
-    sections.push(`Add Pattern\n- ${patternText}`);
-  }
-
-  if (hasValue(bird.quirk)) {
-    sections.push(`Optional Accessory\n- ${lower(bird.quirk)}`);
-  }
-
-  sections.push(`Recommended Expression\n- ${bird.expression}`);
-  sections.push(`Recommended Pose\n- ${bird.pose}`);
-  sections.push("Use the reference sheets for inspiration. Feel free to choose any expression or pose you like.");
-  sections.push(`Optional Story Idea\n- ${storyIdea(bird)}`);
-  sections.push(`Try This\n- ${bird.tryThis}`);
 
   return sections;
 }
@@ -765,6 +443,7 @@ function recipeChips(bird) {
   return [
     bird.birdEnergy,
     itemName(bird.bodyShape),
+    hasValue(bird.actionPose) ? bird.actionPose : "",
     bird.colorPalette.name
   ].filter(hasValue);
 }
@@ -817,7 +496,7 @@ function PaletteSwatches({ colors }) {
 
 function ColorPaletteCard({ palette, onShuffle }) {
   return (
-    <ShuffleCard title="Color Card" onShuffle={() => onShuffle("colorCard")} className="color-card">
+    <ShuffleCard title="Color Palette" onShuffle={() => onShuffle("colorPalette")} className="color-card">
       <CardField label="Palette" value={palette.name} primary />
       <PaletteSwatches colors={palette.colors} />
       <p className="card-note">{palette.mood}</p>
@@ -837,22 +516,43 @@ export default function App() {
     setShowSummary(false);
   }
 
-  function shuffleBirdCard() {
+  function shuffleBirdBodyCard() {
     setBird((currentBird) => {
       const profile = energyProfile(currentBird.birdEnergy);
       return {
         ...currentBird,
-        bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
-        wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
-        crest: weightedPick(tables.crests, profile.crest),
-        tail: weightedPick(tables.tails, profile.tail)
+        bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape)
       };
     });
     setCopyStatus("");
   }
 
-  function shuffleExpressionPoseCard() {
+  function shuffleEmotionCard() {
     shuffleField("birdEnergy");
+  }
+
+  function shuffleWingCard() {
+    setBird((currentBird) => ({
+      ...currentBird,
+      wingStyle: weightedPick(tables.wingStyles, energyProfile(currentBird.birdEnergy).wingStyle)
+    }));
+    setCopyStatus("");
+  }
+
+  function shuffleCrestCard() {
+    setBird((currentBird) => ({
+      ...currentBird,
+      crest: weightedPick(tables.crests, energyProfile(currentBird.birdEnergy).crest)
+    }));
+    setCopyStatus("");
+  }
+
+  function shuffleTailCard() {
+    setBird((currentBird) => ({
+      ...currentBird,
+      tail: weightedPick(tables.tails, energyProfile(currentBird.birdEnergy).tail)
+    }));
+    setCopyStatus("");
   }
 
   function shuffleLegsFeetCard() {
@@ -864,25 +564,20 @@ export default function App() {
     setCopyStatus("");
   }
 
-  function shuffleWildCard() {
+  function shufflePatternCard() {
     setBird((currentBird) => ({
       ...currentBird,
-      tryThis: randomDifferentItem(tryThisPrompts, currentBird.tryThis)
+      pattern: randomDifferentItem(tables.patterns, currentBird.pattern),
+      patternPlacement: randomDifferentItem(tables.patternPlacement, currentBird.patternPlacement)
     }));
     setCopyStatus("");
   }
 
   function shuffleStoryCard() {
-    setBird((currentBird) => {
-      const treasure = randomDifferentTreasureForEnergy(currentBird.birdEnergy, currentBird.treasure);
-      return {
-        ...currentBird,
-        storyCue: randomStoryCue(currentBird.birdEnergy, currentBird.pose, currentBird.storyCue).text,
-        setting: randomSettingForPose(currentBird.pose, currentBird.setting),
-        treasure,
-        treasureStory: randomTreasureStory(currentBird.birdEnergy, treasure)
-      };
-    });
+    setBird((currentBird) => ({
+      ...currentBird,
+      storyCue: randomStoryCue(currentBird.birdEnergy, currentBird.actionPose, currentBird.storyCue).text
+    }));
     setCopyStatus("");
   }
 
@@ -891,22 +586,12 @@ export default function App() {
       setBird((currentBird) => {
         const nextEnergy = validateEmotion(randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy));
         const profile = energyProfile(nextEnergy);
-        const emotion = emotionProfile(nextEnergy);
-        const pose = recommendedPoseForEmotion(nextEnergy);
-        const cue = randomStoryCue(nextEnergy, pose, currentBird.storyCue);
-        const treasure = randomTreasureForEnergy(nextEnergy, currentBird.treasure);
+        const cue = randomStoryCue(nextEnergy, currentBird.actionPose, currentBird.storyCue);
         return {
           ...currentBird,
           birdEnergy: nextEnergy,
           attitude: randomAttitude(nextEnergy),
-          expression: emotion.expression,
-          pose,
-          poseDescription: randomPoseDescription(pose, currentBird.poseDescription),
           storyCue: cue.text,
-          scene: randomSceneForMoment(nextEnergy, pose, currentBird.scene.sceneName),
-          setting: randomSettingForPose(pose, currentBird.setting),
-          treasure,
-          treasureStory: randomTreasureStory(nextEnergy, treasure),
           bodyShape: weightedPick(tables.bodyShapes, profile.bodyShape),
           wingStyle: weightedPick(tables.wingStyles, profile.wingStyle),
           crest: weightedPick(tables.crests, profile.crest),
@@ -923,63 +608,21 @@ export default function App() {
     if (field === "storyCue") {
       setBird((currentBird) => ({
         ...currentBird,
-        storyCue: randomStoryCue(currentBird.birdEnergy, currentBird.pose, currentBird.storyCue).text
+        storyCue: randomStoryCue(currentBird.birdEnergy, currentBird.actionPose, currentBird.storyCue).text
       }));
       setCopyStatus("");
       return;
     }
 
-    if (field === "pose") {
+    if (field === "actionPose") {
       setBird((currentBird) => {
-        const nextPose = randomDifferentItem(tables.poses, currentBird.pose);
+        const nextActionPose = randomActionPose(currentBird.actionPose);
         return {
           ...currentBird,
-          pose: nextPose,
-          poseDescription: randomPoseDescription(nextPose, currentBird.poseDescription),
-          scene: randomSceneForMoment(currentBird.birdEnergy, nextPose, currentBird.scene.sceneName),
-          setting: randomSettingForPose(nextPose, currentBird.setting)
+          actionPose: nextActionPose,
+          storyCue: randomStoryCue(currentBird.birdEnergy, nextActionPose, currentBird.storyCue).text
         };
       });
-      setCopyStatus("");
-      return;
-    }
-
-    if (field === "scene") {
-      setBird((currentBird) => ({
-        ...currentBird,
-        scene: randomSceneForMoment(currentBird.birdEnergy, currentBird.pose, currentBird.scene.sceneName)
-      }));
-      setCopyStatus("");
-      return;
-    }
-
-    if (field === "setting") {
-      setBird((currentBird) => ({
-        ...currentBird,
-        setting: randomSettingForPose(currentBird.pose, currentBird.setting)
-      }));
-      setCopyStatus("");
-      return;
-    }
-
-    if (field === "treasure") {
-      setBird((currentBird) => {
-        const treasure = randomDifferentTreasureForEnergy(currentBird.birdEnergy, currentBird.treasure);
-        return {
-          ...currentBird,
-          treasure,
-          treasureStory: randomTreasureStory(currentBird.birdEnergy, treasure)
-        };
-      });
-      setCopyStatus("");
-      return;
-    }
-
-    if (field === "expression") {
-      setBird((currentBird) => ({
-        ...currentBird,
-        expression: randomExpressionForEnergy(currentBird.birdEnergy, currentBird.expression)
-      }));
       setCopyStatus("");
       return;
     }
@@ -1003,7 +646,7 @@ export default function App() {
       pattern: tables.patterns,
       patternPlacement: tables.patternPlacement,
       quirk: tables.quirks,
-      treasure: tables.treasures
+      actionPose: optionalActionPoseChoices
     };
 
     const items = fieldTables[field];
@@ -1049,39 +692,48 @@ export default function App() {
         </div>
 
         <div className="card-grid">
-          <ShuffleCard title="Bird Card" onShuffle={shuffleBirdCard}>
-            <CardField label="Body" value={itemName(bird.bodyShape)} image={itemImage(bird.bodyShape)} primary />
-            <CardField label="Wings" value={itemName(bird.wingStyle)} image={itemImage(bird.wingStyle)} />
-            <CardField label="Crest" value={itemName(bird.crest)} image={itemImage(bird.crest)} />
-            <CardField label="Tail" value={itemName(bird.tail)} image={itemImage(bird.tail)} />
+          <ShuffleCard title="Bird Emotion" onShuffle={shuffleEmotionCard}>
+            <CardField label="Emotion" value={bird.birdEnergy} primary />
           </ShuffleCard>
 
-          <ShuffleCard title="Expression & Pose" onShuffle={shuffleExpressionPoseCard}>
-            <CardField label="Bird Emotion" value={bird.birdEnergy} primary />
-            <CardField label="Recommended Expression" value={bird.expression} />
-            <CardField label="Recommended Pose" value={bird.pose} />
-            <p className="card-note">Use the reference sheets for inspiration. These are suggestions, not rules.</p>
+          <ShuffleCard title="Bird Body" onShuffle={shuffleBirdBodyCard}>
+            <CardField label="Body" value={itemName(bird.bodyShape)} image={itemImage(bird.bodyShape)} primary />
+          </ShuffleCard>
+
+          <ShuffleCard title="Wings" onShuffle={shuffleWingCard}>
+            <CardField label="Wings" value={itemName(bird.wingStyle)} image={itemImage(bird.wingStyle)} primary />
+          </ShuffleCard>
+
+          <ShuffleCard title="Crest" onShuffle={shuffleCrestCard}>
+            <CardField label="Crest" value={itemName(bird.crest)} image={itemImage(bird.crest)} primary />
+          </ShuffleCard>
+
+          <ShuffleCard title="Tail" onShuffle={shuffleTailCard}>
+            <CardField label="Tail" value={itemName(bird.tail)} image={itemImage(bird.tail)} primary />
           </ShuffleCard>
 
           <ShuffleCard title="Legs & Feet" onShuffle={shuffleLegsFeetCard}>
             <CardField label="Legs" value={bird.legLength} primary />
-            <CardField label="Feet" value={itemName(bird.feet)} image={itemImage(bird.feet)} />
+            <CardField label="Feet / Footwear" value={itemName(bird.feet)} image={itemImage(bird.feet)} />
           </ShuffleCard>
 
-          <ShuffleCard title="Wild Card" onShuffle={shuffleWildCard}>
-            <CardField label="Try This" value={bird.tryThis} primary />
+          <ShuffleCard title="Pattern" onShuffle={shufflePatternCard}>
+            <CardField label="Pattern" value={itemName(bird.pattern)} primary />
+            {hasValue(bird.pattern) && <CardField label="Location" value={itemName(bird.patternPlacement)} />}
+          </ShuffleCard>
+
+          <ShuffleCard title="Accessory" onShuffle={() => shuffleField("quirk")}>
+            <CardField label="Accessory" value={hasValue(bird.quirk) ? bird.quirk : "No accessory this time."} primary />
           </ShuffleCard>
 
           <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
 
-          <ShuffleCard title="Accessory Card" onShuffle={() => shuffleField("quirk")}>
-            <CardField label="Accessory" value={hasValue(bird.quirk) ? bird.quirk : "No accessory this time."} primary />
+          <ShuffleCard title="Optional Action Pose" onShuffle={() => shuffleField("actionPose")}>
+            <CardField label="Action Pose" value={hasValue(bird.actionPose) ? bird.actionPose : "No action pose this time."} primary />
           </ShuffleCard>
 
-          <ShuffleCard title="Story Card" answer="What is happening?" onShuffle={shuffleStoryCard}>
+          <ShuffleCard title="Story Idea" onShuffle={shuffleStoryCard}>
             <CardField label="Story" value={storyIdea(bird)} primary />
-            <CardField label="Setting" value={hasValue(bird.setting) ? bird.setting : "No setting this time."} />
-            <CardField label="Treasure" value={hasValue(bird.treasure) ? bird.treasure : "No treasure this time."} />
           </ShuffleCard>
         </div>
 
