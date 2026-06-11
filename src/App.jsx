@@ -61,48 +61,107 @@ const crestTailSizes = [
   "Simple crest + fancy tail"
 ];
 
-const palettePlacements = {
-  "Ladybug Lane": ["Red body", "Cream belly", "Green accessory", "White accent details"],
-  "Feather Explosion": ["Pink body", "Teal wings", "Yellow and green crest", "Purple tail", "White accent details"],
-  "Spring Tulips": ["Pink body", "Peach belly", "Yellow crest", "Green accessory"],
-  "Fern & Foxglove": ["Deep green body", "Soft pink belly", "Pale green wings", "Peach accent details"],
-  "Wildflower Meadow": ["Green body", "Yellow belly", "Red crest", "Blue tail"],
-  "Buttercup Picnic": ["Yellow body", "Soft pink belly", "Green tail", "Cream accent details"],
-  "April Showers": ["Soft blue body", "Pale belly", "Fresh green crest", "Deep blue feet"],
-  "Puddle Jump": ["Bright blue body", "Pale blue belly", "Yellow crest", "Green feet"],
-  "Rainbow Daydream": ["Pink body", "Peach belly", "Green wings", "Blue tail"],
-  "Sunbeam Garden": ["Golden body", "Orange belly", "Green tail", "Cream accent details"],
-  "Honeybee Hollow": ["Yellow body", "Cream belly", "Dark green crest", "Leafy green accessory"],
-  "Strawberry Patch": ["Red body", "Pink belly", "Green crest", "Cream accent details"],
-  "Mushroom Hollow": ["Rosy body", "Peach belly", "Muted purple crest", "Cream tail"],
-  "Garden Gate": ["Leafy green body", "Cream belly", "Warm brown feet", "Golden accessory"],
-  "Tropical Chaos": ["Green body", "Hot pink crest", "Blue wings", "Orange tail"],
-  "Parrot Party": ["Green body", "Blue wings", "Red crest", "Yellow belly", "Orange feet"],
-  "Circus Bird": ["Red body", "Yellow belly", "Blue accessory", "White accent details"],
-  "Firecracker": ["Red body", "Yellow belly", "Purple crest", "Electric blue tail"],
-  "Crayon Box": ["Red body", "Yellow belly", "Blue wings", "Purple tail"]
-};
-
-const paletteAccents = {
-  "Ladybug Lane": "Cream or white tiny details",
-  "Feather Explosion": "White highlights or tiny details",
-  "Spring Tulips": "Fresh green tiny details",
-  "Fern & Foxglove": "Pale green or peach tiny details",
-  "Wildflower Meadow": "Blue or cream tiny details",
-  "Buttercup Picnic": "Cream highlights",
-  "April Showers": "Pale blue highlights",
-  "Puddle Jump": "Yellow tiny details",
-  "Rainbow Daydream": "Soft blue tiny details",
-  "Sunbeam Garden": "Cream highlights",
-  "Honeybee Hollow": "Dark green tiny details",
-  "Strawberry Patch": "Cream highlights",
-  "Mushroom Hollow": "Cream tiny details",
-  "Garden Gate": "Golden brown tiny details",
-  "Tropical Chaos": "Yellow tiny details",
-  "Parrot Party": "Orange tiny details",
-  "Circus Bird": "White highlights",
-  "Firecracker": "Electric blue tiny details",
-  "Crayon Box": "Purple or blue tiny details"
+const paletteGuides = {
+  "Spring Tulips": {
+    placement: ["Pink body", "Peach wings", "Yellow crest", "Green tail", "Peach feet", "White wearable accessory"],
+    accent: "Fresh green tiny details",
+    description: "Fresh garden colors inspired by spring tulips and sunny flower beds."
+  },
+  "Fern & Foxglove": {
+    placement: ["Deep green body", "Soft pink wings", "Pale green crest", "Peach tail", "Deep green feet", "Soft pink wearable accessory"],
+    accent: "Pale green or peach tiny details",
+    description: "Secret-garden greens with soft foxglove pinks and gentle woodland warmth."
+  },
+  "Wildflower Meadow": {
+    placement: ["Lavender body", "Pink and yellow wings", "Yellow crest", "Lavender and pink tail", "Brown feet", "Green wearable accessory"],
+    accent: "Cream highlights",
+    description: "Bright floral colors inspired by blooming meadow flowers."
+  },
+  "Buttercup Picnic": {
+    placement: ["Yellow body", "Soft pink wings", "Pale yellow crest", "Green tail", "Yellow feet", "Cream wearable accessory"],
+    accent: "Cream highlights",
+    description: "Cheerful buttercup colors with a sweet picnic-blanket feeling."
+  },
+  "April Showers": {
+    placement: ["Soft blue body", "Pale blue wings", "Fresh green crest", "Blue tail", "Deep blue feet", "Pale green wearable accessory"],
+    accent: "Pale blue highlights",
+    description: "Gentle rainy-day colors with fresh leaves and clean puddle sparkle."
+  },
+  "Puddle Jump": {
+    placement: ["Bright blue body", "Pale blue wings", "Yellow crest", "Green tail", "Bright blue feet", "Yellow wearable accessory"],
+    accent: "Yellow tiny details",
+    description: "Splashy rainy-day colors made for a playful bird with tiny boots."
+  },
+  "Rainbow Daydream": {
+    placement: ["Pink body", "Peach wings", "Yellow crest", "Blue tail", "Green feet", "Soft blue wearable accessory"],
+    accent: "Soft blue tiny details",
+    description: "Soft rainbow colors with a dreamy, imaginative sketchbook feeling."
+  },
+  "Sunbeam Garden": {
+    placement: ["Golden body", "Orange wings", "Yellow crest", "Green tail", "Orange feet", "Cream wearable accessory"],
+    accent: "Cream highlights",
+    description: "Warm garden colors glowing with afternoon sun."
+  },
+  "Honeybee Hollow": {
+    placement: ["Yellow body", "Cream wings", "Dark green crest", "Leafy green tail", "Dark green feet", "Cream wearable accessory"],
+    accent: "Dark green tiny details",
+    description: "Golden garden colors with leafy greens and a cozy honeybee feeling."
+  },
+  "Strawberry Patch": {
+    placement: ["Red body", "Pink wings", "Green crest", "Cream tail", "Red feet", "Pink wearable accessory"],
+    accent: "Cream highlights",
+    description: "Juicy berry colors with cheerful garden sweetness."
+  },
+  "Mushroom Hollow": {
+    placement: ["Rosy body", "Peach wings", "Muted purple crest", "Cream tail", "Rosy feet", "Cream wearable accessory"],
+    accent: "Cream tiny details",
+    description: "Cozy woodland colors with a soft storybook mood."
+  },
+  "Ladybug Lane": {
+    placement: ["Red body", "Deep green wings", "Cream crest", "Red and orange tail", "Deep green feet", "Green wearable accessory"],
+    accent: "Cream highlights",
+    description: "Playful garden colors inspired by ladybugs and summer flowers."
+  },
+  "Garden Gate": {
+    placement: ["Leafy green body", "Light green wings", "Golden crest", "Warm brown tail", "Warm brown feet", "Cream wearable accessory"],
+    accent: "Golden brown tiny details",
+    description: "Rustic garden colors with leafy greens and warm gate-side browns."
+  },
+  "Feather Explosion": {
+    placement: ["Hot pink body", "Teal and yellow wings", "Yellow and green crest", "Purple and teal tail", "Purple feet", "White wearable accessory"],
+    accent: "White highlights",
+    description: "Bright, loud, and made for a bird with big feelings."
+  },
+  "Tropical Chaos": {
+    placement: ["Green body", "Blue wings", "Hot pink crest", "Orange tail", "Green feet", "Yellow wearable accessory"],
+    accent: "Yellow tiny details",
+    description: "Juicy tropical colors with wild, high-energy contrast."
+  },
+  "Parrot Party": {
+    placement: ["Green body", "Blue wings", "Red crest", "Yellow and orange tail", "Orange feet", "Yellow wearable accessory"],
+    accent: "Orange tiny details",
+    description: "Bold party colors with a bright, squawky personality."
+  },
+  "Circus Bird": {
+    placement: ["Red body", "Blue wings", "Yellow crest", "Blue and red tail", "Black feet", "White wearable accessory"],
+    accent: "White highlights",
+    description: "High-contrast circus colors with theatrical, playful energy."
+  },
+  "Firecracker": {
+    placement: ["Red body", "Orange wings", "Yellow crest", "Electric blue tail", "Purple feet", "Yellow wearable accessory"],
+    accent: "Electric blue tiny details",
+    description: "Explosive bright colors for a zippy bird that refuses to be quiet."
+  },
+  "Crayon Box": {
+    placement: ["Red body", "Blue wings", "Yellow crest", "Purple tail", "Green feet", "Yellow wearable accessory"],
+    accent: "Purple or blue tiny details",
+    description: "Fresh crayon colors with playful classroom energy."
+  },
+  "Bluebird Morning": {
+    placement: ["Sky blue body", "Soft yellow wings", "White crest", "Blue and yellow tail", "Brown feet", "White wearable accessory"],
+    accent: "Soft gray details",
+    description: "Fresh morning colors with a cheerful countryside feel."
+  }
 };
 
 function randomItem(items) {
@@ -193,11 +252,13 @@ function patternPhrase(bird) {
 }
 
 function palettePlacement(palette) {
-  return palettePlacements[palette.name] || [
+  return (paletteGuides[palette.name] && paletteGuides[palette.name].placement) || [
     "Main color on the body",
-    "Light color on the belly",
+    "Light color on the wings",
     "Bright color on the crest",
-    "Accent color on the tail"
+    "Accent color on the tail",
+    "Dark color on the feet",
+    "Light color on the wearable accessory"
   ];
 }
 
@@ -206,7 +267,11 @@ function palettePlacementSentence(palette) {
 }
 
 function paletteAccent(palette) {
-  return paletteAccents[palette.name] || "Tiny accent details";
+  return (paletteGuides[palette.name] && paletteGuides[palette.name].accent) || "Tiny accent details";
+}
+
+function paletteDescription(palette) {
+  return (paletteGuides[palette.name] && paletteGuides[palette.name].description) || palette.mood;
 }
 
 function naturalList(items) {
@@ -314,7 +379,7 @@ function ColorPaletteCard({ palette, onShuffle }) {
       <PaletteSwatches colors={palette.colors} />
       <CardList label="Recommended Placement" items={palettePlacement(palette)} />
       <CardField label="Accent" value={paletteAccent(palette)} />
-      <p className="card-note">{palette.mood}</p>
+      <CardField label="Description" value={paletteDescription(palette)} />
     </ShuffleCard>
   );
 }
