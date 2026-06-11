@@ -811,6 +811,17 @@ h4 {
   line-height: 1.25;
 }
 
+.card-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding-left: 16px;
+}
+
+.card-list li {
+  padding-left: 2px;
+}
+
 .summary-actions {
   display: grid;
   gap: 8px;
