@@ -40,15 +40,10 @@ const sizeProportions = [
   "Tall bird",
   "Long-legged bird",
   "Big dramatic bird",
-  "Tiny body with giant crest",
   "Tiny bird with huge feet",
-  "Big expressive crest",
   "Small quiet bird",
   "Wide squat bird",
-  "Tall skinny bird"
-];
-
-const crestTailSizes = [
+  "Tall skinny bird",
   "Tiny crest + tiny tail",
   "Big expressive crest + tiny tail",
   "Tiny crest + big dramatic tail",
@@ -216,7 +211,6 @@ function makeBird() {
   return {
     birdEnergy: energy,
     sizeProportion: randomItem(sizeProportions),
-    crestTailSize: randomItem(crestTailSizes),
     legLength: randomItem(tables.legLengths),
     feet: randomItem(tables.feet),
     pattern: randomItem(tables.patterns),
@@ -290,8 +284,7 @@ function birdPrompt(bird) {
   const details = [
     legFeetPhrase(bird),
     patternPhrase(bird),
-    hasValue(bird.quirk) ? lower(bird.quirk) : "",
-    lower(bird.crestTailSize)
+    hasValue(bird.quirk) ? lower(bird.quirk) : ""
   ].filter(Boolean);
 
   const sections = [
@@ -306,7 +299,6 @@ function recipeChips(bird) {
   return [
     bird.birdEnergy,
     bird.sizeProportion,
-    bird.crestTailSize,
     bird.colorPalette.name
   ].filter(hasValue);
 }
@@ -408,14 +400,6 @@ export default function App() {
     shuffleField("birdEnergy");
   }
 
-  function shuffleCrestTailSizeCard() {
-    setBird((currentBird) => ({
-      ...currentBird,
-      crestTailSize: randomDifferentItem(crestTailSizes, currentBird.crestTailSize)
-    }));
-    setCopyStatus("");
-  }
-
   function shuffleLegsFeetCard() {
     setBird((currentBird) => ({
       ...currentBird,
@@ -459,7 +443,6 @@ export default function App() {
 
     const fieldTables = {
       sizeProportion: sizeProportions,
-      crestTailSize: crestTailSizes,
       legLength: tables.legLengths,
       feet: tables.feet,
       pattern: tables.patterns,
@@ -516,10 +499,6 @@ export default function App() {
 
           <ShuffleCard title="Size & Proportions" onShuffle={shuffleSizeProportionCard}>
             <CardField label="Size & Proportions" value={bird.sizeProportion} primary />
-          </ShuffleCard>
-
-          <ShuffleCard title="Crest & Tail Size" onShuffle={shuffleCrestTailSizeCard}>
-            <CardField label="Crest & Tail Size" value={bird.crestTailSize} primary />
           </ShuffleCard>
 
           <ShuffleCard title="Legs & Feet" onShuffle={shuffleLegsFeetCard}>
