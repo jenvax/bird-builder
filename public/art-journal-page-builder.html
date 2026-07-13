@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whimsical Bird Art Journal Page Builder</title>
+</head>
+<body>
+  <div class="bird-journal-widget" data-bird-journal-builder>
+    <style>
+      [data-bird-journal-builder] {
+        --ink: #2f2942;
+        --muted: #675d79;
+        --paper: #fffdf5;
+        --cream: #fff8e8;
+        --recipe-paper: #fffaf0;
+        --recipe-card: #efe5df;
+        --peach: #f4bd87;
+        --aqua: #d9f4ec;
+        --yellow: #fff0a8;
+        --pink: #ffd9e3;
+        --shadow: 0 18px 38px rgba(47, 41, 66, 0.14);
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 22px;
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.45;
+      }
+
+      [data-bird-journal-builder] *,
+      [data-bird-journal-builder] *::before,
+      [data-bird-journal-builder] *::after {
+        box-sizing: border-box;
+      }
+
+      [data-bird-journal-builder] .journal-shell {
+        overflow: hidden;
+        border: 2px solid rgba(244, 189, 135, 0.7);
+        border-radius: 24px;
+        background:
+          linear-gradient(90deg, rgba(98, 143, 120, 0.06) 1px, transparent 1px),
+          linear-gradient(rgba(98, 143, 120, 0.06) 1px, transparent 1px),
+          radial-gradient(circle at 8% 8%, rgba(255, 224, 138, 0.45), transparent 30%),
+          radial-gradient(circle at 94% 16%, rgba(174, 232, 211, 0.48), transparent 28%),
+          var(--cream);
+        background-size: 22px 22px, 22px 22px, auto, auto, auto;
+        box-shadow: var(--shadow);
+      }
+
+      [data-bird-journal-builder] .journal-header {
+        display: grid;
+        gap: 0;
+        padding: 28px;
+      }
+
+      [data-bird-journal-builder] h2,
+      [data-bird-journal-builder] h3,
+      [data-bird-journal-builder] p {
+        margin: 0;
+      }
+
+      [data-bird-journal-builder] h2 {
+        color: var(--ink);
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        line-height: 1.05;
+        letter-spacing: 0;
+        margin: 0 0 10px;
+      }
+
+      [data-bird-journal-builder] .journal-purpose {
+        color: var(--muted);
+        max-width: 650px;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      [data-bird-journal-builder] .action-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin: 22px 0 0;
+      }
+
+      [data-bird-journal-builder] button {
+        min-height: 44px;
+        border: 0;
+        border-radius: 999px;
+        color: #241b3a;
+        font: inherit;
+        font-weight: 800;
+        background: #ffb3c5;
+        box-shadow: none;
+        cursor: pointer;
+        transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+      }
+
+      [data-bird-journal-builder] button:hover,
+      [data-bird-journal-builder] button:focus-visible {
+        transform: translateY(-1px);
+        background: var(--yellow);
+        box-shadow: 0 10px 22px rgba(47, 41, 66, 0.18);
+        outline: 3px solid rgba(244, 189, 135, 0.35);
+        outline-offset: 2px;
+      }
+
+      [data-bird-journal-builder] button:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      [data-bird-journal-builder] .build-button {
+        flex: 0 1 auto;
+        padding: 13px 22px;
+      }
+
+      [data-bird-journal-builder] .copy-button {
+        flex: 0 1 auto;
+        padding: 11px 17px;
+        background: var(--aqua);
+      }
+
+      [data-bird-journal-builder] .journal-content {
+        padding: 24px;
+      }
+
+      [data-bird-journal-builder] .recipe-card {
+        border: 2px solid #3b3352;
+        border-radius: 12px;
+        background:
+          linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
+          var(--paper);
+        background-size: 100% 25px;
+        box-shadow: 4px 4px 0 rgba(47, 41, 66, 0.12);
+      }
+
+      [data-bird-journal-builder] .summary-card {
+        display: grid;
+        gap: 0;
+        margin: 0 0 20px;
+        padding: 20px;
+        border: 2px solid rgba(244, 189, 135, 0.55);
+        border-radius: 18px;
+        background: rgba(255, 250, 240, 0.92);
+        box-shadow: 0 12px 24px rgba(47, 41, 66, 0.1);
+      }
+
+      [data-bird-journal-builder] .summary-card h3 {
+        color: var(--ink);
+        font-size: 1.12rem;
+        line-height: 1.2;
+      }
+
+      [data-bird-journal-builder] .recipe-card h3 {
+        color: var(--ink);
+        font-size: 1.05rem;
+        line-height: 1.15;
+      }
+
+      [data-bird-journal-builder] .summary-text {
+        color: var(--ink);
+        font-size: 0.94rem;
+        line-height: 1.4;
+      }
+
+      [data-bird-journal-builder] .summary-list {
+        display: grid;
+        gap: 8px;
+        margin: 14px 0 0;
+      }
+
+      [data-bird-journal-builder] .summary-entry {
+        display: grid;
+        gap: 0;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(47, 41, 66, 0.08);
+      }
+
+      [data-bird-journal-builder] .summary-entry-label {
+        color: var(--muted);
+        font-size: 0.77rem;
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      [data-bird-journal-builder] .summary-entry-title {
+        color: var(--ink);
+        font-size: 1rem;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      [data-bird-journal-builder] .summary-entry-instruction {
+        color: var(--ink);
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.45;
+      }
+
+      [data-bird-journal-builder] .copy-status {
+        min-height: 1.4em;
+        color: #3f7a59;
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      [data-bird-journal-builder] .card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      [data-bird-journal-builder] .recipe-card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-height: 220px;
+        padding: 18px;
+        border: 1px solid rgba(47, 41, 66, 0.18);
+        border-radius: 18px;
+        background: var(--paper);
+        box-shadow: 0 10px 24px rgba(47, 41, 66, 0.11);
+      }
+
+      [data-bird-journal-builder] .recipe-card:nth-child(3n + 1) {
+        background:
+          radial-gradient(circle at 100% 0, rgba(255, 224, 138, 0.26), transparent 34%),
+          linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
+          var(--paper);
+        background-size: auto, 100% 25px, auto;
+      }
+
+      [data-bird-journal-builder] .recipe-card:nth-child(3n + 2) {
+        background:
+          radial-gradient(circle at 100% 0, rgba(174, 232, 211, 0.34), transparent 34%),
+          linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
+          var(--paper);
+        background-size: auto, 100% 25px, auto;
+      }
+
+      [data-bird-journal-builder] .recipe-card:nth-child(3n) {
+        background:
+          radial-gradient(circle at 100% 0, rgba(255, 217, 227, 0.32), transparent 34%),
+          linear-gradient(rgba(47, 41, 66, 0.045) 1px, transparent 1px),
+          var(--paper);
+        background-size: auto, 100% 25px, auto;
+      }
+
+      [data-bird-journal-builder] .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      [data-bird-journal-builder] .reroll-button {
+        flex: 0 0 auto;
+        min-height: 36px;
+        padding: 8px 12px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--ink);
+        box-shadow: none;
+        color: var(--cream);
+        font-size: 0.85rem;
+      }
+
+      [data-bird-journal-builder] .result-title {
+        color: var(--ink);
+        margin: 4px 0 0;
+        font-size: clamp(1.2rem, 3vw, 1.55rem);
+        font-weight: 900;
+        line-height: 1.15;
+      }
+
+      [data-bird-journal-builder] .result-instruction {
+        color: #49354f;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.45;
+      }
+
+      [data-bird-journal-builder] .card-note {
+        margin-top: auto;
+        padding-top: 8px;
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      @media (max-width: 720px) {
+        [data-bird-journal-builder] {
+          padding: 12px;
+        }
+
+        [data-bird-journal-builder] .journal-header,
+        [data-bird-journal-builder] .journal-content {
+          padding: 20px;
+        }
+
+        [data-bird-journal-builder] .card-grid {
+          grid-template-columns: 1fr;
+        }
+
+        [data-bird-journal-builder] .action-row {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        [data-bird-journal-builder] .build-button,
+        [data-bird-journal-builder] .copy-button {
+          width: 100%;
+        }
+      }
+    </style>
+
+    <div class="journal-shell">
+      <header class="journal-header">
+        <h2>Whimsical Bird Journal Page Builder</h2>
+        <p class="journal-purpose">Generate a layered page recipe for your art journal spread.</p>
+
+        <div class="action-row">
+          <button type="button" class="build-button" data-build-page>Build My Art Journal Page</button>
+          <button type="button" class="copy-button" data-copy-recipe>Copy Recipe</button>
+          <span class="copy-status" data-copy-status aria-live="polite"></span>
+        </div>
+      </header>
+
+      <div class="journal-content">
+        <section class="summary-card" aria-live="polite">
+          <h3>Your Bird Page Recipe</h3>
+          <div class="summary-text" data-recipe-summary>Click the button to build your page recipe.</div>
+        </section>
+
+        <div class="card-grid" data-card-grid></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var root = document.currentScript.closest("[data-bird-journal-builder]");
+        var summaryEl = root.querySelector("[data-recipe-summary]");
+        var statusEl = root.querySelector("[data-copy-status]");
+        var gridEl = root.querySelector("[data-card-grid]");
+        var buildButton = root.querySelector("[data-build-page]");
+        var copyButton = root.querySelector("[data-copy-recipe]");
+
+        var layers = [
+          {
+            key: "pagePrep",
+            label: "Layer 1: Page Prep",
+            name: "Page Prep",
+            note: "Start with the whole spread.",
+            items: [
+              ["White", "Paint the full spread white."],
+              ["Color 1", "Paint the full spread with your first chosen color."],
+              ["Color 2", "Paint the full spread with your second chosen color."],
+              ["Color 3", "Paint the full spread with your third chosen color."],
+              ["Color 4", "Paint the full spread with your fourth chosen color."],
+              ["Color 1 + Color 2", "Use both colors. Paint each page a different color, or patch them randomly across the spread."],
+              ["Color 1 + Color 3", "Use both colors. Paint each page a different color, or patch them randomly across the spread."],
+              ["Color 2 + Color 3", "Use both colors. Paint each page a different color, or patch them randomly across the spread."],
+              ["Color 2 + Color 4", "Use both colors. Paint each page a different color, or patch them randomly across the spread."],
+              ["Color 1 + Color 4", "Use both colors. Paint each page a different color, or patch them randomly across the spread."],
+              ["Color 3 + Color 4", "Use both colors. Paint each page a different color, or patch them randomly across the spread."],
+              ["White + Color 1", "Combine white with your first color."],
+              ["White + Color 2", "Combine white with your second color."],
+              ["White + Color 3", "Combine white with your third color."],
+              ["White + Color 4", "Combine white with your fourth color."]
+            ]
+          },
+          {
+            key: "layerTwo",
+            label: "Layer 2: Mark, Motif, or Background",
+            name: "Mark, Motif, or Background",
+            note: "Add the first visible idea.",
+            items: [
+              ["Paint Swatches", "Add small painted swatches, blocks, or messy color patches."],
+              ["Swirls", "Add loose swirls across the page."],
+              ["Clouds", "Add soft white clouds."],
+              ["Whimsical Words", "Add whimsical words in different sizes and directions."],
+              ["Dots and Circles", "Add dots, circles, rings, or bubble shapes."],
+              ["Stripes", "Add vertical, horizontal, diagonal, or wonky stripes."],
+              ["Intuitive Collage", "Add torn or cut painted papers intuitively."],
+              ["Scallops", "Add rows of scallops or rainbow shapes."],
+              ["Grid", "Add vertical, horizontal, diagonal, or wonky stripes in 2 different directions."],
+              ["Crosses and Asterisks", "Add Xs, asterisks and crosses in different sizes and directions."],
+              ["Hearts and Stars", "Add hearts and stars in different sizes and directions."],
+              ["Textured Background", "Add texture with dry brush, scraping, stamping, or messy marks."]
+            ]
+          },
+          {
+            key: "layerThree",
+            label: "Layer 3: Page Development",
+            name: "Page Development",
+            note: "Build depth and personality.",
+            items: [
+              ["Decorative Edges", "Add borders, scallops, dots, stripes, or marks around the edges."],
+              ["Add a Bird or Other Fodder", "Glue on a bird or another piece of bird-inspired fodder."],
+              ["Add a Nest or Other Fodder", "Glue on a nest or another cozy bird-world detail."],
+              ["Add a Birdhouse or Other Fodder", "Glue on a birdhouse or another playful paper piece."],
+              ["Add Flowers or Other Fodder", "Glue on flowers or another garden-inspired fodder piece."],
+              ["Add Mushrooms or Other Fodder", "Glue on mushrooms or another woodland-inspired fodder piece."],
+              ["Add Feathers or Other Fodder", "Glue on feathers or another soft bird-inspired detail."],
+              ["Glue on a Piece of Paper or Other Fodder", "Add a painted paper piece, torn scrap, collage shape, or other fodder."],
+              ["Add Shading", "Add shading with paint, pencil, crayon, or pen to create depth."],
+              ["Paint a Bird", "Paint a bird on the page."],
+              ["Paint Over Negative Shapes", "Paint around shapes to create bird related silhouettes or hidden images."],
+              ["Brain Dump", "Write messy thoughts, phrases, ideas, nature or bird related words across the page."],
+              ["Journal Writing Words", "Add short journal-style words or phrases."],
+              ["Doodle On Top", "Draw more details over an existing layer."],
+              ["Add a Cluster", "Layer several small pieces together."],
+              ["Add a Whimsical Tab", "Add a tab to the top, side, or bottom of the page."],
+              ["Trees and Branches", "Add a tree, branch, or silhouette."],
+              ["Stack 'Em", "Stack shapes, papers, birds, mushrooms, nests or words vertically or in a pile."],
+              ["Add Interactivity", "Add a flap, pocket, foldout, tuck spot, tab, or tip-in."],
+              ["Repeat Any Second Layer", "Choose one Layer 2 idea and add it again in a new way."]
+            ]
+          },
+          {
+            key: "keepGoing",
+            label: "Layer 4+: Keep Going",
+            name: "Keep Going",
+            note: "Decide what the page needs next.",
+            items: [
+              ["Repeat Any Second Layer", "Choose one Layer 2 idea and add it again."],
+              ["Repeat Any Third Layer", "Choose one Layer 3 idea and add it again."],
+              ["Add One More Cluster", "Add one more small layered cluster."],
+              ["Add More Fodder", "Glue on another fodder piece or bird."],
+              ["Add a Tab or Tip-In", "Add one small interactive element."],
+              ["Add Writing", "Add words, journaling, labels, or bird related phrases."],
+              ["Add Contrast", "Use a dark color, white, or hero color to make something pop."],
+              ["Add Details with Pen", "Add tiny lines, dots, outlines, patterns, or finishing marks."],
+              ["Stop - This Page Is Done", "Leave the page alone for now."]
+            ]
+          },
+          {
+            key: "mood",
+            label: "Optional Mood",
+            name: "Mood",
+            note: "Let this flavor your choices.",
+            items: [
+              ["Playful and Silly", "Let your page feel lighthearted, funny, and full of personality."],
+              ["Gentle and Quiet", "Use soft details, open space, and a calm approach."],
+              ["Curious Explorer", "Add discoveries, wandering paths, nests, maps, or found treasures."],
+              ["Busy Bird Village", "Fill the page with activity, birdhouses, branches, and community."],
+              ["Cozy Nesting Day", "Focus on nests, comfort, gathering, and home."],
+              ["Cheerful Garden", "Include flowers, growth, sunshine, and happy details."],
+              ["Windy Adventure", "Use movement, swirls, feathers, flight paths, and drifting elements."],
+              ["Whimsical Woodland", "Add mushrooms, branches, leaves, and forest-inspired details."],
+              ["Tiny Bird World", "Imagine the page from a bird's perspective, with miniature discoveries everywhere."],
+              ["Bold and Colorful", "Embrace contrast, patterns, bright accents, and playful energy."],
+              ["Storybook Scene", "Build the page as if it belongs inside an illustrated children's book."]
+            ]
+          }
+        ];
+
+        var state = {};
+
+        function randomItem(items) {
+          return items[Math.floor(Math.random() * items.length)];
+        }
+
+        function selectLayer(layer) {
+          var current = state[layer.key];
+          var next = randomItem(layer.items);
+          if (layer.items.length > 1) {
+            while (current && current.title === next[0]) {
+              next = randomItem(layer.items);
+            }
+          }
+          state[layer.key] = { title: next[0], instruction: next[1] };
+        }
+
+        function buildAll() {
+          layers.forEach(selectLayer);
+          render();
+        }
+
+        function recipeLabel(layer) {
+          if (layer.key === "pagePrep") return "Layer 1";
+          if (layer.key === "layerTwo") return "Layer 2";
+          if (layer.key === "layerThree") return "Layer 3";
+          if (layer.key === "keepGoing") return "Layer 4+: Keep Going";
+          if (layer.key === "mood") return "Optional Mood";
+          return layer.label;
+        }
+
+        function recipeTitle(layer, result) {
+          if (layer.key === "pagePrep") return "Paint your pages with " + result.title;
+          if (layer.key === "layerTwo") return "Add " + result.title;
+          if (layer.key === "layerThree") return result.title;
+          return result.title;
+        }
+
+        function recipeText() {
+          var lines = ["Your Bird Page Recipe", ""];
+          layers.forEach(function (layer) {
+            var result = state[layer.key];
+            if (!result) return;
+            lines.push(recipeLabel(layer));
+            lines.push(recipeTitle(layer, result));
+            lines.push(result.instruction);
+            lines.push("");
+          });
+          return lines.join("\n").trim();
+        }
+
+        function renderSummary() {
+          summaryEl.innerHTML = "";
+          var list = document.createElement("div");
+          list.className = "summary-list";
+
+          layers.forEach(function (layer) {
+            var result = state[layer.key];
+            if (!result) return;
+
+            var entry = document.createElement("div");
+            entry.className = "summary-entry";
+
+            var label = document.createElement("p");
+            label.className = "summary-entry-label";
+            label.textContent = recipeLabel(layer);
+
+            var title = document.createElement("p");
+            title.className = "summary-entry-title";
+            title.textContent = recipeTitle(layer, result);
+
+            var instruction = document.createElement("p");
+            instruction.className = "summary-entry-instruction";
+            instruction.textContent = result.instruction;
+
+            entry.appendChild(label);
+            entry.appendChild(title);
+            entry.appendChild(instruction);
+            list.appendChild(entry);
+          });
+
+          summaryEl.appendChild(list);
+        }
+
+        function renderCards() {
+          gridEl.innerHTML = "";
+          layers.forEach(function (layer) {
+            var result = state[layer.key];
+            var card = document.createElement("section");
+            card.className = "recipe-card";
+
+            var top = document.createElement("div");
+            top.className = "card-top";
+
+            var heading = document.createElement("h3");
+            heading.textContent = layer.label;
+
+            var button = document.createElement("button");
+            button.type = "button";
+            button.className = "reroll-button";
+            button.textContent = "Reroll";
+            button.addEventListener("click", function () {
+              selectLayer(layer);
+              statusEl.textContent = "";
+              render();
+            });
+
+            var title = document.createElement("p");
+            title.className = "result-title";
+            title.textContent = result ? result.title : "Not chosen yet";
+
+            var instruction = document.createElement("p");
+            instruction.className = "result-instruction";
+            instruction.textContent = result ? result.instruction : "Click the main button to build this layer.";
+
+            var note = document.createElement("div");
+            note.className = "card-note";
+            note.textContent = layer.note;
+
+            top.appendChild(heading);
+            top.appendChild(button);
+            card.appendChild(top);
+            card.appendChild(title);
+            card.appendChild(instruction);
+            card.appendChild(note);
+            gridEl.appendChild(card);
+          });
+        }
+
+        function render() {
+          renderSummary();
+          renderCards();
+        }
+
+        function copyRecipe() {
+          var text = recipeText();
+          if (!text) return;
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () {
+              statusEl.textContent = "Recipe copied.";
+            }).catch(function () {
+              statusEl.textContent = "Copy is blocked here. Select the recipe text to copy it.";
+            });
+          } else {
+            statusEl.textContent = "Copy is blocked here. Select the recipe text to copy it.";
+          }
+        }
+
+        buildButton.addEventListener("click", function () {
+          statusEl.textContent = "";
+          buildAll();
+        });
+
+        copyButton.addEventListener("click", copyRecipe);
+
+        buildAll();
+      })();
+    </script>
+  </div>
+</body>
+</html>
