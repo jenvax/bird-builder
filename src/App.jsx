@@ -50,14 +50,6 @@ const builderPrompts = {
     ]
   },
   emotion: ["Happy", "Curious", "Sleepy", "Grumpy", "Proud", "Surprised", "Excited", "Shy"],
-  beak: [
-    "Tiny beak",
-    "Long beak",
-    "Wide beak",
-    "Beak pointing up",
-    "Beak pointing down",
-    "Sideways beak"
-  ],
   accessory: [
     "No Accessory",
     "Glasses",
@@ -88,7 +80,7 @@ const builderPrompts = {
 };
 
 const categoryConfig = [
-  { key: "view", title: "View", note: "This choice keeps the eye and beak wording consistent." },
+  { key: "view", title: "View" },
   { key: "body", title: "Body" },
   { key: "wings", title: "Wings" },
   { key: "crest", title: "Crest" },
@@ -98,7 +90,6 @@ const categoryConfig = [
     title: "Emotion",
     note: "Use the Emotion Reference Sheet to draw the eyes, eyebrows, and mouth."
   },
-  { key: "beak", title: "Beak" },
   { key: "accessory", title: "Accessory" },
   { key: "legsFeet", title: "Legs & Feet" },
   { key: "sillyDetail", title: "Silly Detail" }
@@ -142,14 +133,6 @@ function wingOptionsForView(view) {
   return builderPrompts.wings.filter((wing) => wing !== "Matching wings" && wing !== "Mismatched wings");
 }
 
-function beakOptionsForView(view) {
-  if (view === "Profile") {
-    return builderPrompts.beak.map((beak) => (beak === "Sideways beak" ? "Sideways-facing beak" : beak));
-  }
-
-  return builderPrompts.beak.filter((beak) => beak !== "Beak pointing up" && beak !== "Beak pointing down");
-}
-
 function sillyDetailOptionsForBird(bird) {
   const options = [...builderPrompts.sillyDetail];
 
@@ -177,10 +160,6 @@ function promptOptionsForCategory(key, bird) {
 
   if (key === "wings") {
     return wingOptionsForView(bird.view);
-  }
-
-  if (key === "beak") {
-    return beakOptionsForView(bird.view);
   }
 
   if (key === "legsFeet") {
@@ -227,21 +206,6 @@ function normalizeWingsForView(view, wings) {
   return options.includes(wings) ? wings : randomItem(options);
 }
 
-function normalizeBeakForView(view, beak) {
-  const normalizedBeak = view === "Profile" && beak === "Sideways beak" ? "Sideways-facing beak" : beak;
-  const options = beakOptionsForView(view);
-
-  if (!options.includes(normalizedBeak)) {
-    return randomItem(options);
-  }
-
-  if (view === "Profile") {
-    return normalizedBeak;
-  }
-
-  return normalizedBeak === "Sideways-facing beak" ? "Sideways beak" : normalizedBeak;
-}
-
 function normalizeSillyDetailForBird(bird) {
   const options = sillyDetailOptionsForBird(bird);
   return options.includes(bird.sillyDetail) ? bird.sillyDetail : randomItem(options);
@@ -262,7 +226,6 @@ function makeBird(currentBird = {}, locks = initialLocks) {
 
   nextBird.eyes = normalizeEyesForView(nextBird.view, nextBird.eyes);
   nextBird.wings = normalizeWingsForView(nextBird.view, nextBird.wings);
-  nextBird.beak = normalizeBeakForView(nextBird.view, nextBird.beak);
   nextBird.sillyDetail = normalizeSillyDetailForBird(nextBird);
 
   return nextBird;
@@ -340,28 +303,6 @@ function eyePhrase(eyes, view) {
   return `it has ${lower(eyes)}`;
 }
 
-function beakPhrase(beak, view) {
-  const normalizedBeak = normalizeBeakForView(view, beak);
-
-  if (normalizedBeak === "Sideways-facing beak") {
-    return "a sideways-facing beak";
-  }
-
-  if (normalizedBeak === "Sideways beak") {
-    return "a sideways beak as a whimsical twist";
-  }
-
-  const beakMap = {
-    "Tiny beak": "a tiny beak",
-    "Long beak": "a long beak",
-    "Wide beak": "a wide beak",
-    "Beak pointing up": "a beak pointing up",
-    "Beak pointing down": "a beak pointing down"
-  };
-
-  return beakMap[normalizedBeak] || lower(normalizedBeak);
-}
-
 function accessoryPhrase(accessory) {
   if (accessory === "No Accessory") {
     return "skip accessories";
@@ -407,15 +348,14 @@ function sillyDetailPhrase(sillyDetail) {
   return lower(stripPrefix(sillyDetail, "Add "));
 }
 
-function beakAccessoryLegsSentence(bird) {
-  const beak = beakPhrase(bird.beak, bird.view);
+function accessoryLegsSentence(bird) {
   const legsFeet = legsFeetPhrase(bird.legsFeet);
 
   if (bird.accessory === "No Accessory") {
-    return `Add ${beak} and ${legsFeet}; skip accessories.`;
+    return `Add ${legsFeet}; skip accessories.`;
   }
 
-  return `Add ${beak}, ${accessoryPhrase(bird.accessory)}, and ${legsFeet}.`;
+  return `Add ${accessoryPhrase(bird.accessory)} and ${legsFeet}.`;
 }
 
 function fullRecipe(bird) {
@@ -426,7 +366,7 @@ function fullRecipe(bird) {
     `Build a ${bodyPhrase(bird.body)} ${viewPhrase} bird.`,
     `Give it ${wingPhrase(bird.wings, bird.view)} and ${crestPhrase(bird.crest)}.`,
     `${eyeSentence.charAt(0).toUpperCase()}${eyeSentence.slice(1)}, and it feels ${lower(bird.emotion)}.`,
-    beakAccessoryLegsSentence(bird),
+    accessoryLegsSentence(bird),
     `Finish with ${sillyDetailPhrase(bird.sillyDetail)}.`
   ].join(" ");
 }
@@ -490,7 +430,6 @@ export default function App() {
       if (key === "view") {
         nextBird.eyes = normalizeEyesForView(nextBird.view, nextBird.eyes);
         nextBird.wings = normalizeWingsForView(nextBird.view, nextBird.wings);
-        nextBird.beak = normalizeBeakForView(nextBird.view, nextBird.beak);
         nextBird.sillyDetail = normalizeSillyDetailForBird(nextBird);
       }
 
@@ -500,10 +439,6 @@ export default function App() {
 
       if (key === "eyes") {
         nextBird.eyes = normalizeEyesForView(nextBird.view, nextBird.eyes);
-      }
-
-      if (key === "beak") {
-        nextBird.beak = normalizeBeakForView(nextBird.view, nextBird.beak);
       }
 
       if (key === "legsFeet" || key === "sillyDetail") {
