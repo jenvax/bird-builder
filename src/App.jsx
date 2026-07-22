@@ -1,182 +1,121 @@
 import React, { useMemo, useState } from "react";
-import birdEnergy from "./data/birdEnergy.json";
-import legLengths from "./data/legLengths.json";
-import simpleFeet from "./data/simpleFeet.json";
-import palettes from "./data/palettes.json";
-import quirks from "./data/quirks.json";
-import patterns from "./data/patterns.json";
-import patternPlacement from "./data/patternPlacement.json";
 
-const tables = {
-  birdEnergy,
-  legLengths,
-  feet: simpleFeet,
-  palettes,
-  quirks,
-  patterns,
-  patternPlacement
+const builderPrompts = {
+  view: ["Straight on", "Profile"],
+  body: [
+    "Large body",
+    "Small body",
+    "Tall body",
+    "Round body",
+    "Wide body",
+    "Wonky body"
+  ],
+  wings: [
+    "Tiny wings",
+    "Oversized wings",
+    "Matching wings",
+    "Mismatched wings",
+    "Patterned wings",
+    "Solid wings"
+  ],
+  crest: [
+    "No crest",
+    "One small feather",
+    "Three feathers",
+    "Tiny crest",
+    "Matching crest",
+    "Mismatched crest",
+    "Use an unexpected shape"
+  ],
+  eyes: {
+    front: [
+      "Two eyes",
+      "Tiny eyes",
+      "Oversized eyes",
+      "Close together",
+      "Far apart",
+      "Looking up",
+      "Looking down",
+      "Looking sideways",
+      "Looking straight ahead"
+    ],
+    profile: [
+      "One visible eye",
+      "Tiny eye",
+      "Oversized eye",
+      "Looking up",
+      "Looking down",
+      "Looking sideways",
+      "Looking straight ahead"
+    ]
+  },
+  emotion: ["Happy", "Curious", "Sleepy", "Grumpy", "Proud", "Surprised", "Excited", "Shy"],
+  beak: [
+    "Tiny beak",
+    "Long beak",
+    "Wide beak",
+    "Beak pointing up",
+    "Beak pointing down",
+    "Sideways beak"
+  ],
+  accessory: [
+    "No Accessory",
+    "Glasses",
+    "Sunglasses",
+    "Hat",
+    "Crown",
+    "Feather Crown",
+    "Bow",
+    "Feathered Headpiece",
+    "Head Band"
+  ],
+  legsFeet: {
+    noLegs: "No visible legs",
+    pairedLegs: ["Tiny legs", "Long legs"],
+    pairedFeet: ["boots", "shoes", "socks", "mismatched footwear", "simple bird feet"],
+    singleLeg: "One leg showing",
+    singleFoot: ["boot", "shoe", "sock", "simple bird foot"]
+  },
+  sillyDetail: [
+    "Add a heart",
+    "Add a star",
+    "Add a feather",
+    "Add a flower",
+    "Add enormous feet",
+    "Add a worm in its beak.",
+    "Add something unexpected"
+  ]
 };
 
-const finalEmotionValues = new Set(birdEnergy);
-const boldPaletteEmotions = new Set([
-  "Joyful",
-  "Excited",
-  "Mischievous",
-  "Playful",
-  "Cheeky",
-  "Surprised",
-  "Startled",
-  "Shocked",
-  "Irritated",
-  "Annoyed",
-  "Frustrated",
-  "Angry"
-]);
-
-const sizeProportions = [
-  "Tiny bird",
-  "Small bird",
-  "Round chubby bird",
-  "Tall bird",
-  "Long-legged bird",
-  "Big dramatic bird",
-  "Tiny bird with huge feet",
-  "Small quiet bird",
-  "Wide squat bird",
-  "Tall skinny bird",
-  "Tiny crest + tiny tail",
-  "Big expressive crest + tiny tail",
-  "Tiny crest + big dramatic tail",
-  "Wild messy crest + small tail",
-  "Tall crest + short tail",
-  "Floppy crest + long tail",
-  "Big crest + big tail",
-  "Small quiet crest + small tail",
-  "Extra dramatic crest + simple tail",
-  "Simple crest + fancy tail"
+const categoryConfig = [
+  { key: "view", title: "View", note: "This choice keeps the eye and beak wording consistent." },
+  { key: "body", title: "Body" },
+  { key: "wings", title: "Wings" },
+  { key: "crest", title: "Crest" },
+  { key: "eyes", title: "Eyes" },
+  {
+    key: "emotion",
+    title: "Emotion",
+    note: "Use the Emotion Reference Sheet to draw the eyes, eyebrows, and mouth."
+  },
+  { key: "beak", title: "Beak" },
+  { key: "accessory", title: "Accessory" },
+  { key: "legsFeet", title: "Legs & Feet" },
+  { key: "sillyDetail", title: "Silly Detail" }
 ];
 
-const paletteGuides = {
-  "Spring Tulips": {
-    placement: ["Pink body", "Peach wings", "Yellow crest", "Green tail", "Peach feet", "White wearable accessory"],
-    accent: "Fresh green tiny details",
-    description: "Fresh garden colors inspired by spring tulips and sunny flower beds."
-  },
-  "Fern & Foxglove": {
-    placement: ["Deep green body", "Soft pink wings", "Pale green crest", "Peach tail", "Deep green feet", "Soft pink wearable accessory"],
-    accent: "Pale green or peach tiny details",
-    description: "Secret-garden greens with soft foxglove pinks and gentle woodland warmth."
-  },
-  "Wildflower Meadow": {
-    placement: ["Lavender body", "Pink and yellow wings", "Yellow crest", "Lavender and pink tail", "Brown feet", "Green wearable accessory"],
-    accent: "Cream highlights",
-    description: "Bright floral colors inspired by blooming meadow flowers."
-  },
-  "Buttercup Picnic": {
-    placement: ["Yellow body", "Soft pink wings", "Pale yellow crest", "Green tail", "Yellow feet", "Cream wearable accessory"],
-    accent: "Cream highlights",
-    description: "Cheerful buttercup colors with a sweet picnic-blanket feeling."
-  },
-  "April Showers": {
-    placement: ["Soft blue body", "Pale blue wings", "Fresh green crest", "Blue tail", "Deep blue feet", "Pale green wearable accessory"],
-    accent: "Pale blue highlights",
-    description: "Gentle rainy-day colors with fresh leaves and clean puddle sparkle."
-  },
-  "Puddle Jump": {
-    placement: ["Bright blue body", "Pale blue wings", "Yellow crest", "Green tail", "Bright blue feet", "Yellow wearable accessory"],
-    accent: "Yellow tiny details",
-    description: "Splashy rainy-day colors made for a playful bird with tiny boots."
-  },
-  "Rainbow Daydream": {
-    placement: ["Pink body", "Peach wings", "Yellow crest", "Blue tail", "Green feet", "Soft blue wearable accessory"],
-    accent: "Soft blue tiny details",
-    description: "Soft rainbow colors with a dreamy, imaginative sketchbook feeling."
-  },
-  "Sunbeam Garden": {
-    placement: ["Golden body", "Orange wings", "Yellow crest", "Green tail", "Orange feet", "Cream wearable accessory"],
-    accent: "Cream highlights",
-    description: "Warm garden colors glowing with afternoon sun."
-  },
-  "Honeybee Hollow": {
-    placement: ["Yellow body", "Cream wings", "Dark green crest", "Leafy green tail", "Dark green feet", "Cream wearable accessory"],
-    accent: "Dark green tiny details",
-    description: "Golden garden colors with leafy greens and a cozy honeybee feeling."
-  },
-  "Strawberry Patch": {
-    placement: ["Red body", "Pink wings", "Green crest", "Cream tail", "Red feet", "Pink wearable accessory"],
-    accent: "Cream highlights",
-    description: "Juicy berry colors with cheerful garden sweetness."
-  },
-  "Mushroom Hollow": {
-    placement: ["Rosy body", "Peach wings", "Muted purple crest", "Cream tail", "Rosy feet", "Cream wearable accessory"],
-    accent: "Cream tiny details",
-    description: "Cozy woodland colors with a soft storybook mood."
-  },
-  "Ladybug Lane": {
-    placement: ["Red body", "Deep green wings", "Cream crest", "Red and orange tail", "Deep green feet", "Green wearable accessory"],
-    accent: "Cream highlights",
-    description: "Playful garden colors inspired by ladybugs and summer flowers."
-  },
-  "Garden Gate": {
-    placement: ["Leafy green body", "Light green wings", "Golden crest", "Warm brown tail", "Warm brown feet", "Cream wearable accessory"],
-    accent: "Golden brown tiny details",
-    description: "Rustic garden colors with leafy greens and warm gate-side browns."
-  },
-  "Feather Explosion": {
-    placement: ["Hot pink body", "Teal and yellow wings", "Yellow and green crest", "Purple and teal tail", "Purple feet", "White wearable accessory"],
-    accent: "White highlights",
-    description: "Bright, loud, and made for a bird with big feelings."
-  },
-  "Tropical Chaos": {
-    placement: ["Green body", "Blue wings", "Hot pink crest", "Orange tail", "Green feet", "Yellow wearable accessory"],
-    accent: "Yellow tiny details",
-    description: "Juicy tropical colors with wild, high-energy contrast."
-  },
-  "Parrot Party": {
-    placement: ["Green body", "Blue wings", "Red crest", "Yellow and orange tail", "Orange feet", "Yellow wearable accessory"],
-    accent: "Orange tiny details",
-    description: "Bold party colors with a bright, squawky personality."
-  },
-  "Circus Bird": {
-    placement: ["Red body", "Blue wings", "Yellow crest", "Blue and red tail", "Black feet", "White wearable accessory"],
-    accent: "White highlights",
-    description: "High-contrast circus colors with theatrical, playful energy."
-  },
-  "Firecracker": {
-    placement: ["Red body", "Orange wings", "Yellow crest", "Electric blue tail", "Purple feet", "Yellow wearable accessory"],
-    accent: "Electric blue tiny details",
-    description: "Explosive bright colors for a zippy bird that refuses to be quiet."
-  },
-  "Crayon Box": {
-    placement: ["Red body", "Blue wings", "Yellow crest", "Purple tail", "Green feet", "Yellow wearable accessory"],
-    accent: "Purple or blue tiny details",
-    description: "Fresh crayon colors with playful classroom energy."
-  },
-  "Bluebird Morning": {
-    placement: ["Sky blue body", "Soft yellow wings", "White crest", "Blue and yellow tail", "Brown feet", "White wearable accessory"],
-    accent: "Soft gray details",
-    description: "Fresh morning colors with a cheerful countryside feel."
-  }
-};
+const initialLocks = Object.fromEntries(categoryConfig.map(({ key }) => [key, false]));
+
+const legsFeetOptions = [
+  builderPrompts.legsFeet.noLegs,
+  ...builderPrompts.legsFeet.pairedLegs.flatMap((legs) =>
+    builderPrompts.legsFeet.pairedFeet.map((feet) => `${legs} with ${feet}`)
+  ),
+  ...builderPrompts.legsFeet.singleFoot.map((foot) => `${builderPrompts.legsFeet.singleLeg} with a ${foot}`)
+];
 
 function randomItem(items) {
   return items[Math.floor(Math.random() * items.length)];
-}
-
-function itemName(item) {
-  return typeof item === "string" ? item : item.name;
-}
-
-function itemImage(item) {
-  return typeof item === "string" ? "" : item.image || "";
-}
-
-function hasValue(value) {
-  return itemName(value) !== "None";
-}
-
-function lower(value) {
-  return itemName(value).toLowerCase();
 }
 
 function randomDifferentItem(items, currentItem) {
@@ -185,289 +124,425 @@ function randomDifferentItem(items, currentItem) {
   }
 
   let nextItem = randomItem(items);
-  while (itemName(nextItem) === itemName(currentItem)) {
+  while (nextItem === currentItem) {
     nextItem = randomItem(items);
   }
   return nextItem;
 }
 
-function validateEmotion(emotion) {
-  return finalEmotionValues.has(emotion) ? emotion : "Curious";
+function eyeOptionsForView(view) {
+  return view === "Profile" ? builderPrompts.eyes.profile : builderPrompts.eyes.front;
 }
 
-function randomPaletteForEmotion(emotion, currentPaletteName = "") {
-  const wantsBold = boldPaletteEmotions.has(validateEmotion(emotion));
-  const preferred = tables.palettes.filter((palette) =>
-    wantsBold ? palette.collection === "Silly Bird Palettes" : palette.collection !== "Silly Bird Palettes"
-  );
-  const fallback = preferred.length > 0 ? preferred : tables.palettes;
-  const candidates = fallback.filter((palette) => palette.name !== currentPaletteName);
-  return randomItem(candidates.length > 0 ? candidates : fallback);
+function wingOptionsForView(view) {
+  if (view !== "Profile") {
+    return builderPrompts.wings;
+  }
+
+  return builderPrompts.wings.filter((wing) => wing !== "Matching wings" && wing !== "Mismatched wings");
 }
 
-function makeBird() {
-  const energy = validateEmotion(randomItem(tables.birdEnergy));
+function beakOptionsForView(view) {
+  if (view === "Profile") {
+    return builderPrompts.beak.map((beak) => (beak === "Sideways beak" ? "Sideways-facing beak" : beak));
+  }
 
-  return {
-    birdEnergy: energy,
-    sizeProportion: randomItem(sizeProportions),
-    legLength: randomItem(tables.legLengths),
-    feet: randomItem(tables.feet),
-    pattern: randomItem(tables.patterns),
-    patternPlacement: randomItem(tables.patternPlacement),
-    quirk: randomItem(tables.quirks),
-    colorPalette: randomPaletteForEmotion(energy)
+  return builderPrompts.beak.filter((beak) => beak !== "Beak pointing up" && beak !== "Beak pointing down");
+}
+
+function sillyDetailOptionsForBird(bird) {
+  const options = [...builderPrompts.sillyDetail];
+
+  if (bird.view === "Straight on") {
+    options.push("Make the eyes different sizes.");
+    options.push("Make the eyes look in different directions.");
+  }
+
+  if (bird.view === "Profile") {
+    options.push("Rotate the body so that the bird is looking down at something on the ground.");
+    options.push("Rotate the body so that the bird is looking up at something above them.");
+  }
+
+  if (bird.legsFeet && bird.legsFeet !== builderPrompts.legsFeet.noLegs) {
+    options.push("Draw the legs in a funny pose.");
+  }
+
+  return options;
+}
+
+function promptOptionsForCategory(key, bird) {
+  if (key === "eyes") {
+    return eyeOptionsForView(bird.view);
+  }
+
+  if (key === "wings") {
+    return wingOptionsForView(bird.view);
+  }
+
+  if (key === "beak") {
+    return beakOptionsForView(bird.view);
+  }
+
+  if (key === "legsFeet") {
+    return legsFeetOptions;
+  }
+
+  if (key === "sillyDetail") {
+    return sillyDetailOptionsForBird(bird);
+  }
+
+  return builderPrompts[key];
+}
+
+function normalizeEyesForView(view, eyes) {
+  const options = eyeOptionsForView(view);
+
+  if (options.includes(eyes)) {
+    return eyes;
+  }
+
+  if (view === "Profile") {
+    const profileMap = {
+      "Two eyes": "One visible eye",
+      "Tiny eyes": "Tiny eye",
+      "Oversized eyes": "Oversized eye",
+      "Close together": "One visible eye",
+      "Far apart": "One visible eye"
+    };
+
+    return profileMap[eyes] || randomItem(options);
+  }
+
+  const frontMap = {
+    "One visible eye": "Two eyes",
+    "Tiny eye": "Tiny eyes",
+    "Oversized eye": "Oversized eyes"
   };
+
+  return frontMap[eyes] || randomItem(options);
 }
 
-function paletteWord(palette) {
-  return palette.name.split(" ")[0];
+function normalizeWingsForView(view, wings) {
+  const options = wingOptionsForView(view);
+  return options.includes(wings) ? wings : randomItem(options);
 }
 
-function birdName(bird) {
-  return `${bird.birdEnergy} ${paletteWord(bird.colorPalette)} Bird`;
-}
+function normalizeBeakForView(view, beak) {
+  const normalizedBeak = view === "Profile" && beak === "Sideways beak" ? "Sideways-facing beak" : beak;
+  const options = beakOptionsForView(view);
 
-function feetPhrase(feet) {
-  return lower(feet);
-}
-
-function legFeetPhrase(bird) {
-  return `${lower(bird.legLength)} legs and ${feetPhrase(bird.feet)}`;
-}
-
-function patternPhrase(bird) {
-  if (!hasValue(bird.pattern)) {
-    return "";
+  if (!options.includes(normalizedBeak)) {
+    return randomItem(options);
   }
 
-  const location = lower(bird.patternPlacement);
-  return location === "all over" ? `${lower(bird.pattern)} all over` : `${lower(bird.pattern)} on the ${location}`;
-}
-
-function palettePlacement(palette) {
-  return (paletteGuides[palette.name] && paletteGuides[palette.name].placement) || [
-    "Main color on the body",
-    "Light color on the wings",
-    "Bright color on the crest",
-    "Accent color on the tail",
-    "Dark color on the feet",
-    "Light color on the wearable accessory"
-  ];
-}
-
-function palettePlacementSentence(palette) {
-  return palettePlacement(palette).map((placement) => lower(placement)).join(", ");
-}
-
-function paletteAccent(palette) {
-  return (paletteGuides[palette.name] && paletteGuides[palette.name].accent) || "Tiny accent details";
-}
-
-function paletteDescription(palette) {
-  return (paletteGuides[palette.name] && paletteGuides[palette.name].description) || palette.mood;
-}
-
-function naturalList(items) {
-  if (items.length <= 1) {
-    return items[0] || "";
+  if (view === "Profile") {
+    return normalizedBeak;
   }
 
-  if (items.length === 2) {
-    return `${items[0]} and ${items[1]}`;
+  return normalizedBeak === "Sideways-facing beak" ? "Sideways beak" : normalizedBeak;
+}
+
+function normalizeSillyDetailForBird(bird) {
+  const options = sillyDetailOptionsForBird(bird);
+  return options.includes(bird.sillyDetail) ? bird.sillyDetail : randomItem(options);
+}
+
+function makeBird(currentBird = {}, locks = initialLocks) {
+  const nextBird = {};
+
+  categoryConfig.forEach(({ key }) => {
+    if (locks[key] && currentBird[key]) {
+      nextBird[key] = currentBird[key];
+      return;
+    }
+
+    const options = promptOptionsForCategory(key, { ...currentBird, ...nextBird });
+    nextBird[key] = currentBird[key] ? randomDifferentItem(options, currentBird[key]) : randomItem(options);
+  });
+
+  nextBird.eyes = normalizeEyesForView(nextBird.view, nextBird.eyes);
+  nextBird.wings = normalizeWingsForView(nextBird.view, nextBird.wings);
+  nextBird.beak = normalizeBeakForView(nextBird.view, nextBird.beak);
+  nextBird.sillyDetail = normalizeSillyDetailForBird(nextBird);
+
+  return nextBird;
+}
+
+function lower(value) {
+  return value.toLowerCase();
+}
+
+function stripPrefix(value, prefix) {
+  return value.startsWith(prefix) ? value.slice(prefix.length) : value;
+}
+
+function bodyPhrase(body) {
+  return lower(body).replace(" body", "");
+}
+
+function wingPhrase(wings, view) {
+  const text = lower(wings);
+
+  if (text === "one wing") {
+    return view === "Profile" ? "one visible wing" : "one wing";
   }
 
-  return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
+  if (text === "two wings") {
+    return "two wings";
+  }
+
+  return text;
 }
 
-function birdPrompt(bird) {
-  const details = [
-    legFeetPhrase(bird),
-    patternPhrase(bird),
-    hasValue(bird.quirk) ? lower(bird.quirk) : ""
-  ].filter(Boolean);
+function crestPhrase(crest) {
+  if (crest === "No crest") {
+    return "no crest";
+  }
 
-  const sections = [
-    `Draw a ${lower(bird.birdEnergy)} ${lower(bird.sizeProportion)}${details.length > 0 ? ` with ${naturalList(details)}` : ""}.`,
-    `Use the ${bird.colorPalette.name} palette with ${palettePlacementSentence(bird.colorPalette)}, and ${lower(paletteAccent(bird.colorPalette))}.`
-  ];
+  if (crest === "One small feather") {
+    return "a crest with one small feather";
+  }
 
-  return sections;
+  if (crest === "Three feathers") {
+    return "a three-feather crest";
+  }
+
+  if (crest === "Use an unexpected shape") {
+    return "a crest made from an unexpected shape";
+  }
+
+  return `a ${lower(crest)}`;
 }
 
-function recipeChips(bird) {
+function eyePhrase(eyes, view) {
+  const direction = lower(eyes).replace("looking", "looking");
+
+  if (view === "Profile") {
+    if (eyes === "One visible eye") {
+      return "its one visible eye is clearly drawn";
+    }
+
+    if (eyes === "Tiny eye" || eyes === "Oversized eye") {
+      return `its visible eye is ${lower(eyes).replace(" eye", "")}`;
+    }
+
+    return `its visible eye is ${direction}`;
+  }
+
+  if (eyes === "Close together" || eyes === "Far apart") {
+    return `its eyes are ${direction}`;
+  }
+
+  if (eyes.startsWith("Looking")) {
+    return `its eyes are ${direction}`;
+  }
+
+  return `it has ${lower(eyes)}`;
+}
+
+function beakPhrase(beak, view) {
+  const normalizedBeak = normalizeBeakForView(view, beak);
+
+  if (normalizedBeak === "Sideways-facing beak") {
+    return "a sideways-facing beak";
+  }
+
+  if (normalizedBeak === "Sideways beak") {
+    return "a sideways beak as a whimsical twist";
+  }
+
+  const beakMap = {
+    "Tiny beak": "a tiny beak",
+    "Long beak": "a long beak",
+    "Wide beak": "a wide beak",
+    "Beak pointing up": "a beak pointing up",
+    "Beak pointing down": "a beak pointing down"
+  };
+
+  return beakMap[normalizedBeak] || lower(normalizedBeak);
+}
+
+function accessoryPhrase(accessory) {
+  if (accessory === "No Accessory") {
+    return "skip accessories";
+  }
+
+  if (accessory === "Glasses" || accessory === "Sunglasses") {
+    return lower(accessory);
+  }
+
+  return `a ${lower(accessory)}`;
+}
+
+function legsFeetPhrase(legsFeet) {
+  if (legsFeet === "No visible legs") {
+    return "no visible legs";
+  }
+
+  return lower(legsFeet);
+}
+
+function sillyDetailPhrase(sillyDetail) {
+  const detailMap = {
+    "Add a heart": "a heart",
+    "Add a star": "a star",
+    "Add a feather": "a feather",
+    "Add a flower": "a flower",
+    "Add enormous feet": "enormous feet",
+    "Add a worm in its beak.": "a worm in its beak",
+    "Add something unexpected": "something unexpected",
+    "Make the eyes different sizes.": "eyes in different sizes",
+    "Make the eyes look in different directions.": "eyes looking in different directions",
+    "Draw the legs in a funny pose.": "legs in a funny pose",
+    "Rotate the body so that the bird is looking down at something on the ground.":
+      "a rotated body looking down at something on the ground",
+    "Rotate the body so that the bird is looking up at something above them.":
+      "a rotated body looking up at something above them"
+  };
+
+  if (detailMap[sillyDetail]) {
+    return detailMap[sillyDetail];
+  }
+
+  return lower(stripPrefix(sillyDetail, "Add "));
+}
+
+function beakAccessoryLegsSentence(bird) {
+  const beak = beakPhrase(bird.beak, bird.view);
+  const legsFeet = legsFeetPhrase(bird.legsFeet);
+
+  if (bird.accessory === "No Accessory") {
+    return `Add ${beak} and ${legsFeet}; skip accessories.`;
+  }
+
+  return `Add ${beak}, ${accessoryPhrase(bird.accessory)}, and ${legsFeet}.`;
+}
+
+function fullRecipe(bird) {
+  const viewPhrase = bird.view === "Profile" ? "profile" : "straight-on";
+  const eyeSentence = eyePhrase(bird.eyes, bird.view);
+
   return [
-    bird.birdEnergy,
-    bird.sizeProportion,
-    bird.colorPalette.name
-  ].filter(hasValue);
+    `Build a ${bodyPhrase(bird.body)} ${viewPhrase} bird.`,
+    `Give it ${wingPhrase(bird.wings, bird.view)} and ${crestPhrase(bird.crest)}.`,
+    `${eyeSentence.charAt(0).toUpperCase()}${eyeSentence.slice(1)}, and it feels ${lower(bird.emotion)}.`,
+    beakAccessoryLegsSentence(bird),
+    `Finish with ${sillyDetailPhrase(bird.sillyDetail)}.`
+  ].join(" ");
 }
 
-function CardField({ label, value, image, primary = false }) {
+function CategoryCard({ title, value, note, locked, onReroll, onToggleLock }) {
   return (
-    <div className={primary ? "card-field card-field-primary" : "card-field"}>
-      <dt>{label}</dt>
-      <dd>
-        {image && (
-          <img
-            className="detail-thumb"
-            src={image}
-            alt=""
-            onError={(event) => {
-              event.currentTarget.hidden = true;
-            }}
-          />
-        )}
-        <span>{value}</span>
-      </dd>
-    </div>
-  );
-}
-
-function CardList({ label, items }) {
-  return (
-    <div className="card-field">
-      <dt>{label}</dt>
-      <dd>
-        <ul className="card-list">
-          {items.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </dd>
-    </div>
-  );
-}
-
-function ShuffleCard({ title, answer, onShuffle, children, className = "" }) {
-  return (
-    <section className={`shuffle-card ${className}`} aria-labelledby={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>
+    <section
+      className="shuffle-card"
+      data-category={title}
+      aria-labelledby={`${title.replaceAll(" ", "-").replace("&", "and").toLowerCase()}-heading`}
+    >
       <div className="shuffle-card-header">
-        <h2 id={`${title.replaceAll(" ", "-").toLowerCase()}-heading`}>{title}</h2>
-        <button type="button" className="shuffle-button" onClick={onShuffle}>
-          Shuffle
-        </button>
+        <h2 id={`${title.replaceAll(" ", "-").replace("&", "and").toLowerCase()}-heading`}>{title}</h2>
+        <div className="card-actions">
+          <button
+            type="button"
+            className={locked ? "lock-button is-locked" : "lock-button"}
+            onClick={onToggleLock}
+            aria-pressed={locked}
+            aria-label={`${locked ? "Unlock" : "Lock"} ${title}`}
+          >
+            {locked ? "Locked" : "Lock"}
+          </button>
+          <button type="button" className="shuffle-button" onClick={onReroll} aria-label={`Reroll ${title}`}>
+            Reroll
+          </button>
+        </div>
       </div>
-      <dl className="shuffle-card-content">{children}</dl>
-      {answer && <p className="card-answer">{answer}</p>}
+      <dl className="shuffle-card-content">
+        <div className="card-field card-field-primary">
+          <dd>{value}</dd>
+        </div>
+      </dl>
+      {note && <p className="card-note">{note}</p>}
     </section>
-  );
-}
-
-function PaletteSwatches({ colors }) {
-  return (
-    <div className="palette-swatches" aria-label="Palette colors">
-      {colors.map((color) => (
-        <span key={color} style={{ backgroundColor: color }} />
-      ))}
-    </div>
-  );
-}
-
-function ColorPaletteCard({ palette, onShuffle }) {
-  return (
-    <ShuffleCard title="Color Palette" onShuffle={() => onShuffle("colorPalette")} className="color-card">
-      <CardField label="Palette" value={palette.name} primary />
-      <PaletteSwatches colors={palette.colors} />
-      <CardList label="Recommended Placement" items={palettePlacement(palette)} />
-      <CardField label="Accent" value={paletteAccent(palette)} />
-      <CardField label="Description" value={paletteDescription(palette)} />
-    </ShuffleCard>
   );
 }
 
 export default function App() {
   const [bird, setBird] = useState(() => makeBird());
+  const [locks, setLocks] = useState(initialLocks);
   const [copyStatus, setCopyStatus] = useState("");
-  const [showSummary, setShowSummary] = useState(false);
-  const prompt = useMemo(() => birdPrompt(bird), [bird]);
+  const recipe = useMemo(() => fullRecipe(bird), [bird]);
 
   function generateBird() {
-    setBird(makeBird());
+    setBird((currentBird) => makeBird(currentBird, locks));
     setCopyStatus("");
-    setShowSummary(false);
   }
 
-  function shuffleSizeProportionCard() {
-    setBird((currentBird) => ({
-      ...currentBird,
-      sizeProportion: randomDifferentItem(sizeProportions, currentBird.sizeProportion)
+  function rerollAll() {
+    setBird((currentBird) => makeBird(currentBird, locks));
+    setCopyStatus("");
+  }
+
+  function rerollCategory(key) {
+    setBird((currentBird) => {
+      const nextBird = { ...currentBird };
+      const options = promptOptionsForCategory(key, currentBird);
+      nextBird[key] = randomDifferentItem(options, currentBird[key]);
+
+      if (key === "view") {
+        nextBird.eyes = normalizeEyesForView(nextBird.view, nextBird.eyes);
+        nextBird.wings = normalizeWingsForView(nextBird.view, nextBird.wings);
+        nextBird.beak = normalizeBeakForView(nextBird.view, nextBird.beak);
+        nextBird.sillyDetail = normalizeSillyDetailForBird(nextBird);
+      }
+
+      if (key === "wings") {
+        nextBird.wings = normalizeWingsForView(nextBird.view, nextBird.wings);
+      }
+
+      if (key === "eyes") {
+        nextBird.eyes = normalizeEyesForView(nextBird.view, nextBird.eyes);
+      }
+
+      if (key === "beak") {
+        nextBird.beak = normalizeBeakForView(nextBird.view, nextBird.beak);
+      }
+
+      if (key === "legsFeet" || key === "sillyDetail") {
+        nextBird.sillyDetail = normalizeSillyDetailForBird(nextBird);
+      }
+
+      return nextBird;
+    });
+    setCopyStatus("");
+  }
+
+  function toggleLock(key) {
+    setLocks((currentLocks) => ({
+      ...currentLocks,
+      [key]: !currentLocks[key]
     }));
-    setCopyStatus("");
   }
 
-  function shuffleEmotionCard() {
-    shuffleField("birdEnergy");
-  }
+  async function copyRecipe() {
+    const completeRecipe = `${recipe}\n\n${categoryConfig.map(({ key, title }) => `${title}: ${bird[key]}`).join("\n")}`;
 
-  function shuffleLegsFeetCard() {
-    setBird((currentBird) => ({
-      ...currentBird,
-      legLength: randomDifferentItem(tables.legLengths, currentBird.legLength),
-      feet: randomDifferentItem(tables.feet, currentBird.feet)
-    }));
-    setCopyStatus("");
-  }
-
-  function shufflePatternCard() {
-    setBird((currentBird) => ({
-      ...currentBird,
-      pattern: randomDifferentItem(tables.patterns, currentBird.pattern),
-      patternPlacement: randomDifferentItem(tables.patternPlacement, currentBird.patternPlacement)
-    }));
-    setCopyStatus("");
-  }
-
-  function shuffleField(field) {
-    if (field === "birdEnergy") {
-      setBird((currentBird) => {
-        const nextEnergy = validateEmotion(randomDifferentItem(tables.birdEnergy, currentBird.birdEnergy));
-        return {
-          ...currentBird,
-          birdEnergy: nextEnergy,
-          colorPalette: randomPaletteForEmotion(nextEnergy, currentBird.colorPalette.name)
-        };
-      });
-      setCopyStatus("");
-      return;
-    }
-
-    if (field === "colorPalette") {
-      setBird((currentBird) => ({
-        ...currentBird,
-        colorPalette: randomPaletteForEmotion(currentBird.birdEnergy, currentBird.colorPalette.name)
-      }));
-      setCopyStatus("");
-      return;
-    }
-
-    const fieldTables = {
-      sizeProportion: sizeProportions,
-      legLength: tables.legLengths,
-      feet: tables.feet,
-      pattern: tables.patterns,
-      patternPlacement: tables.patternPlacement,
-      quirk: tables.quirks
-    };
-
-    const items = fieldTables[field];
-    if (!items) {
-      return;
-    }
-
-    setBird((currentBird) => ({
-      ...currentBird,
-      [field]: randomDifferentItem(items, currentBird[field])
-    }));
-    setCopyStatus("");
-  }
-
-  async function copyPrompt() {
     try {
-      await navigator.clipboard.writeText(prompt.join("\n\n"));
-      setCopyStatus("Prompt copied.");
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(completeRecipe);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = completeRecipe;
+        textArea.setAttribute("readonly", "");
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+      }
+
+      setCopyStatus("Recipe copied.");
     } catch {
-      setCopyStatus("Copy is blocked here. Select the prompt text to copy it.");
+      setCopyStatus("Copy is blocked here. Select the recipe text to copy it.");
     }
   }
 
@@ -475,72 +550,51 @@ export default function App() {
     <main className="page">
       <section className="sketchbook" aria-labelledby="bird-title">
         <header className="page-header">
-          <div className="eyebrow">Whimsical Bird Builder</div>
-          <p className="kicker">Whimsical Drawing Prompt Generator</p>
+          <h1 className="builder-title">Whimsical Bird Character Builder</h1>
+          <p className="kicker">
+            Create a playful bird character one choice at a time. Mix body shapes, wings, expressions,
+            accessories, feet, and silly details to create a bird filled with personality.
+          </p>
+          <p className="instruction">
+            Generate a complete bird, or reroll one detail at a time until your character feels just right.
+          </p>
         </header>
 
-        <button type="button" className="primary-action" onClick={generateBird}>Build Another Bird</button>
+        <div className="builder-actions">
+          <button type="button" className="primary-action" onClick={generateBird}>
+            Build My Bird
+          </button>
+          <button type="button" className="secondary" onClick={rerollAll}>
+            Reroll All
+          </button>
+          <button type="button" className="secondary" onClick={copyRecipe}>
+            Copy Recipe
+          </button>
+        </div>
+        <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
 
         <section className="result-hero">
-          <p className="today-label">Today's Bird</p>
-          <h1 id="bird-title">{birdName(bird)}</h1>
+          <h2 id="bird-title">{bird.emotion} {bird.view} Bird</h2>
         </section>
 
-        <div className="recipe-strip" aria-label="Bird recipe highlights">
-          {recipeChips(bird).map((chip, index) => (
-            <span key={`${chip}-${index}`}>{chip}</span>
-          ))}
-        </div>
+        <p className="pack-note">
+          Use your Whimsical Bird Character Pack to choose printable bodies, wings, eyes, crests,
+          accessories, and feet that match your recipe. You can also draw or invent your own pieces.
+        </p>
 
         <div className="card-grid">
-          <ShuffleCard title="Bird Emotion" onShuffle={shuffleEmotionCard}>
-            <CardField label="Emotion" value={bird.birdEnergy} primary />
-          </ShuffleCard>
-
-          <ShuffleCard title="Size & Proportions" onShuffle={shuffleSizeProportionCard}>
-            <CardField label="Size & Proportions" value={bird.sizeProportion} primary />
-          </ShuffleCard>
-
-          <ShuffleCard title="Legs & Feet" onShuffle={shuffleLegsFeetCard}>
-            <CardField label="Legs" value={bird.legLength} primary />
-            <CardField label="Feet / Footwear" value={itemName(bird.feet)} image={itemImage(bird.feet)} />
-          </ShuffleCard>
-
-          <ShuffleCard title="Pattern" onShuffle={shufflePatternCard}>
-            <CardField label="Pattern" value={itemName(bird.pattern)} primary />
-            {hasValue(bird.pattern) && <CardField label="Location" value={itemName(bird.patternPlacement)} />}
-          </ShuffleCard>
-
-          <ShuffleCard title="Wearable Accessory" onShuffle={() => shuffleField("quirk")}>
-            <CardField label="Wearable Accessory" value={hasValue(bird.quirk) ? bird.quirk : "No accessory this time."} primary />
-          </ShuffleCard>
-
-          <ColorPaletteCard palette={bird.colorPalette} onShuffle={shuffleField} />
+          {categoryConfig.map(({ key, title, note }) => (
+            <CategoryCard
+              key={key}
+              title={title}
+              value={bird[key]}
+              note={note}
+              locked={locks[key]}
+              onReroll={() => rerollCategory(key)}
+              onToggleLock={() => toggleLock(key)}
+            />
+          ))}
         </div>
-
-        <div className="summary-actions">
-          <button type="button" className="secondary" onClick={() => setShowSummary((value) => !value)}>
-            {showSummary ? "Hide Written Summary" : "Generate Written Summary"}
-          </button>
-          {showSummary && (
-            <div className="prompt-column">
-              <section className="prompt-card" aria-labelledby="prompt-heading">
-                <h2 id="prompt-heading">Written Summary</h2>
-                <div className="prompt-text">
-                  {prompt.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
-              </section>
-
-              <div className="copy-action">
-                <button type="button" className="secondary" onClick={copyPrompt}>Copy Summary</button>
-                <p className="copy-status" role="status" aria-live="polite">{copyStatus}</p>
-              </div>
-            </div>
-          )}
-        </div>
-
       </section>
     </main>
   );
