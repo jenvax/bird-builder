@@ -75,8 +75,7 @@ const builderPrompts = {
     "Add a flower",
     "Add a belly shape",
     "Add enormous feet",
-    "Add a worm in its beak.",
-    "Add something unexpected"
+    "Add a worm in its beak."
   ]
 };
 
@@ -143,8 +142,13 @@ function sillyDetailOptionsForBird(bird) {
   }
 
   if (bird.view === "Profile") {
-    options.push("Rotate the body so that the bird is looking down at something on the ground.");
-    options.push("Rotate the body so that the bird is looking up at something above them.");
+    if (bird.eyes !== "Looking up") {
+      options.push("Rotate the body so that the bird is looking down at something on the ground.");
+    }
+
+    if (bird.eyes !== "Looking down") {
+      options.push("Rotate the body so that the bird is looking up at something above them.");
+    }
   }
 
   if (bird.legsFeet && bird.legsFeet !== builderPrompts.legsFeet.noLegs) {
@@ -333,7 +337,6 @@ function sillyDetailPhrase(sillyDetail) {
     "Add a belly shape": "a belly shape",
     "Add enormous feet": "enormous feet",
     "Add a worm in its beak.": "a worm in its beak",
-    "Add something unexpected": "something unexpected",
     "Make the eyes different sizes.": "eyes in different sizes",
     "Make the eyes look in different directions.": "eyes looking in different directions",
     "Draw the legs in a funny pose.": "legs in a funny pose",
