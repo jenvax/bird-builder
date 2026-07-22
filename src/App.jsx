@@ -73,6 +73,7 @@ const builderPrompts = {
     "Add a star",
     "Add a feather",
     "Add a flower",
+    "Add a belly shape",
     "Add enormous feet",
     "Add a worm in its beak.",
     "Add something unexpected"
@@ -329,6 +330,7 @@ function sillyDetailPhrase(sillyDetail) {
     "Add a star": "a star",
     "Add a feather": "a feather",
     "Add a flower": "a flower",
+    "Add a belly shape": "a belly shape",
     "Add enormous feet": "enormous feet",
     "Add a worm in its beak.": "a worm in its beak",
     "Add something unexpected": "something unexpected",
