@@ -36,15 +36,16 @@ const builderPrompts = {
       "Looking up",
       "Looking down",
       "Looking sideways",
-      "Looking straight ahead"
+      "Looking straight ahead",
+      "Close one eye",
+      "Close both eyes",
+      "Make the eyes different sizes",
+      "Make each eye look in a different direction"
     ],
     profile: [
-      "One visible eye",
       "Tiny eye",
       "Oversized eye",
-      "Looking up",
-      "Looking down",
-      "Looking straight ahead"
+      "Close the eye"
     ]
   },
   emotion: ["Happy", "Curious", "Sleepy", "Grumpy", "Proud", "Surprised", "Excited", "Shy"],
@@ -84,7 +85,7 @@ const categoryConfig = [
   { key: "body", title: "Body" },
   { key: "wings", title: "Wings" },
   { key: "crest", title: "Crest" },
-  { key: "eyes", title: "Eyes" },
+  { key: "eyes", title: "Eyes", note: "Optional: draw the eyes based on the Emotion." },
   {
     key: "emotion",
     title: "Emotion",
@@ -199,20 +200,23 @@ function normalizeEyesForView(view, eyes) {
 
   if (view === "Profile") {
     const profileMap = {
-      "Two eyes": "One visible eye",
+      "Two eyes": "Tiny eye",
       "Tiny eyes": "Tiny eye",
       "Oversized eyes": "Oversized eye",
-      "Close together": "One visible eye",
-      "Far apart": "One visible eye"
+      "Close together": "Tiny eye",
+      "Far apart": "Tiny eye",
+      "Close one eye": "Close the eye",
+      "Close both eyes": "Close the eye"
     };
 
     return profileMap[eyes] || randomItem(options);
   }
 
   const frontMap = {
-    "One visible eye": "Two eyes",
+    "One visible eye": "Tiny eyes",
     "Tiny eye": "Tiny eyes",
-    "Oversized eye": "Oversized eyes"
+    "Oversized eye": "Oversized eyes",
+    "Close the eye": "Close one eye"
   };
 
   return frontMap[eyes] || randomItem(options);
@@ -304,12 +308,12 @@ function eyePhrase(eyes, view) {
   const direction = lower(eyes).replace("looking", "looking");
 
   if (view === "Profile") {
-    if (eyes === "One visible eye") {
-      return "its one visible eye is clearly drawn";
-    }
-
     if (eyes === "Tiny eye" || eyes === "Oversized eye") {
       return `its visible eye is ${lower(eyes).replace(" eye", "")}`;
+    }
+
+    if (eyes === "Close the eye") {
+      return "its visible eye is closed";
     }
 
     return `its visible eye is ${direction}`;
@@ -321,6 +325,22 @@ function eyePhrase(eyes, view) {
 
   if (eyes.startsWith("Looking")) {
     return `its eyes are ${direction}`;
+  }
+
+  if (eyes === "Close one eye") {
+    return "it has one eye closed";
+  }
+
+  if (eyes === "Close both eyes") {
+    return "both eyes are closed";
+  }
+
+  if (eyes === "Make the eyes different sizes") {
+    return "its eyes are different sizes";
+  }
+
+  if (eyes === "Make each eye look in a different direction") {
+    return "each eye looks in a different direction";
   }
 
   return `it has ${lower(eyes)}`;
