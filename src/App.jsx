@@ -29,7 +29,6 @@ const builderPrompts = {
   ],
   eyes: {
     front: [
-      "Two eyes",
       "Tiny eyes",
       "Oversized eyes",
       "Close together",
@@ -45,22 +44,23 @@ const builderPrompts = {
       "Oversized eye",
       "Looking up",
       "Looking down",
-      "Looking sideways",
       "Looking straight ahead"
     ]
   },
   emotion: ["Happy", "Curious", "Sleepy", "Grumpy", "Proud", "Surprised", "Excited", "Shy"],
-  accessory: [
-    "No Accessory",
-    "Glasses",
-    "Sunglasses",
-    "Hat",
-    "Crown",
-    "Feather Crown",
-    "Bow",
-    "Feathered Headpiece",
-    "Head Band"
-  ],
+  accessory: {
+    always: ["No Accessory", "Glasses", "Sunglasses", "Headscarf"],
+    crestReplacement: [
+      "Replace the crest with a flower on a stem",
+      "Replace the crest with a star on a stem",
+      "Replace the crest with a swirly sprout",
+      "Replace the crest with a feather crown",
+      "Replace the crest with a crown",
+      "Replace the crest with a hat",
+      "Replace the crest with a feathered headpiece",
+      "Replace the crest with a head scarf"
+    ]
+  },
   legsFeet: {
     noLegs: "No visible legs",
     pairedLegs: ["Tiny legs", "Long legs"],
@@ -133,6 +133,14 @@ function wingOptionsForView(view) {
   return builderPrompts.wings.filter((wing) => wing !== "Matching wings" && wing !== "Mismatched wings");
 }
 
+function accessoryOptionsForBird(bird) {
+  if (bird.crest && bird.crest !== "No crest") {
+    return [...builderPrompts.accessory.always, ...builderPrompts.accessory.crestReplacement];
+  }
+
+  return builderPrompts.accessory.always;
+}
+
 function sillyDetailOptionsForBird(bird) {
   const options = [...builderPrompts.sillyDetail];
 
@@ -169,6 +177,10 @@ function promptOptionsForCategory(key, bird) {
 
   if (key === "legsFeet") {
     return legsFeetOptions;
+  }
+
+  if (key === "accessory") {
+    return accessoryOptionsForBird(bird);
   }
 
   if (key === "sillyDetail") {
@@ -216,6 +228,11 @@ function normalizeSillyDetailForBird(bird) {
   return options.includes(bird.sillyDetail) ? bird.sillyDetail : randomItem(options);
 }
 
+function normalizeAccessoryForBird(bird) {
+  const options = accessoryOptionsForBird(bird);
+  return options.includes(bird.accessory) ? bird.accessory : randomItem(options);
+}
+
 function makeBird(currentBird = {}, locks = initialLocks) {
   const nextBird = {};
 
@@ -231,6 +248,7 @@ function makeBird(currentBird = {}, locks = initialLocks) {
 
   nextBird.eyes = normalizeEyesForView(nextBird.view, nextBird.eyes);
   nextBird.wings = normalizeWingsForView(nextBird.view, nextBird.wings);
+  nextBird.accessory = normalizeAccessoryForBird(nextBird);
   nextBird.sillyDetail = normalizeSillyDetailForBird(nextBird);
 
   return nextBird;
@@ -317,6 +335,10 @@ function accessoryPhrase(accessory) {
     return lower(accessory);
   }
 
+  if (accessory.startsWith("Replace the crest")) {
+    return lower(accessory);
+  }
+
   return `a ${lower(accessory)}`;
 }
 
@@ -358,6 +380,10 @@ function accessoryLegsSentence(bird) {
 
   if (bird.accessory === "No Accessory") {
     return `Add ${legsFeet}; skip accessories.`;
+  }
+
+  if (bird.accessory.startsWith("Replace the crest")) {
+    return `${accessoryPhrase(bird.accessory)} and add ${legsFeet}.`;
   }
 
   return `Add ${accessoryPhrase(bird.accessory)} and ${legsFeet}.`;
@@ -444,6 +470,10 @@ export default function App() {
 
       if (key === "eyes") {
         nextBird.eyes = normalizeEyesForView(nextBird.view, nextBird.eyes);
+      }
+
+      if (key === "crest" || key === "accessory") {
+        nextBird.accessory = normalizeAccessoryForBird(nextBird);
       }
 
       if (key === "legsFeet" || key === "sillyDetail") {
